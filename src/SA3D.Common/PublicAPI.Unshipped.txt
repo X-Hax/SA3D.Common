@@ -1,0 +1,457 @@
+﻿#nullable enable
+abstract SA3D.Common.Lookup.BaseLUT.AddEntry(uint address, object! value) -> void
+const SA3D.Common.MathHelper.BAMS2Deg = 182.04445 -> float
+const SA3D.Common.MathHelper.BAMS2Rad = 10430.378 -> float
+const SA3D.Common.MathHelper.HalfPi = 1.5707964 -> float
+const SA3D.Common.MathHelper.Rad2Deg = 57.295776 -> float
+override SA3D.Common.Converters.BAMS16Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.BAMS16Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.BAMS16Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.BAMS16Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.BAMS16Converter.IsValid(System.ComponentModel.ITypeDescriptorContext? context, object? value) -> bool
+override SA3D.Common.Converters.BAMS32Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.BAMS32Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.BAMS32Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.BAMS32Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.BAMS32Converter.IsValid(System.ComponentModel.ITypeDescriptorContext? context, object? value) -> bool
+override SA3D.Common.Converters.Int32HexConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.Int32HexConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.Int32HexConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.Int32HexConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.Int32HexConverter.IsValid(System.ComponentModel.ITypeDescriptorContext? context, object? value) -> bool
+override SA3D.Common.Converters.StringConverter<T>.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.StringConverter<T>.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.StringConverter<T>.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.StringConverter<T>.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.UInt16HexConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.UInt16HexConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.UInt16HexConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.UInt16HexConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.UInt16HexConverter.IsValid(System.ComponentModel.ITypeDescriptorContext? context, object? value) -> bool
+override SA3D.Common.Converters.UInt32HexConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.UInt32HexConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.UInt32HexConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.UInt32HexConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.UInt32HexConverter.IsValid(System.ComponentModel.ITypeDescriptorContext? context, object? value) -> bool
+override SA3D.Common.Converters.Vector2Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.Vector2Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.Vector2Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.Vector2Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.Vector3Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.Vector3Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.Vector3Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.Vector3Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Lookup.LabeledArray<T>.ToString() -> string!
+override SA3D.Common.Lookup.LabeledReadOnlyArray<T>.ToString() -> string!
+SA3D.Common.CollectionExtensions
+SA3D.Common.Converters.BAMS16Converter
+SA3D.Common.Converters.BAMS16Converter.BAMS16Converter() -> void
+SA3D.Common.Converters.BAMS32Converter
+SA3D.Common.Converters.BAMS32Converter.BAMS32Converter() -> void
+SA3D.Common.Converters.Int32HexConverter
+SA3D.Common.Converters.Int32HexConverter.Int32HexConverter() -> void
+SA3D.Common.Converters.StringConverter<T>
+SA3D.Common.Converters.StringConverter<T>.StringConverter() -> void
+SA3D.Common.Converters.UInt16HexConverter
+SA3D.Common.Converters.UInt16HexConverter.UInt16HexConverter() -> void
+SA3D.Common.Converters.UInt32HexConverter
+SA3D.Common.Converters.UInt32HexConverter.UInt32HexConverter() -> void
+SA3D.Common.Converters.Vector2Converter
+SA3D.Common.Converters.Vector2Converter.Vector2Converter() -> void
+SA3D.Common.Converters.Vector3Converter
+SA3D.Common.Converters.Vector3Converter.Vector3Converter() -> void
+SA3D.Common.DistinctMap<T>
+SA3D.Common.DistinctMap<T>.DistinctMap(System.Collections.Generic.IList<T>! values, int[]? map) -> void
+SA3D.Common.DistinctMap<T>.GetValue(int absoluteIndex) -> T
+SA3D.Common.DistinctMap<T>.Map.get -> int[]?
+SA3D.Common.DistinctMap<T>.this[int absoluteIndex].get -> int
+SA3D.Common.DistinctMap<T>.this[short absoluteIndex].get -> short
+SA3D.Common.DistinctMap<T>.this[uint absoluteIndex].get -> uint
+SA3D.Common.DistinctMap<T>.this[ushort absoluteIndex].get -> ushort
+SA3D.Common.DistinctMap<T>.ValueArray.get -> T[]!
+SA3D.Common.DistinctMap<T>.Values.get -> System.Collections.Generic.IList<T>!
+SA3D.Common.DistinctMapExtensions
+SA3D.Common.Flag16
+SA3D.Common.Flag16.B0 = 1 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B1 = 2 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B10 = 1024 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B11 = 2048 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B12 = 4096 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B13 = 8192 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B14 = 16384 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B15 = 32768 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B2 = 4 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B3 = 8 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B4 = 16 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B5 = 32 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B6 = 64 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B7 = 128 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B8 = 256 -> SA3D.Common.Flag16
+SA3D.Common.Flag16.B9 = 512 -> SA3D.Common.Flag16
+SA3D.Common.Flag32
+SA3D.Common.Flag32.B0 = 1 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B1 = 2 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B10 = 1024 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B11 = 2048 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B12 = 4096 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B13 = 8192 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B14 = 16384 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B15 = 32768 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B16 = 65536 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B17 = 131072 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B18 = 262144 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B19 = 524288 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B2 = 4 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B20 = 1048576 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B21 = 2097152 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B22 = 4194304 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B23 = 8388608 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B24 = 16777216 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B25 = 33554432 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B26 = 67108864 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B27 = 134217728 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B28 = 268435456 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B29 = 536870912 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B3 = 8 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B30 = 1073741824 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B31 = 2147483648 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B4 = 16 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B5 = 32 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B6 = 64 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B7 = 128 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B8 = 256 -> SA3D.Common.Flag32
+SA3D.Common.Flag32.B9 = 512 -> SA3D.Common.Flag32
+SA3D.Common.Flag64
+SA3D.Common.Flag64.B0 = 1 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B1 = 2 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B10 = 1024 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B11 = 2048 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B12 = 4096 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B13 = 8192 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B14 = 16384 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B15 = 32768 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B16 = 65536 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B17 = 131072 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B18 = 262144 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B19 = 524288 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B2 = 4 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B20 = 1048576 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B21 = 2097152 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B22 = 4194304 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B23 = 8388608 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B24 = 16777216 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B25 = 33554432 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B26 = 67108864 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B27 = 134217728 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B28 = 268435456 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B29 = 536870912 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B3 = 8 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B30 = 1073741824 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B31 = 2147483648 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B32 = 4294967296 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B33 = 8589934592 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B34 = 17179869184 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B35 = 34359738368 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B36 = 68719476736 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B37 = 137438953472 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B38 = 274877906944 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B39 = 549755813888 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B4 = 16 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B40 = 1099511627776 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B41 = 2199023255552 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B42 = 4398046511104 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B43 = 8796093022208 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B44 = 17592186044416 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B45 = 35184372088832 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B46 = 70368744177664 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B47 = 140737488355328 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B48 = 281474976710656 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B49 = 562949953421312 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B5 = 32 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B50 = 1125899906842624 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B51 = 2251799813685248 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B52 = 4503599627370496 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B53 = 9007199254740992 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B54 = 18014398509481984 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B55 = 36028797018963968 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B56 = 72057594037927936 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B57 = 144115188075855872 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B58 = 288230376151711744 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B59 = 576460752303423488 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B6 = 64 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B60 = 1152921504606846976 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B61 = 2305843009213693952 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B62 = 4611686018427387904 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B63 = 9223372036854775808 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B7 = 128 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B8 = 256 -> SA3D.Common.Flag64
+SA3D.Common.Flag64.B9 = 512 -> SA3D.Common.Flag64
+SA3D.Common.Flag8
+SA3D.Common.Flag8.B0 = 1 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B1 = 2 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B2 = 4 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B3 = 8 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B4 = 16 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B5 = 32 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B6 = 64 -> SA3D.Common.Flag8
+SA3D.Common.Flag8.B7 = 128 -> SA3D.Common.Flag8
+SA3D.Common.Ini.Attributes.IniAlwaysIncludeAttribute
+SA3D.Common.Ini.Attributes.IniAlwaysIncludeAttribute.IniAlwaysIncludeAttribute() -> void
+SA3D.Common.Ini.Attributes.IniCollectionAttribute
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.Format.get -> string!
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.Format.set -> void
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.IniCollectionAttribute(SA3D.Common.Ini.IniCollectionMode mode) -> void
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.KeyConverter.get -> System.Type?
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.KeyConverter.set -> void
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.Settings.get -> SA3D.Common.Ini.IniCollectionSettings!
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.StartIndex.get -> int
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.StartIndex.set -> void
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.ValueConverter.get -> System.Type?
+SA3D.Common.Ini.Attributes.IniCollectionAttribute.ValueConverter.set -> void
+SA3D.Common.Ini.Attributes.IniIgnoreAttribute
+SA3D.Common.Ini.Attributes.IniIgnoreAttribute.IniIgnoreAttribute() -> void
+SA3D.Common.Ini.Attributes.IniNameAttribute
+SA3D.Common.Ini.Attributes.IniNameAttribute.IniNameAttribute(string! name) -> void
+SA3D.Common.Ini.Attributes.IniNameAttribute.Name.get -> string!
+SA3D.Common.Ini.IniCollectionMode
+SA3D.Common.Ini.IniCollectionMode.IndexOnly = 1 -> SA3D.Common.Ini.IniCollectionMode
+SA3D.Common.Ini.IniCollectionMode.Normal = 0 -> SA3D.Common.Ini.IniCollectionMode
+SA3D.Common.Ini.IniCollectionMode.NoSquareBrackets = 2 -> SA3D.Common.Ini.IniCollectionMode
+SA3D.Common.Ini.IniCollectionMode.SingleLine = 3 -> SA3D.Common.Ini.IniCollectionMode
+SA3D.Common.Ini.IniCollectionModeExtensions
+SA3D.Common.Ini.IniCollectionSettings
+SA3D.Common.Ini.IniCollectionSettings.Format.get -> string!
+SA3D.Common.Ini.IniCollectionSettings.Format.set -> void
+SA3D.Common.Ini.IniCollectionSettings.IniCollectionSettings(SA3D.Common.Ini.IniCollectionMode mode) -> void
+SA3D.Common.Ini.IniCollectionSettings.KeyConverter.get -> System.ComponentModel.TypeConverter?
+SA3D.Common.Ini.IniCollectionSettings.KeyConverter.set -> void
+SA3D.Common.Ini.IniCollectionSettings.Mode.get -> SA3D.Common.Ini.IniCollectionMode
+SA3D.Common.Ini.IniCollectionSettings.StartIndex.get -> int
+SA3D.Common.Ini.IniCollectionSettings.StartIndex.set -> void
+SA3D.Common.Ini.IniCollectionSettings.ValueConverter.get -> System.ComponentModel.TypeConverter?
+SA3D.Common.Ini.IniCollectionSettings.ValueConverter.set -> void
+SA3D.Common.Ini.IniFile
+SA3D.Common.Ini.IniSerializer
+SA3D.Common.IO.EndianStackReader
+SA3D.Common.IO.EndianStackReader.BigEndian.get -> bool
+SA3D.Common.IO.EndianStackReader.CheckBigEndian16(uint address) -> bool
+SA3D.Common.IO.EndianStackReader.CheckBigEndian32(uint address) -> bool
+SA3D.Common.IO.EndianStackReader.EndianStackReader(byte[]! source, uint imageBase = 0, bool bigEndian = false) -> void
+SA3D.Common.IO.EndianStackReader.ImageBase.get -> uint
+SA3D.Common.IO.EndianStackReader.ImageBase.set -> void
+SA3D.Common.IO.EndianStackReader.Length.get -> int
+SA3D.Common.IO.EndianStackReader.LongLength.get -> long
+SA3D.Common.IO.EndianStackReader.PopEndian() -> void
+SA3D.Common.IO.EndianStackReader.PushBigEndian(bool bigEndian) -> void
+SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address) -> string!
+SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, out uint byteLength) -> string!
+SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, System.Text.Encoding! encoding) -> string!
+SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, System.Text.Encoding! encoding, out uint byteLength) -> string!
+SA3D.Common.IO.EndianStackReader.ReadPointer(uint address) -> uint
+SA3D.Common.IO.EndianStackReader.ReadString(uint address, uint count) -> string!
+SA3D.Common.IO.EndianStackReader.ReadStringLimited(uint address, int limit, out uint byteLength) -> string!
+SA3D.Common.IO.EndianStackReader.ReadStringLimited(uint address, System.Text.Encoding! encoding, int limit, out uint byteLength) -> string!
+SA3D.Common.IO.EndianStackReader.Slice(int address) -> System.ReadOnlySpan<byte>
+SA3D.Common.IO.EndianStackReader.Slice(uint address) -> System.ReadOnlySpan<byte>
+SA3D.Common.IO.EndianStackReader.Slice(uint address, int length) -> System.ReadOnlySpan<byte>
+SA3D.Common.IO.EndianStackReader.Source.get -> System.ReadOnlySpan<byte>
+SA3D.Common.IO.EndianStackReader.TryReadPointer(uint address, out uint pointer) -> bool
+SA3D.Common.IO.EndianStackWriter
+SA3D.Common.IO.EndianStackWriter.Align(uint size, uint offset = 0) -> void
+SA3D.Common.IO.EndianStackWriter.BigEndian.get -> bool
+SA3D.Common.IO.EndianStackWriter.EndianStackWriter(System.IO.Stream! stream, uint imageBase = 0, bool bigEndian = false) -> void
+SA3D.Common.IO.EndianStackWriter.ImageBase.get -> uint
+SA3D.Common.IO.EndianStackWriter.ImageBase.set -> void
+SA3D.Common.IO.EndianStackWriter.PointerPosition.get -> uint
+SA3D.Common.IO.EndianStackWriter.PopEndian() -> void
+SA3D.Common.IO.EndianStackWriter.Position.get -> uint
+SA3D.Common.IO.EndianStackWriter.PushBigEndian(bool bigEndian) -> void
+SA3D.Common.IO.EndianStackWriter.Seek(uint offset, System.IO.SeekOrigin origin) -> void
+SA3D.Common.IO.EndianStackWriter.SeekEnd() -> void
+SA3D.Common.IO.EndianStackWriter.SeekStart() -> void
+SA3D.Common.IO.EndianStackWriter.Stream.get -> System.IO.Stream!
+SA3D.Common.IO.EndianStackWriter.WriteString(string! data) -> void
+SA3D.Common.IO.EndianStackWriter.WriteString(string! data, int length) -> void
+SA3D.Common.IO.EndianStackWriter.WriteString(string! data, int length, System.Text.Encoding! encoding) -> void
+SA3D.Common.IO.EndianStackWriter.WriteString(string! data, System.Text.Encoding! encoding) -> void
+SA3D.Common.IO.EndianStackWriter.WriteStringNullterminated(string! data) -> void
+SA3D.Common.IO.EndianStackWriter.WriteStringNullterminated(string! data, System.Text.Encoding! encoding) -> void
+SA3D.Common.IO.ExeHelper
+SA3D.Common.Lookup.BaseLUT
+SA3D.Common.Lookup.BaseLUT.All.get -> SA3D.Common.Lookup.PointerDictionary<object!>!
+SA3D.Common.Lookup.BaseLUT.BaseLUT() -> void
+SA3D.Common.Lookup.BaseLUT.BaseLUT(System.Collections.Generic.Dictionary<uint, string!>! labels) -> void
+SA3D.Common.Lookup.BaseLUT.GetAddAddress<T>(T? value, System.Func<T!, uint>! write) -> uint
+SA3D.Common.Lookup.BaseLUT.GetAddLabeledValue<T>(uint address, string! genPrefix, System.Func<T!>! read) -> T!
+SA3D.Common.Lookup.BaseLUT.GetAddLabeledValue<T>(uint address, string! genPrefix, System.Func<uint, T!>! read) -> T!
+SA3D.Common.Lookup.BaseLUT.GetAddValue<T>(uint address, System.Func<T!>! read) -> T!
+SA3D.Common.Lookup.BaseLUT.GetAddValue<T>(uint address, System.Func<uint, T!>! read) -> T!
+SA3D.Common.Lookup.BaseLUT.Labels.get -> SA3D.Common.Lookup.LabelDictionary!
+SA3D.Common.Lookup.ILabel
+SA3D.Common.Lookup.ILabel.Label.get -> string!
+SA3D.Common.Lookup.ILabel.Label.set -> void
+SA3D.Common.Lookup.ILabeledArray<T>
+SA3D.Common.Lookup.ILabeledArray<T>.Clone() -> SA3D.Common.Lookup.ILabeledArray<T>!
+SA3D.Common.Lookup.ILabeledArray<T>.IsLabeledArray(object? value) -> bool
+SA3D.Common.Lookup.ILabeledArray<T>.Length.get -> int
+SA3D.Common.Lookup.ILabeledArray<T>.this[int index].get -> T
+SA3D.Common.Lookup.LabelDictionary
+SA3D.Common.Lookup.LabelDictionary.AddSafe(uint address, string! label) -> string!
+SA3D.Common.Lookup.LabelDictionary.GetGenerateValue(uint address, string! prefix) -> string!
+SA3D.Common.Lookup.LabelDictionary.LabelDictionary() -> void
+SA3D.Common.Lookup.LabelDictionary.LabelDictionary(System.Collections.Generic.Dictionary<uint, string!>! labels) -> void
+SA3D.Common.Lookup.LabeledArray<T>
+SA3D.Common.Lookup.LabeledArray<T>.Array.get -> T[]!
+SA3D.Common.Lookup.LabeledArray<T>.Array.set -> void
+SA3D.Common.Lookup.LabeledArray<T>.Clone() -> SA3D.Common.Lookup.LabeledArray<T>!
+SA3D.Common.Lookup.LabeledArray<T>.CopyTo(System.Array! array, int index) -> void
+SA3D.Common.Lookup.LabeledArray<T>.GetEnumerator() -> System.Collections.IEnumerator!
+SA3D.Common.Lookup.LabeledArray<T>.IsFixedSize.get -> bool
+SA3D.Common.Lookup.LabeledArray<T>.IsReadOnly.get -> bool
+SA3D.Common.Lookup.LabeledArray<T>.IsSynchronized.get -> bool
+SA3D.Common.Lookup.LabeledArray<T>.Label.get -> string!
+SA3D.Common.Lookup.LabeledArray<T>.Label.set -> void
+SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(int size) -> void
+SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(string! label, int size) -> void
+SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(string! label, T[]! array) -> void
+SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(string! label, uint size) -> void
+SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(T[]! array) -> void
+SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(uint size) -> void
+SA3D.Common.Lookup.LabeledArray<T>.Length.get -> int
+SA3D.Common.Lookup.LabeledArray<T>.SyncRoot.get -> object!
+SA3D.Common.Lookup.LabeledArray<T>.this[int index].get -> T
+SA3D.Common.Lookup.LabeledArray<T>.this[int index].set -> void
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Array.get -> System.Collections.ObjectModel.ReadOnlyCollection<T>!
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Clone() -> SA3D.Common.Lookup.LabeledReadOnlyArray<T>!
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Label.get -> string!
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Label.set -> void
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(string! label, System.Collections.Generic.IList<T>! list) -> void
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(string! label, System.Collections.ObjectModel.ReadOnlyCollection<T>! array) -> void
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(System.Collections.Generic.IList<T>! list) -> void
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(System.Collections.ObjectModel.ReadOnlyCollection<T>! array) -> void
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Length.get -> int
+SA3D.Common.Lookup.LabeledReadOnlyArray<T>.this[int index].get -> T
+SA3D.Common.Lookup.LookupExtensions
+SA3D.Common.Lookup.PointerDictionary<T>
+SA3D.Common.Lookup.PointerDictionary<T>.Add(uint address, T value) -> void
+SA3D.Common.Lookup.PointerDictionary<T>.GetAddress(T value) -> uint?
+SA3D.Common.Lookup.PointerDictionary<T>.GetDictFrom() -> System.Collections.Generic.Dictionary<uint, T>!
+SA3D.Common.Lookup.PointerDictionary<T>.GetDictTo() -> System.Collections.Generic.Dictionary<T, uint>!
+SA3D.Common.Lookup.PointerDictionary<T>.GetValue(uint address) -> T?
+SA3D.Common.Lookup.PointerDictionary<T>.PointerDictionary() -> void
+SA3D.Common.Lookup.PointerDictionary<T>.TryAdd(uint address, T value) -> bool
+SA3D.Common.Lookup.PointerDictionary<T>.TryGetAddress(T value, out uint? result) -> bool
+SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(uint address, out T result) -> bool
+SA3D.Common.MathHelper
+SA3D.Common.RegionMarker<T>
+SA3D.Common.RegionMarker<T>.HasValue(uint from, uint to, T value) -> bool
+SA3D.Common.RegionMarker<T>.MarkRegion(uint from, uint to, T value) -> void
+SA3D.Common.RegionMarker<T>.RegionMarker() -> void
+SA3D.Common.StringExtensions
+static SA3D.Common.CollectionExtensions.ContentClone<T>(this T[]! input) -> T[]!
+static SA3D.Common.CollectionExtensions.SelectIgnoringNull<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult?>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
+static SA3D.Common.CollectionExtensions.SelectManyIgnoringNull<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, System.Collections.Generic.IEnumerable<TResult?>?>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
+static SA3D.Common.DistinctMap<T>.CreateDistinctMap(System.Collections.Generic.IList<T>! collection) -> SA3D.Common.DistinctMap<T>!
+static SA3D.Common.DistinctMap<T>.TryCreateDistinctMap(System.Collections.Generic.IList<T>! collection, out SA3D.Common.DistinctMap<T>! map) -> bool
+static SA3D.Common.DistinctMapExtensions.CreateDistinctMap<T>(this System.Collections.Generic.IList<T>! collection) -> SA3D.Common.DistinctMap<T>!
+static SA3D.Common.DistinctMapExtensions.TryCreateDistinctMap<T>(this System.Collections.Generic.IList<T>! collection, out SA3D.Common.DistinctMap<T>! map) -> bool
+static SA3D.Common.Ini.IniCollectionModeExtensions.IndexFromName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! full) -> string?
+static SA3D.Common.Ini.IniCollectionModeExtensions.IndexToName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! index) -> string!
+static SA3D.Common.Ini.IniFile.Combine(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictA, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictB) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Read(params string![]! data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Read(string! filename) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Read(System.Collections.Generic.IEnumerable<string!>! data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Read(System.IO.Stream! stream) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini) -> string![]!
+static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, string! filename) -> void
+static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, System.IO.Stream! stream) -> void
+static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini) -> object?
+static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
+static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> object?
+static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, System.ComponentModel.TypeConverter? converter) -> object?
+static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini) -> T?
+static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
+static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename, System.ComponentModel.TypeConverter? converter) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename) -> void
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> void
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> void
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename, System.ComponentModel.TypeConverter? converter) -> void
+static SA3D.Common.IO.ExeHelper.FixRELPointers(byte[]! file, uint imageBase = 0) -> void
+static SA3D.Common.IO.ExeHelper.SetupEXE(byte[]! file, out byte[]? result, out uint imageBase) -> bool
+static SA3D.Common.Lookup.LookupExtensions.ContentClone<T>(this SA3D.Common.Lookup.ILabeledArray<T>! labeledArray) -> SA3D.Common.Lookup.ILabeledArray<T>!
+static SA3D.Common.Lookup.LookupExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! labeledArray) -> SA3D.Common.Lookup.LabeledArray<T>!
+static SA3D.Common.Lookup.LookupExtensions.GetILabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address) -> SA3D.Common.Lookup.ILabeledArray<T>?
+static SA3D.Common.Lookup.LookupExtensions.GetILabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address) -> SA3D.Common.Lookup.ILabeledArray<T>?
+static SA3D.Common.Lookup.LookupExtensions.GetLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address) -> SA3D.Common.Lookup.LabeledArray<T>?
+static SA3D.Common.Lookup.LookupExtensions.GetLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address) -> SA3D.Common.Lookup.LabeledArray<T>?
+static SA3D.Common.Lookup.LookupExtensions.GetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address) -> SA3D.Common.Lookup.LabeledReadOnlyArray<T>?
+static SA3D.Common.Lookup.LookupExtensions.GetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address) -> SA3D.Common.Lookup.LabeledReadOnlyArray<T>?
+static SA3D.Common.Lookup.LookupExtensions.TryGetILabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address, out SA3D.Common.Lookup.ILabeledArray<T>! result) -> bool
+static SA3D.Common.Lookup.LookupExtensions.TryGetILabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address, out SA3D.Common.Lookup.ILabeledArray<T>! result) -> bool
+static SA3D.Common.Lookup.LookupExtensions.TryGetLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address, out SA3D.Common.Lookup.LabeledArray<T>! result) -> bool
+static SA3D.Common.Lookup.LookupExtensions.TryGetLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address, out SA3D.Common.Lookup.LabeledArray<T>! result) -> bool
+static SA3D.Common.Lookup.LookupExtensions.TryGetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address, out SA3D.Common.Lookup.LabeledReadOnlyArray<T>! result) -> bool
+static SA3D.Common.Lookup.LookupExtensions.TryGetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address, out SA3D.Common.Lookup.LabeledReadOnlyArray<T>! result) -> bool
+static SA3D.Common.MathHelper.BAMSToDeg(int BAMS) -> float
+static SA3D.Common.MathHelper.BAMSToRad(int BAMS) -> float
+static SA3D.Common.MathHelper.DegToBAMS(float deg) -> int
+static SA3D.Common.MathHelper.DegToRad(float deg) -> float
+static SA3D.Common.MathHelper.IsPow2(int number) -> bool
+static SA3D.Common.MathHelper.IsPow2(uint number) -> bool
+static SA3D.Common.MathHelper.Lerp(float from, float to, float time) -> float
+static SA3D.Common.MathHelper.RadToBAMS(float rad) -> int
+static SA3D.Common.MathHelper.RadToDeg(float rad) -> float
+static SA3D.Common.MathHelper.RotateNormal(System.Numerics.Vector3 axis, System.Numerics.Vector3 target, float angleRadians) -> System.Numerics.Vector3
+static SA3D.Common.StringExtensions.GenerateIdentifier() -> string!
+static SA3D.Common.StringExtensions.GetZeros(int zeroCount) -> string!
+static SA3D.Common.StringExtensions.MakeIdentifier(this string! input) -> string!
+static SA3D.Common.StringExtensions.ToC(this float number) -> string!
+static SA3D.Common.StringExtensions.ToC(this string? input) -> string!
+static SA3D.Common.StringExtensions.ToCHex(this int number) -> string!
+static SA3D.Common.StringExtensions.ToCHex(this long number) -> string!
+static SA3D.Common.StringExtensions.ToCHex(this short number) -> string!
+static SA3D.Common.StringExtensions.ToCHex(this uint number) -> string!
+static SA3D.Common.StringExtensions.ToCHex(this ulong number) -> string!
+static SA3D.Common.StringExtensions.ToCHex(this ushort number) -> string!
+static SA3D.Common.StringExtensions.ToLongString(this float number) -> string!
+virtual SA3D.Common.IO.EndianStackReader.ReadByte(uint address) -> byte
+virtual SA3D.Common.IO.EndianStackReader.ReadBytes(uint address, int length) -> byte[]!
+virtual SA3D.Common.IO.EndianStackReader.ReadBytes(uint sourceAddress, byte[]! destination, uint destinationAddress, int length) -> void
+virtual SA3D.Common.IO.EndianStackReader.ReadDouble(uint address) -> double
+virtual SA3D.Common.IO.EndianStackReader.ReadFloat(uint address) -> float
+virtual SA3D.Common.IO.EndianStackReader.ReadInt(uint address) -> int
+virtual SA3D.Common.IO.EndianStackReader.ReadLong(uint address) -> ulong
+virtual SA3D.Common.IO.EndianStackReader.ReadSByte(uint address) -> sbyte
+virtual SA3D.Common.IO.EndianStackReader.ReadShort(uint address) -> short
+virtual SA3D.Common.IO.EndianStackReader.ReadString(uint address, System.Text.Encoding! encoding, uint count) -> string!
+virtual SA3D.Common.IO.EndianStackReader.ReadUInt(uint address) -> uint
+virtual SA3D.Common.IO.EndianStackReader.ReadULong(uint address) -> long
+virtual SA3D.Common.IO.EndianStackReader.ReadUShort(uint address) -> ushort
+virtual SA3D.Common.IO.EndianStackReader.Slice(int address, int length) -> System.ReadOnlySpan<byte>
+virtual SA3D.Common.IO.EndianStackReader.this[uint index].get -> byte
+virtual SA3D.Common.IO.EndianStackWriter.Write(System.ReadOnlySpan<byte> data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteByte(byte data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteDouble(double data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteEmpty(uint length) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteFloat(float data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteInt(int data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteLong(long data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteSByte(sbyte data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteShort(short data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteUInt(uint data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteULong(ulong data) -> void
+virtual SA3D.Common.IO.EndianStackWriter.WriteUShort(ushort data) -> void

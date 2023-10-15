@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+    	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RootNamespace>SA3D.Common</RootNamespace>
+		<WarningsAsErrors>CS1591</WarningsAsErrors>
+    	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+    	<EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+    	<Title>SA3D Common Library</Title>
+		<Product>SA3D Common Library</Product>
+		<Description>Reused code in the SA3D API.</Description>
+		<Authors>X-Hax</Authors>
+		<Version>1.0.0</Version>
+    	<RepositoryUrl>https://github.com/X-Hax/SA3D.Common</RepositoryUrl>
+    	<PackageId>SA3D.Common</PackageId>
+    	<PackageIcon>icon.png</PackageIcon>
+    	<PackageReadmeFile>README.md</PackageReadmeFile>
+    	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+    	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\LICENSE">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Reloaded.Memory" Version="9.1.0" />
+	</ItemGroup>
+
+</Project>
