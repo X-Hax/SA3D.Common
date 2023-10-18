@@ -13,32 +13,38 @@ namespace SA3D.Common.Ini.Deserialization
             Type valuetype = typeof(TValue);
             IDictionary<TKey, TValue> list = (IDictionary<TKey, TValue>)listObj;
 
-            if (collectionSettings.Mode == IniCollectionMode.SingleLine)
+            if(collectionSettings.Mode == IniCollectionMode.SingleLine)
+            {
                 throw new InvalidOperationException("Cannot deserialize IDictionary<TKey, TValue> with IniCollectionMode.SingleLine!");
+            }
 
             List<string> items = new();
 
-            if (!valuetype.IsComplexType(collectionSettings.ValueConverter))
+            if(!valuetype.IsComplexType(collectionSettings.ValueConverter))
             {
-                foreach (IniNameValue item in group)
+                foreach(IniNameValue item in group)
                 {
                     string? value = collectionSettings.Mode.IndexFromName(name, item.Key);
-                    if (value == null)
+                    if(value == null)
+                    {
                         continue;
+                    }
 
                     items.Add(value);
                 }
 
-                foreach (string item in items)
+                foreach(string item in items)
                 {
-                    TKey? key = (TKey?)keytype.ConvertFromString(item, collectionSettings.KeyConverter);
-                    if (key == null)
+                    if(keytype.ConvertFromString(item, collectionSettings.KeyConverter) is not TKey key)
+                    {
                         throw new InvalidCastException("Failed to convert key from string");
+                    }
 
                     string valueString = collectionSettings.Mode.IndexToName(name, item);
-                    TValue? value = (TValue?)valuetype.ConvertFromString(valueString, collectionSettings.ValueConverter);
-                    if (value == null)
+                    if(valuetype.ConvertFromString(valueString, collectionSettings.ValueConverter) is not TValue value)
+                    {
                         throw new InvalidCastException("Failed to convert value from string");
+                    }
 
                     list.Add(key, value);
                     group.Remove(valueString);
@@ -46,25 +52,30 @@ namespace SA3D.Common.Ini.Deserialization
             }
             else
             {
-                foreach (IniNameGroup item in ini)
+                foreach(IniNameGroup item in ini)
                 {
                     string? value = collectionSettings.Mode.IndexFromName(name, item.Key);
-                    if (value == null)
+                    if(value == null)
+                    {
                         continue;
+                    }
 
                     items.Add(value);
                 }
 
-                foreach (string item in items)
+                foreach(string item in items)
                 {
-                    TKey? key = (TKey?)keytype.ConvertFromString(item, collectionSettings.KeyConverter);
-                    if (key == null)
+                    if(keytype.ConvertFromString(item, collectionSettings.KeyConverter) is not TKey key)
+                    {
                         throw new InvalidCastException("Failed to convert key from string");
+                    }
 
                     string valueString = collectionSettings.Mode.IndexToName(name, item);
-                    TValue? value = (TValue?)DeserializeInternal("value", valuetype, valuetype.GetDefaultValue(), ini, valueString, true, defaultCollectionSettings, collectionSettings.ValueConverter);
-                    if (value == null)
+                    if(DeserializeInternal("value", valuetype, valuetype.GetDefaultValue(), ini, valueString, true, _defaultCollectionSettings, collectionSettings.ValueConverter)
+                        is not TValue value)
+                    {
                         throw new InvalidCastException("Failed to convert value from string");
+                    }
 
                     list.Add(key, value);
                     group.Remove(valueString);

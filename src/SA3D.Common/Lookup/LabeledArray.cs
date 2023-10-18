@@ -97,9 +97,20 @@ namespace SA3D.Common.Lookup
             set => ((IList<T>)Array)[index] = value;
         }
 
-        int IList<T>.IndexOf(T item) => ((IList<T>)Array).IndexOf(item);
-        void IList<T>.Insert(int index, T item) => ((IList<T>)Array).Insert(index, item);
-        void IList<T>.RemoveAt(int index) => ((IList<T>)Array).RemoveAt(index);
+        int IList<T>.IndexOf(T item)
+        {
+            return ((IList<T>)Array).IndexOf(item);
+        }
+
+        void IList<T>.Insert(int index, T item)
+        {
+            ((IList<T>)Array).Insert(index, item);
+        }
+
+        void IList<T>.RemoveAt(int index)
+        {
+            ((IList<T>)Array).RemoveAt(index);
+        }
 
         bool IList.IsReadOnly => Array.IsReadOnly;
 
@@ -109,50 +120,115 @@ namespace SA3D.Common.Lookup
             set => ((IList)Array)[index] = value;
         }
 
-        int IList.Add(object? value) => ((IList)Array).Add(value);
-        bool IList.Contains(object? value) => ((IList)Array).Contains(value);
-        int IList.IndexOf(object? value) => ((IList)Array).IndexOf(value);
-        void IList.Insert(int index, object? value) => ((IList)Array).Insert(index, value);
-        void IList.Remove(object? value) => ((IList)Array).Remove(value);
-        void IList.RemoveAt(int index) => ((IList)Array).RemoveAt(index);
-        void IList.Clear() => ((IList)Array).Clear();
+        int IList.Add(object? value)
+        {
+            return ((IList)Array).Add(value);
+        }
 
+        bool IList.Contains(object? value)
+        {
+            return ((IList)Array).Contains(value);
+        }
+
+        int IList.IndexOf(object? value)
+        {
+            return ((IList)Array).IndexOf(value);
+        }
+
+        void IList.Insert(int index, object? value)
+        {
+            ((IList)Array).Insert(index, value);
+        }
+
+        void IList.Remove(object? value)
+        {
+            ((IList)Array).Remove(value);
+        }
+
+        void IList.RemoveAt(int index)
+        {
+            ((IList)Array).RemoveAt(index);
+        }
+
+        void IList.Clear()
+        {
+            ((IList)Array).Clear();
+        }
 
         int ICollection.Count => ((ICollection)Array).Count;
         int IReadOnlyCollection<T>.Count => ((IReadOnlyCollection<T>)Array).Count;
         int ICollection<T>.Count => ((ICollection<T>)Array).Count;
         bool ICollection<T>.IsReadOnly => ((ICollection<T>)Array).IsReadOnly;
-        void ICollection<T>.Add(T item) => ((ICollection<T>)Array).Add(item);
-        void ICollection<T>.Clear() => ((ICollection<T>)Array).Clear();
-        bool ICollection<T>.Contains(T item) => ((ICollection<T>)Array).Contains(item);
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex) => ((ICollection<T>)Array).CopyTo(array, arrayIndex);
-        bool ICollection<T>.Remove(T item) => ((ICollection<T>)Array).Remove(item);
+        void ICollection<T>.Add(T item)
+        {
+            ((ICollection<T>)Array).Add(item);
+        }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => ((IEnumerable<T>)Array).GetEnumerator();
-        ILabeledArray<T> ILabeledArray<T>.Clone() => Clone();
-        object ICloneable.Clone() => Clone();
+        void ICollection<T>.Clear()
+        {
+            ((ICollection<T>)Array).Clear();
+        }
+
+        bool ICollection<T>.Contains(T item)
+        {
+            return ((ICollection<T>)Array).Contains(item);
+        }
+
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
+            ((ICollection<T>)Array).CopyTo(array, arrayIndex);
+        }
+
+        bool ICollection<T>.Remove(T item)
+        {
+            return ((ICollection<T>)Array).Remove(item);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return ((IEnumerable<T>)Array).GetEnumerator();
+        }
+
+        ILabeledArray<T> ILabeledArray<T>.Clone()
+        {
+            return Clone();
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
 
         #endregion
 
         /// <inheritdoc/>
-        public void CopyTo(Array array, int index) => Array.CopyTo(array, index);
+        public void CopyTo(Array array, int index)
+        {
+            Array.CopyTo(array, index);
+        }
 
         /// <inheritdoc/>
-        public IEnumerator GetEnumerator() => Array.GetEnumerator();
+        public IEnumerator GetEnumerator()
+        {
+            return Array.GetEnumerator();
+        }
 
         /// <inheritdoc/>
         public LabeledArray<T> Clone()
         {
             LabeledArray<T> result = new(Label, new T[Length]);
-            for (int i = 0; i < Length; i++)
+            for(int i = 0; i < Length; i++)
             {
                 result[i] = this[i];
             }
+
             return result;
         }
 
         /// <inheritdoc/>
         public override string ToString()
-            => $"{Label}: {Array}";
+        {
+            return $"{Label}: {Array}";
+        }
     }
 }

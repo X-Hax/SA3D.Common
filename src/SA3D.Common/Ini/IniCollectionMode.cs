@@ -21,7 +21,7 @@
         NoSquareBrackets,
 
         /// <summary>
-        /// <see cref="IniCollectionSettings.Format"/> property is used with <seealso cref="string.Join"/> to create the ini entry's value. The key is the collection's name.
+        /// <see cref="IniCollectionSettings.Format"/> property is used with <seealso cref="string.Join(string?, string?[])"/> to create the ini entry's value. The key is the collection's name.
         /// </summary>
         SingleLine
     }

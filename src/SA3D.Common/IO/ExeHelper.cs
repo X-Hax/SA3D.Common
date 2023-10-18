@@ -22,13 +22,13 @@ namespace SA3D.Common.IO
 
             EndianStackReader exeData = new(file);
 
-            if (exeData.ReadUShort(0) != 0x5A4D)
+            if(exeData.ReadUShort(0) != 0x5A4D)
             {
                 return false;
             }
 
             uint ptr = exeData.ReadUInt(0x3c);
-            if (exeData.ReadUInt(ptr) != 0x4550) //PE\0\0
+            if(exeData.ReadUInt(ptr) != 0x4550) //PE\0\0
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace SA3D.Common.IO
             exeData.ReadBytes(0, result, 0, exeData.ReadInt(ptr + 0x54));
 
             ptr += 0xF8;
-            for (int i = 0; i < numsects; i++)
+            for(int i = 0; i < numsects; i++)
             {
                 exeData.ReadBytes(
                     exeData.ReadUInt(ptr + SectionOffsets.FAddr),
@@ -67,21 +67,21 @@ namespace SA3D.Common.IO
             OSModuleHeader header = OSModuleHeader.Read(data, 0);
 
             OSSectionInfo[] sections = new OSSectionInfo[header.Info.NumSections];
-            for (uint i = 0; i < header.Info.NumSections; i++)
+            for(uint i = 0; i < header.Info.NumSections; i++)
             {
-                sections[i] = OSSectionInfo.Read(data, header.Info.SectionInfoOffset + i * 8);
+                sections[i] = OSSectionInfo.Read(data, header.Info.SectionInfoOffset + (i * 8));
             }
 
             OSImportInfo[] imports = new OSImportInfo[header.ImpSize / 8];
-            for (uint i = 0; i < imports.Length; i++)
+            for(uint i = 0; i < imports.Length; i++)
             {
-                imports[i] = OSImportInfo.Read(data, header.ImpOffset + i * 8);
+                imports[i] = OSImportInfo.Read(data, header.ImpOffset + (i * 8));
             }
 
             uint reladdr = 0;
-            for (int i = 0; i < imports.Length; i++)
+            for(int i = 0; i < imports.Length; i++)
             {
-                if (imports[i].ID == header.Info.ID)
+                if(imports[i].ID == header.Info.ID)
                 {
                     reladdr = imports[i].Offset;
                     break;
@@ -93,31 +93,31 @@ namespace SA3D.Common.IO
 
             unchecked
             {
-                while (rel.Type != RelocTypes.R_DOLPHIN_END)
+                while(rel.Type != RelocTypes.R_DOLPHIN_END)
                 {
                     dataaddr += rel.Offset;
                     uint sectionbase = (uint)(sections[rel.Section].Offset & ~1);
                     uint? newPointer = null;
-                    switch (rel.Type)
+                    switch(rel.Type)
                     {
                         case 0x01:
                             newPointer = rel.Addend + sectionbase;
                             break;
                         case 0x02:
-                            newPointer = data.ReadUInt(dataaddr) & 0xFC000003 | rel.Addend + sectionbase & 0x3FFFFFC;
+                            newPointer = (data.ReadUInt(dataaddr) & 0xFC000003) | ((rel.Addend + sectionbase) & 0x3FFFFFC);
                             break;
                         case 0x03:
                         case 0x04:
                             newPointer = (ushort)(rel.Addend + sectionbase);
                             break;
                         case 0x05:
-                            newPointer = (ushort)(rel.Addend + sectionbase >> 16);
+                            newPointer = (ushort)((rel.Addend + sectionbase) >> 16);
                             break;
                         case 0x06:
-                            newPointer = (ushort)((rel.Addend + sectionbase >> 16) + ((rel.Addend + sectionbase & 0x8000) == 0x8000 ? 1 : 0));
+                            newPointer = (ushort)(((rel.Addend + sectionbase) >> 16) + (((rel.Addend + sectionbase) & 0x8000) == 0x8000 ? 1 : 0));
                             break;
                         case 0x0A:
-                            newPointer = data.ReadUInt(dataaddr) & 0xFC000003 | rel.Addend + sectionbase - dataaddr & 0x3FFFFFC;
+                            newPointer = (data.ReadUInt(dataaddr) & 0xFC000003) | ((rel.Addend + sectionbase - dataaddr) & 0x3FFFFFC);
                             break;
                         case 0x00:
                         case RelocTypes.R_DOLPHIN_NOP:
@@ -130,7 +130,7 @@ namespace SA3D.Common.IO
                             throw new NotImplementedException($"REL type \"{rel.Type}\" not supported");
                     }
 
-                    if (newPointer != null)
+                    if(newPointer != null)
                     {
                         BitConverter.GetBytes(newPointer.Value + imageBase).CopyTo(file, dataaddr);
                     }

@@ -18,7 +18,7 @@ namespace SA3D.Common
         {
             T[] result = new T[input.Length];
 
-            for (int i = 0; i < result.Length; i++)
+            for(int i = 0; i < result.Length; i++)
             {
                 result[i] = (T)input[i].Clone();
             }

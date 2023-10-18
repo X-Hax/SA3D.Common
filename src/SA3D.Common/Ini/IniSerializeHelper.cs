@@ -10,10 +10,10 @@ namespace SA3D.Common.Ini
 {
     internal static class IniSerializeHelper
     {
-        internal static readonly IniCollectionSettings initialCollectionSettings
+        internal static readonly IniCollectionSettings _initialCollectionSettings
             = new(IniCollectionMode.IndexOnly);
 
-        internal static readonly IniCollectionSettings defaultCollectionSettings
+        internal static readonly IniCollectionSettings _defaultCollectionSettings
             = new(IniCollectionMode.Normal);
 
         /// <summary>
@@ -22,7 +22,9 @@ namespace SA3D.Common.Ini
         /// <param name="type">Type to get the default value of</param>
         /// <returns></returns>
         public static object? GetDefaultValue(this Type type)
-            => type.IsValueType ? Activator.CreateInstance(type) : null;
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
+        }
 
         /// <summary>
         /// Checks if a type is complex
@@ -32,15 +34,19 @@ namespace SA3D.Common.Ini
         /// <returns></returns>
         public static bool IsComplexType(this Type type, TypeConverter? converter)
         {
-            if (Type.GetTypeCode(type) != TypeCode.Object)
+            if(Type.GetTypeCode(type) != TypeCode.Object)
+            {
                 return false;
+            }
 
             converter ??= TypeDescriptor.GetConverter(type);
 
-            if (converter is not ComponentConverter
+            if(converter is not ComponentConverter
                 && converter.GetType() != typeof(TypeConverter)
                 && converter.CanConvertTo(typeof(string)) & converter.CanConvertFrom(typeof(string)))
+            {
                 return false;
+            }
 
             return type.GetType() != typeof(Type);
         }
@@ -56,19 +62,24 @@ namespace SA3D.Common.Ini
             string? result = null;
             converter ??= TypeDescriptor.GetConverter(@object);
 
-            if (@object is string @string)
+            if(@object is string @string)
+            {
                 result = @string;
-
-            else if (@object is Enum)
+            }
+            else if(@object is Enum)
+            {
                 result = @object.ToString();
-
-            else if (converter is not ComponentConverter
+            }
+            else if(converter is not ComponentConverter
                 && converter.GetType() != typeof(TypeConverter)
                 && converter.CanConvertTo(typeof(string)))
+            {
                 result = converter.ConvertToInvariantString(@object);
-
-            else if (@object is Type type)
+            }
+            else if(@object is Type type)
+            {
                 result = type.AssemblyQualifiedName;
+            }
 
             return result ?? "null";
         }
@@ -84,13 +95,17 @@ namespace SA3D.Common.Ini
         {
             converter ??= TypeDescriptor.GetConverter(type);
 
-            if (converter is not ComponentConverter
+            if(converter is not ComponentConverter
                 && converter.GetType() != typeof(TypeConverter)
                 && converter.CanConvertFrom(typeof(string)))
+            {
                 return converter.ConvertFromInvariantString(value);
+            }
 
-            if (type == typeof(Type))
+            if(type == typeof(Type))
+            {
                 return Type.GetType(value);
+            }
 
             return type.GetDefaultValue();
         }
@@ -104,45 +119,47 @@ namespace SA3D.Common.Ini
         /// <returns></returns>
         public static bool ImplementsGenericDefinition(this Type type, Type genericInterfaceDefinition, [MaybeNullWhen(false)] out Type implementingType)
         {
-            if (type.IsInterface && type.IsGenericType)
+            if(type.IsInterface && type.IsGenericType)
             {
                 Type interfaceDefinition = type.GetGenericTypeDefinition();
-                if (genericInterfaceDefinition == interfaceDefinition)
+                if(genericInterfaceDefinition == interfaceDefinition)
                 {
                     implementingType = type;
                     return true;
                 }
             }
 
-            foreach (Type i in type.GetInterfaces())
+            foreach(Type i in type.GetInterfaces())
             {
-                if (i.IsGenericType)
+                if(i.IsGenericType)
                 {
                     Type interfaceDefinition = i.GetGenericTypeDefinition();
 
-                    if (genericInterfaceDefinition == interfaceDefinition)
+                    if(genericInterfaceDefinition == interfaceDefinition)
                     {
                         implementingType = i;
                         return true;
                     }
                 }
             }
+
             implementingType = null;
             return false;
         }
 
         public static T? GetAttribute<T>(System.Reflection.MemberInfo member, bool inherit = true) where T : Attribute
-            => (T?)Attribute.GetCustomAttribute(member, typeof(T), inherit);
+        {
+            return (T?)Attribute.GetCustomAttribute(member, typeof(T), inherit);
+        }
 
         public static TypeConverter? GetConverterFromAttribute(System.Reflection.MemberInfo member)
         {
             TypeConverter? conv = null;
             TypeConverterAttribute? convattr = GetAttribute<TypeConverterAttribute>(member);
-            if (convattr != null)
+            if(convattr != null)
             {
-                Type? convType = Type.GetType(convattr.ConverterTypeName);
-                if (convType == null)
-                    throw new NullReferenceException("Converter doesnt exist");
+                Type convType = Type.GetType(convattr.ConverterTypeName) ?? throw new NullReferenceException("Converter doesnt exist");
+
                 conv = (TypeConverter?)Activator.CreateInstance(convType);
             }
 

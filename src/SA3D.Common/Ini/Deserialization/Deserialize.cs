@@ -22,35 +22,43 @@ namespace SA3D.Common.Ini.Deserialization
         internal static object? DeserializeInternal(string name, Type type, object? defaultvalue, IniDictionary ini, string groupName, bool rootObject, IniCollectionSettings collectionSettings, TypeConverter? converter)
         {
             string fullname = groupName;
-            if (!rootObject)
+            if(!rootObject)
             {
-                if (!string.IsNullOrEmpty(fullname))
+                if(!string.IsNullOrEmpty(fullname))
+                {
                     fullname += '.';
+                }
+
                 fullname += name;
             }
 
-            if (!ini.ContainsKey(groupName))
-                return defaultvalue;
-
-            IniGroup group = ini[groupName];
-            if (!type.IsComplexType(converter))
+            if(!ini.ContainsKey(groupName))
             {
-                if (group.TryGetValue(name, out string? value))
-                {
-                    object? converted = type.ConvertFromString(value, converter);
-                    group.Remove(name);
-                    if (converted != null)
-                        return converted;
-                }
                 return defaultvalue;
             }
 
-            if (type.IsArray)
+            IniGroup group = ini[groupName];
+            if(!type.IsComplexType(converter))
+            {
+                if(group.TryGetValue(name, out string? value))
+                {
+                    object? converted = type.ConvertFromString(value, converter);
+                    group.Remove(name);
+                    if(converted != null)
+                    {
+                        return converted;
+                    }
+                }
+
+                return defaultvalue;
+            }
+
+            if(type.IsArray)
             {
                 return DeserializeArray(name, fullname, type, ini, collectionSettings, group);
             }
 
-            if (type.ImplementsGenericDefinition(typeof(IList<>), out Type? generictype))
+            if(type.ImplementsGenericDefinition(typeof(IList<>), out Type? generictype))
             {
                 object obj = Activator.CreateInstance(type) ?? throw new NullReferenceException("Deserialized array is null!");
 
@@ -64,14 +72,16 @@ namespace SA3D.Common.Ini.Deserialization
                 return obj;
             }
 
-            if (type.ImplementsGenericDefinition(typeof(IDictionary<,>), out generictype))
+            if(type.ImplementsGenericDefinition(typeof(IDictionary<,>), out generictype))
             {
                 object obj = Activator.CreateInstance(type) ?? throw new NullReferenceException("Dictionary array is null!");
                 Type keytype = generictype.GetGenericArguments()[0];
                 Type valuetype = generictype.GetGenericArguments()[1];
 
-                if (keytype.IsComplexType(collectionSettings.KeyConverter))
+                if(keytype.IsComplexType(collectionSettings.KeyConverter))
+                {
                     return obj;
+                }
 
                 Type dictionaryType = typeof(DictionaryDeserializer<,>).MakeGenericType(keytype, valuetype);
                 ICollectionDeserializer deserializer =
@@ -89,23 +99,28 @@ namespace SA3D.Common.Ini.Deserialization
         {
             object? result = Activator.CreateInstance(type);
             MemberInfo? collection = null;
-            foreach (MemberInfo member in type.GetMembers(BindingFlags.Public | BindingFlags.Instance))
+            foreach(MemberInfo member in type.GetMembers(BindingFlags.Public | BindingFlags.Instance))
             {
-                if (GetAttribute<IniIgnoreAttribute>(member) != null)
+                if(GetAttribute<IniIgnoreAttribute>(member) != null)
+                {
                     continue;
+                }
 
                 string membername = GetAttribute<IniNameAttribute>(member)?.Name ?? member.Name;
-                IniCollectionSettings colset = GetAttribute<IniCollectionAttribute>(member)?.Settings ?? defaultCollectionSettings;
+                IniCollectionSettings colset = GetAttribute<IniCollectionAttribute>(member)?.Settings ?? _defaultCollectionSettings;
                 TypeConverter? conv = GetConverterFromAttribute(member);
 
-                switch (member.MemberType)
+                switch(member.MemberType)
                 {
                     case MemberTypes.Field:
                         FieldInfo field = (FieldInfo)member;
-                        if (colset.Mode == IniCollectionMode.IndexOnly && typeof(ICollection).IsAssignableFrom(field.FieldType))
+                        if(colset.Mode == IniCollectionMode.IndexOnly && typeof(ICollection).IsAssignableFrom(field.FieldType))
                         {
-                            if (collection != null)
+                            if(collection != null)
+                            {
                                 throw new Exception("IniCollectionMode.IndexOnly cannot be used on multiple members of a Type.");
+                            }
+
                             collection = member;
                             continue;
                         }
@@ -119,13 +134,18 @@ namespace SA3D.Common.Ini.Deserialization
                     case MemberTypes.Property:
                         PropertyInfo property = (PropertyInfo)member;
 
-                        if (property.GetIndexParameters().Length > 0)
-                            continue;
-
-                        if (colset.Mode == IniCollectionMode.IndexOnly && typeof(ICollection).IsAssignableFrom(property.PropertyType))
+                        if(property.GetIndexParameters().Length > 0)
                         {
-                            if (collection != null)
+                            continue;
+                        }
+
+                        if(colset.Mode == IniCollectionMode.IndexOnly && typeof(ICollection).IsAssignableFrom(property.PropertyType))
+                        {
+                            if(collection != null)
+                            {
                                 throw new Exception("IniCollectionMode.IndexOnly cannot be used on multiple members of a Type.");
+                            }
+
                             collection = member;
                             continue;
                         }
@@ -138,14 +158,23 @@ namespace SA3D.Common.Ini.Deserialization
 
                         property.GetSetMethod()?.Invoke(result, new[] { propval });
                         break;
+                    case MemberTypes.Constructor:
+                    case MemberTypes.Event:
+                    case MemberTypes.Method:
+                    case MemberTypes.TypeInfo:
+                    case MemberTypes.Custom:
+                    case MemberTypes.NestedType:
+                    case MemberTypes.All:
+                    default:
+                        break;
                 }
             }
 
-            if (collection != null)
+            if(collection != null)
             {
-                IniCollectionSettings settings = GetAttribute<IniCollectionAttribute>(collection)?.Settings ?? defaultCollectionSettings;
+                IniCollectionSettings settings = GetAttribute<IniCollectionAttribute>(collection)?.Settings ?? _defaultCollectionSettings;
 
-                switch (collection.MemberType)
+                switch(collection.MemberType)
                 {
                     case MemberTypes.Field:
                         FieldInfo field = (FieldInfo)collection;
@@ -161,6 +190,15 @@ namespace SA3D.Common.Ini.Deserialization
 
                         property.GetSetMethod()?.Invoke(result, new[] { propval });
                         break;
+                    case MemberTypes.Constructor:
+                    case MemberTypes.Event:
+                    case MemberTypes.Method:
+                    case MemberTypes.TypeInfo:
+                    case MemberTypes.Custom:
+                    case MemberTypes.NestedType:
+                    case MemberTypes.All:
+                    default:
+                        break;
                 }
             }
 
@@ -174,34 +212,39 @@ namespace SA3D.Common.Ini.Deserialization
             TypeConverter keyconverter = collectionSettings.KeyConverter ?? new Int32Converter();
             int maxIndex = int.MinValue;
 
-            if (!valuetype.IsComplexType(collectionSettings.ValueConverter))
+            if(!valuetype.IsComplexType(collectionSettings.ValueConverter))
             {
-                if (collectionSettings.Mode == IniCollectionMode.SingleLine)
+                if(collectionSettings.Mode == IniCollectionMode.SingleLine)
                 {
-                    if (group.ContainsKey(name))
+                    if(group.ContainsKey(name))
                     {
-                        string[] items;
-                        if (string.IsNullOrEmpty(group[name]))
-                            items = Array.Empty<string>();
-                        else
-                            items = group[name].Split(new[] { collectionSettings.Format }, StringSplitOptions.None);
+                        string[] items = string.IsNullOrEmpty(group[name])
+                            ? Array.Empty<string>()
+                            : group[name].Split(new[] { collectionSettings.Format }, StringSplitOptions.None);
 
                         Array _obj = Array.CreateInstance(valuetype, items.Length);
-                        for (int i = 0; i < items.Length; i++)
+                        for(int i = 0; i < items.Length; i++)
+                        {
                             _obj.SetValue(valuetype.ConvertFromString(items[i], collectionSettings.ValueConverter), i);
+                        }
+
                         group.Remove(name);
                         return _obj;
                     }
                     else
+                    {
                         return null;
+                    }
                 }
                 else
                 {
-                    foreach (IniNameValue item in group)
+                    foreach(IniNameValue item in group)
                     {
                         string? key = collectionSettings.Mode.IndexFromName(name, item.Key);
-                        if (key == null)
+                        if(key == null)
+                        {
                             continue;
+                        }
 
                         int? index = (int?)keyconverter.ConvertFromInvariantString(key);
                         maxIndex = Math.Max(index ?? throw new NullReferenceException("Converted key is null"), maxIndex);
@@ -210,14 +253,18 @@ namespace SA3D.Common.Ini.Deserialization
             }
             else
             {
-                if (collectionSettings.Mode == IniCollectionMode.SingleLine)
+                if(collectionSettings.Mode == IniCollectionMode.SingleLine)
+                {
                     throw new InvalidOperationException("Cannot Deserialize type " + valuetype + " with IniCollectionMode.SingleLine!");
+                }
 
-                foreach (IniNameGroup item in ini)
+                foreach(IniNameGroup item in ini)
                 {
                     string? key = collectionSettings.Mode.IndexFromName(fullname, item.Key);
-                    if (key == null)
+                    if(key == null)
+                    {
                         continue;
+                    }
 
                     try
                     {
@@ -228,32 +275,36 @@ namespace SA3D.Common.Ini.Deserialization
                 }
             }
 
-            if (maxIndex == int.MinValue)
+            if(maxIndex == int.MinValue)
+            {
                 return Array.CreateInstance(valuetype, 0);
+            }
 
             int length = maxIndex + 1 - (collectionSettings.Mode == IniCollectionMode.SingleLine ? 0 : collectionSettings.StartIndex);
             Array obj = Array.CreateInstance(valuetype, length);
 
-            if (!valuetype.IsComplexType(collectionSettings.ValueConverter))
+            if(!valuetype.IsComplexType(collectionSettings.ValueConverter))
             {
-                for (int i = 0; i < length; i++)
+                for(int i = 0; i < length; i++)
                 {
                     string indexString = keyconverter.ConvertToInvariantString(i + collectionSettings.StartIndex)
                         ?? throw new NullReferenceException("Key conversion returned null");
                     string keyname = collectionSettings.Mode.IndexToName(name, indexString);
-                    if (group.TryGetValue(keyname, out string? value))
+                    if(group.TryGetValue(keyname, out string? value))
                     {
                         obj.SetValue(valuetype.ConvertFromString(value, collectionSettings.ValueConverter), i);
                         group.Remove(keyname);
                     }
                     else
+                    {
                         obj.SetValue(valuetype.GetDefaultValue(), i);
+                    }
                 }
 
             }
             else
             {
-                for (int i = 0; i < length; i++)
+                for(int i = 0; i < length; i++)
                 {
                     string indexString = keyconverter.ConvertToInvariantString(i + collectionSettings.StartIndex)
                         ?? throw new NullReferenceException("Key conversion returned null");
@@ -266,12 +317,13 @@ namespace SA3D.Common.Ini.Deserialization
                         ini,
                         groupName,
                         true,
-                        defaultCollectionSettings,
+                        _defaultCollectionSettings,
                         collectionSettings.ValueConverter);
 
                     obj.SetValue(element, i);
                 }
             }
+
             return obj;
         }
     }

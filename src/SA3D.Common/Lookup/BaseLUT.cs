@@ -55,17 +55,19 @@ namespace SA3D.Common.Lookup
         /// <returns>The address for the specified value.</returns>
         public uint GetAddAddress<T>(T? value, Func<T, uint> write) where T : class
         {
-            if (value == null)
+            if(value == null)
+            {
                 return 0;
+            }
 
             uint result;
 
-            if (!All.TryGetAddress(value, out uint? tryGetResult))
+            if(!All.TryGetAddress(value, out uint? tryGetResult))
             {
                 result = write(value);
                 All.Add(result, value);
 
-                if (value is ILabel label)
+                if(value is ILabel label)
                 {
                     Labels.AddSafe(result, label.Label);
                 }
@@ -81,23 +83,25 @@ namespace SA3D.Common.Lookup
 
         private T GetAddValue<T>(uint address, string? genPrefix, Func<uint, T> read) where T : class
         {
-            if (address == 0)
+            if(address == 0)
+            {
                 throw new ArgumentException("Address is 0!");
+            }
 
             T result;
-            if (!All.TryGetValue(address, out object? gottenValue))
+            if(!All.TryGetValue(address, out object? gottenValue))
             {
                 result = read(address);
 
                 All.Add(address, result);
 
-                if (result is ILabel labelable)
+                if(result is ILabel labelable)
                 {
-                    if (Labels.TryGetValue(address, out string? label))
+                    if(Labels.TryGetValue(address, out string? label))
                     {
                         labelable.Label = label;
                     }
-                    else if (genPrefix != null)
+                    else if(genPrefix != null)
                     {
                         labelable.Label = Labels.GetGenerateValue(address, genPrefix);
                         Labels.Add(address, labelable.Label);
@@ -110,6 +114,7 @@ namespace SA3D.Common.Lookup
             {
                 result = (T)gottenValue;
             }
+
             return result;
         }
 
@@ -152,8 +157,11 @@ namespace SA3D.Common.Lookup
         /// <exception cref="InvalidOperationException">Thrown when passing an ILabel type value</exception>
         public T GetAddValue<T>(uint address, Func<uint, T> read) where T : class
         {
-            if (typeof(T).IsAssignableTo(typeof(ILabel)))
+            if(typeof(T).IsAssignableTo(typeof(ILabel)))
+            {
                 throw new InvalidOperationException("Please use GetAddLabeledValue for types that implement ILabel!");
+            }
+
             return GetAddValue(address, null, read);
         }
 

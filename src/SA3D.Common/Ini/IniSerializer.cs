@@ -35,7 +35,7 @@ namespace SA3D.Common.Ini
         /// <returns>The converted Ini Dictionary</returns>
         public static IniDictionary Serialize(object? data, IniCollectionSettings collectionSettings)
         {
-            return Serialize(data, collectionSettings, (TypeConverter?)null);
+            return Serialize(data, collectionSettings, null);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SA3D.Common.Ini
         /// <returns>The converted Ini Dictionary</returns>
         public static IniDictionary Serialize(object? data, TypeConverter? converter)
         {
-            return Serialize(data, initialCollectionSettings, converter);
+            return Serialize(data, _initialCollectionSettings, converter);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SA3D.Common.Ini
         /// <returns>The converted Ini Dictionary</returns>
         public static IniDictionary Serialize(object? data)
         {
-            return Serialize(data, initialCollectionSettings, (TypeConverter?)null);
+            return Serialize(data, _initialCollectionSettings, null);
         }
 
 
@@ -142,7 +142,7 @@ namespace SA3D.Common.Ini
         /// <returns>The converted data.</returns>
         public static object? Deserialize(Type type, IniDictionary ini, TypeConverter? converter)
         {
-            return DeserializeInternal(type, ini, initialCollectionSettings, converter);
+            return DeserializeInternal(type, ini, _initialCollectionSettings, converter);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace SA3D.Common.Ini
         /// <returns>The converted data.</returns>
         public static object? Deserialize(Type type, IniDictionary ini)
         {
-            return DeserializeInternal(type, ini, initialCollectionSettings, null);
+            return DeserializeInternal(type, ini, _initialCollectionSettings, null);
         }
 
 
