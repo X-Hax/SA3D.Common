@@ -30,8 +30,11 @@ namespace SA3D.Common.Lookup
         /// <exception cref="ArgumentNullException"/>
         public T? GetValue(uint address)
         {
-            if (_fromAddr.TryGetValue(address, out T? value))
+            if(_fromAddr.TryGetValue(address, out T? value))
+            {
                 return value;
+            }
+
             return default;
         }
 
@@ -43,8 +46,11 @@ namespace SA3D.Common.Lookup
         /// <exception cref="ArgumentNullException"/>
         public uint? GetAddress(T value)
         {
-            if (_toAddr.TryGetValue(value, out uint address))
+            if(_toAddr.TryGetValue(value, out uint address))
+            {
                 return address;
+            }
+
             return null;
         }
 
@@ -82,12 +88,12 @@ namespace SA3D.Common.Lookup
         /// <exception cref="ArgumentException"/>
         public void Add(uint address, T value)
         {
-            if (!_fromAddr.TryAdd(address, value))
+            if(!_fromAddr.TryAdd(address, value))
             {
                 throw new ArgumentException($"An item with the same address has already been added. Address: {address:X8}");
             }
 
-            if (!_toAddr.TryAdd(value, address))
+            if(!_toAddr.TryAdd(value, address))
             {
                 _fromAddr.Remove(address);
                 throw new ArgumentException($"An item with the same value has already been added. Value: {value}");
@@ -102,12 +108,12 @@ namespace SA3D.Common.Lookup
         /// <returns><see langword="true"/> if the address/value pair was successfully added to the dictionary; otherwise <see langword="false"/>.</returns>
         public bool TryAdd(uint address, T value)
         {
-            if (!_fromAddr.TryAdd(address, value))
+            if(!_fromAddr.TryAdd(address, value))
             {
                 return false;
             }
 
-            if (!_toAddr.TryAdd(value, address))
+            if(!_toAddr.TryAdd(value, address))
             {
                 _fromAddr.Remove(address);
                 return false;

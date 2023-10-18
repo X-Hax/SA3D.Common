@@ -12,7 +12,7 @@ namespace SA3D.Common.Ini
         /// </summary>
         /// <param name="mode">Conversion mode.</param>
         /// <param name="name">Name of the collection.</param>
-        /// <param name="index">Index to the element of the collection./param>
+        /// <param name="index">Index to the element of the collection.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         public static string IndexToName(this IniCollectionMode mode, string name, string index)
@@ -22,7 +22,7 @@ namespace SA3D.Common.Ini
                 IniCollectionMode.Normal => "{0}[{1}]",
                 IniCollectionMode.IndexOnly => "{1}",
                 IniCollectionMode.NoSquareBrackets => "{0}{1}",
-                _ => throw new InvalidOperationException($"{mode} mode not mode not supporting name formatting!"),
+                IniCollectionMode.SingleLine or _ => throw new InvalidOperationException($"{mode} mode not mode not supporting name formatting!"),
             };
             return string.Format(format, name, index);
         }
@@ -32,28 +32,37 @@ namespace SA3D.Common.Ini
         /// </summary>
         /// <param name="mode">Conversion mode.</param>
         /// <param name="name">Name of the collection.</param>
-        /// <param name="full">Full element reference./param>
+        /// <param name="full">Full element reference.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         public static string? IndexFromName(this IniCollectionMode mode, string name, string full)
         {
-            switch (mode)
+            switch(mode)
             {
                 case IniCollectionMode.Normal:
-                    if (!full.StartsWith($"{name}["))
+                    if(!full.StartsWith($"{name}["))
+                    {
                         return null;
+                    }
+
                     return full.Substring(name.Length + 1, full.Length - (name.Length + 2));
 
                 case IniCollectionMode.IndexOnly:
-                    if (string.IsNullOrEmpty(full))
+                    if(string.IsNullOrEmpty(full))
+                    {
                         return null;
+                    }
+
                     return full;
 
                 case IniCollectionMode.NoSquareBrackets:
-                    if (!full.StartsWith(name))
+                    if(!full.StartsWith(name))
+                    {
                         return null;
-                    return full.Substring(name.Length);
+                    }
 
+                    return full[name.Length..];
+                case IniCollectionMode.SingleLine:
                 default:
                     throw new InvalidOperationException($"{mode} mode not supporting name formatting!");
             }

@@ -65,7 +65,7 @@ namespace SA3D.Common.IO
             _source = source;
             ImageBase = imageBase;
 
-            fixed (byte* src = _source)
+            fixed(byte* src = _source)
             {
                 _bigEndianReader = new(src);
                 _littleEndianReader = new(src);
@@ -105,10 +105,7 @@ namespace SA3D.Common.IO
         /// </summary>
         /// <param name="index">Index from which to read the byte</param>
         /// <returns>The byte at the index.</returns>
-        public virtual byte this[uint index]
-        {
-            get => _source[index];
-        }
+        public virtual byte this[uint index] => _source[index];
 
         /// <summary>
         /// Reads a set of bytes at a given address from the source.
@@ -257,11 +254,12 @@ namespace SA3D.Common.IO
         public bool TryReadPointer(uint address, out uint pointer)
         {
             pointer = ReadUInt(address);
-            if (pointer != 0)
+            if(pointer != 0)
             {
                 pointer -= ImageBase;
                 return true;
             }
+
             return false;
         }
 
@@ -275,8 +273,11 @@ namespace SA3D.Common.IO
         /// <returns>The string that was read.</returns>
         public virtual string ReadString(uint address, Encoding encoding, uint count)
         {
-            if (count == 0)
+            if(count == 0)
+            {
                 return "";
+            }
+
             return encoding.GetString(_source, (int)address, (int)count);
         }
 
@@ -301,7 +302,7 @@ namespace SA3D.Common.IO
         public string ReadNullterminatedString(uint address, Encoding encoding, out uint byteLength)
         {
             byteLength = 0;
-            while (_source[address + byteLength] != 0)
+            while(_source[address + byteLength] != 0)
             {
                 byteLength++;
             }
@@ -352,7 +353,7 @@ namespace SA3D.Common.IO
         public string ReadStringLimited(uint address, Encoding encoding, int limit, out uint byteLength)
         {
             byteLength = 0;
-            while (byteLength <= limit && _source[address + byteLength] != 0)
+            while(byteLength <= limit && _source[address + byteLength] != 0)
             {
                 byteLength++;
             }

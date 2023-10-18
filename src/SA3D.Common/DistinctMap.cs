@@ -22,8 +22,11 @@ namespace SA3D.Common
         {
             get
             {
-                if (Values is T[] array)
+                if(Values is T[] array)
+                {
                     return array;
+                }
+
                 return Values.ToArray();
             }
         }
@@ -101,12 +104,12 @@ namespace SA3D.Common
             int distinctCount = 0;
 
             int i = 0;
-            foreach (T c in collection)
+            foreach(T c in collection)
             {
 
-                for (int j = 0; j < distinctCount; j++)
+                for(int j = 0; j < distinctCount; j++)
                 {
-                    if (resultDistinct[j].Equals(c))
+                    if(resultDistinct[j].Equals(c))
                     {
                         resultMap[i] = j;
                         goto found;
@@ -117,13 +120,15 @@ namespace SA3D.Common
                 resultDistinct[distinctCount] = c;
                 distinctCount++;
 
-            found:
+                found:
                 ;
                 i++;
             }
 
-            if (distinctCount == resultMap.Length)
+            if(distinctCount == resultMap.Length)
+            {
                 return false;
+            }
 
             T[] distinct = new T[distinctCount];
             Array.Copy(resultDistinct, distinct, distinctCount);

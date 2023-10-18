@@ -28,11 +28,11 @@ namespace SA3D.Common.Lookup
         /// <exception cref="ArgumentException"/>
         public static ILabeledArray<T> ContentClone<T>(this ILabeledArray<T> labeledArray) where T : ICloneable
         {
-            if (labeledArray is LabeledReadOnlyArray<T> ro)
+            if(labeledArray is LabeledReadOnlyArray<T> ro)
             {
                 return ro.Clone();
             }
-            else if (labeledArray is LabeledArray<T> la)
+            else if(labeledArray is LabeledArray<T> la)
             {
                 return la.ContentClone();
             }
@@ -53,14 +53,16 @@ namespace SA3D.Common.Lookup
         /// <exception cref="ArgumentNullException"/>
         public static ILabeledArray<T>? GetILabeledArray<T>(this PointerDictionary<object> dict, uint address)
         {
-            if (dict.TryGetValue(address, out object? value))
+            if(dict.TryGetValue(address, out object? value))
             {
-                if (value is not ILabeledArray<T> result)
+                if(value is not ILabeledArray<T> result)
                 {
                     throw new InvalidCastException($"The labelled array at {address:X8} is a {value.GetType()}");
                 }
+
                 return result;
             }
+
             return null;
         }
 
@@ -91,13 +93,16 @@ namespace SA3D.Common.Lookup
         public static LabeledArray<T>? GetLabeledArray<T>(this PointerDictionary<object> dict, uint address)
         {
             ILabeledArray<T>? result = dict.GetILabeledArray<T>(address);
-            if (result == null)
+            if(result == null)
+            {
                 return null;
+            }
 
-            if (result is not LabeledArray<T> castResult)
+            if(result is not LabeledArray<T> castResult)
             {
                 throw new InvalidCastException("Collection at address {address:X8} is readonly!");
             }
+
             return castResult;
         }
 
@@ -128,13 +133,16 @@ namespace SA3D.Common.Lookup
         public static LabeledReadOnlyArray<T>? GetReadOnlyLabeledArray<T>(this PointerDictionary<object> dict, uint address)
         {
             ILabeledArray<T>? result = dict.GetILabeledArray<T>(address);
-            if (result == null)
+            if(result == null)
+            {
                 return null;
+            }
 
-            if (result is not LabeledReadOnlyArray<T> castResult)
+            if(result is not LabeledReadOnlyArray<T> castResult)
             {
                 return new(result);
             }
+
             return castResult;
         }
 

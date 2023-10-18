@@ -1,9 +1,9 @@
 ﻿#nullable enable
 abstract SA3D.Common.Lookup.BaseLUT.AddEntry(uint address, object! value) -> void
-const SA3D.Common.MathHelper.BAMS2Deg = 182.04445 -> float
-const SA3D.Common.MathHelper.BAMS2Rad = 10430.378 -> float
-const SA3D.Common.MathHelper.HalfPi = 1.5707964 -> float
-const SA3D.Common.MathHelper.Rad2Deg = 57.295776 -> float
+static readonly SA3D.Common.MathHelper.BAMS2Deg -> float
+static readonly SA3D.Common.MathHelper.BAMS2Rad -> float
+static readonly SA3D.Common.MathHelper.HalfPi -> float
+static readonly SA3D.Common.MathHelper.Rad2Deg -> float
 override SA3D.Common.Converters.BAMS16Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?

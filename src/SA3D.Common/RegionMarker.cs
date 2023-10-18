@@ -26,13 +26,13 @@ namespace SA3D.Common
             uint nextIndex = 0;
             T next = default;
 
-            foreach (KeyValuePair<uint, T> item in _regions)
+            foreach(KeyValuePair<uint, T> item in _regions)
             {
-                if (item.Key < from)
+                if(item.Key < from)
                 {
                     before = item.Value;
                 }
-                else if (item.Key < to)
+                else if(item.Key < to)
                 {
                     _toRemoveBuffer.Add(item.Key);
                     after = item.Value;
@@ -45,19 +45,19 @@ namespace SA3D.Common
                 }
             }
 
-            foreach (uint key in _toRemoveBuffer)
+            foreach(uint key in _toRemoveBuffer)
             {
                 _regions.Remove(key);
             }
 
-            if (from == 0 || !before.Equals(value))
+            if(from == 0 || !before.Equals(value))
             {
                 _regions.Add(from, value);
             }
 
-            if (_regions.TryGetValue(to, out T currentAfter))
+            if(_regions.TryGetValue(to, out T currentAfter))
             {
-                if (currentAfter.Equals(value))
+                if(currentAfter.Equals(value))
                 {
                     _regions.Remove(to);
                 }
@@ -65,13 +65,13 @@ namespace SA3D.Common
             else
             {
                 T newEndValue = value;
-                if (!after.Equals(value))
+                if(!after.Equals(value))
                 {
                     newEndValue = after;
                     _regions.Add(to, after);
                 }
 
-                if (nextIndex != 0 && newEndValue.Equals(next))
+                if(nextIndex != 0 && newEndValue.Equals(next))
                 {
                     _regions.Remove(nextIndex);
                 }

@@ -8,25 +8,31 @@ namespace SA3D.Common
     /// </summary>
     public static class MathHelper
     {
+        /* These constants have been changed to static readonly, as the APIAnalyzer is unable to verify
+         * their correctness.
+         * See https://github.com/dotnet/roslyn-analyzers/issues/6747
+         * They will be changed back to constants once the issue is resolved
+         */
+
         /// <summary>
         /// Half Pi
         /// </summary>
-        public const float HalfPi = float.Pi * 0.5f;
+        public static readonly float HalfPi = float.Pi * 0.5f;
 
         /// <summary>
         /// BAMS to Degree ratio
         /// </summary>
-        public const float BAMS2Deg = 0x10000 / 360f;
+        public static readonly float BAMS2Deg = 0x10000 / 360f;
 
         /// <summary>
         /// BAMS to Radians ratio
         /// </summary>
-        public const float BAMS2Rad = 0x10000 / float.Tau;
+        public static readonly float BAMS2Rad = 0x10000 / float.Tau;
 
         /// <summary>
         /// Radians to Degree ratio
         /// </summary>
-        public const float Rad2Deg = 180.0f / float.Pi;
+        public static readonly float Rad2Deg = 180.0f / float.Pi;
 
         /// <summary>
         /// Converts an angle from BAMS to radians.
@@ -89,7 +95,7 @@ namespace SA3D.Common
         /// <returns></returns>
         public static float Lerp(float from, float to, float time)
         {
-            return from + (to - from) * time;
+            return from + ((to - from) * time);
         }
 
         /// <summary>
@@ -130,9 +136,9 @@ namespace SA3D.Common
 
             float Formula(int c, int c1, int c2)
             {
-                return target[c] * cosine
-                + (target[c1] * axis[c2] - target[c2] * axis[c1]) * sine
-                + axis[c] * oneMinusCosine;
+                return (target[c] * cosine)
+                + (((target[c1] * axis[c2]) - (target[c2] * axis[c1])) * sine)
+                + (axis[c] * oneMinusCosine);
             }
 
             return Vector3.Normalize(new(

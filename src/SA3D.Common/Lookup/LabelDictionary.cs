@@ -18,7 +18,7 @@ namespace SA3D.Common.Lookup
         /// </summary>
         public LabelDictionary(Dictionary<uint, string> labels) : base()
         {
-            foreach (KeyValuePair<uint, string> label in labels)
+            foreach(KeyValuePair<uint, string> label in labels)
             {
                 Add(label.Key, label.Value);
             }
@@ -33,11 +33,14 @@ namespace SA3D.Common.Lookup
         /// <exception cref="ArgumentException"/>
         public string AddSafe(uint address, string label)
         {
-            if (_toAddr.ContainsKey(label))
+            if(_toAddr.ContainsKey(label))
             {
                 int append = 1;
-                while (_toAddr.ContainsKey($"{label}_{append}"))
+                while(_toAddr.ContainsKey($"{label}_{append}"))
+                {
                     append++;
+                }
+
                 label = $"{label}_{append}";
             }
 
@@ -53,11 +56,9 @@ namespace SA3D.Common.Lookup
         /// <returns>The found or generated label.</returns>
         public string GetGenerateValue(uint address, string prefix)
         {
-            if (!TryGetValue(address, out string? result))
-            {
-                return $"{prefix}{address:X8}";
-            }
-            return result;
+            return TryGetValue(address, out string? result)
+                ? result
+                : $"{prefix}{address:X8}";
         }
 
     }

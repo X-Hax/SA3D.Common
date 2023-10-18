@@ -21,8 +21,11 @@ namespace SA3D.Common
         /// <returns>A C hexadecimal constant.</returns>
         public static string ToCHex(this short number)
         {
-            if (number > -1 && number < 10)
+            if(number is > (-1) and < 10)
+            {
                 return number.ToString(NumberFormatInfo.InvariantInfo);
+            }
+
             return $"0x{number:X}";
         }
 
@@ -33,8 +36,11 @@ namespace SA3D.Common
         /// <returns>A C hexadecimal constant.</returns>
         public static string ToCHex(this ushort number)
         {
-            if (number < 10)
+            if(number < 10)
+            {
                 return number.ToString(NumberFormatInfo.InvariantInfo);
+            }
+
             return $"0x{number:X}u";
         }
 
@@ -45,8 +51,11 @@ namespace SA3D.Common
         /// <returns>A C hexadecimal constant.</returns>
         public static string ToCHex(this int number)
         {
-            if (number > -1 && number < 10)
+            if(number is > (-1) and < 10)
+            {
                 return number.ToString(NumberFormatInfo.InvariantInfo);
+            }
+
             return $"0x{number:X}";
         }
 
@@ -57,8 +66,11 @@ namespace SA3D.Common
         /// <returns>A C hexadecimal constant.</returns>
         public static string ToCHex(this uint number)
         {
-            if (number < 10)
+            if(number < 10)
+            {
                 return number.ToString(NumberFormatInfo.InvariantInfo);
+            }
+
             return $"0x{number:X}u";
         }
 
@@ -69,8 +81,11 @@ namespace SA3D.Common
         /// <returns>A C hexadecimal constant.</returns>
         public static string ToCHex(this long number)
         {
-            if (number > -1 && number < 10)
+            if(number is > (-1) and < 10)
+            {
                 return number.ToString(NumberFormatInfo.InvariantInfo);
+            }
+
             return $"0x{number:X}";
         }
 
@@ -81,8 +96,11 @@ namespace SA3D.Common
         /// <returns>A C hexadecimal constant.</returns>
         public static string ToCHex(this ulong number)
         {
-            if (number < 10)
+            if(number < 10)
+            {
                 return number.ToString(NumberFormatInfo.InvariantInfo);
+            }
+
             return $"0x{number:X}u";
         }
 
@@ -93,14 +111,16 @@ namespace SA3D.Common
         /// <returns>A C escaped string</returns>
         public static string ToC(this string? input)
         {
-            if (input == null)
+            if(input == null)
+            {
                 return "NULL";
+            }
 
             Encoding enc = Encoding.GetEncoding(932);
             StringBuilder result = new("\"");
-            foreach (char item in input)
+            foreach(char item in input)
             {
-                switch (item)
+                switch(item)
                 {
                     case '\0':
                         result.Append(@"\0");
@@ -133,18 +153,26 @@ namespace SA3D.Common
                         result.Append(@"\\");
                         break;
                     default:
-                        if (item < ' ')
-                            result.AppendFormat(@"\{0}", Convert.ToString((short)item, 8).PadLeft(3, '0'));
-                        else if (item > '\x7F')
+                        if(item < ' ')
                         {
-                            foreach (byte b in enc.GetBytes(item.ToString()))
+                            result.AppendFormat(@"\{0}", Convert.ToString((short)item, 8).PadLeft(3, '0'));
+                        }
+                        else if(item > '\x7F')
+                        {
+                            foreach(byte b in enc.GetBytes(item.ToString()))
+                            {
                                 result.AppendFormat(@"\{0}", Convert.ToString(b, 8).PadLeft(3, '0'));
+                            }
                         }
                         else
+                        {
                             result.Append(item);
+                        }
+
                         break;
                 }
             }
+
             result.Append("\"");
             return result.ToString();
         }
@@ -157,10 +185,11 @@ namespace SA3D.Common
         public static string ToC(this float number)
         {
             string result = number.ToLongString();
-            if (result.Contains('.'))
+            if(result.Contains('.'))
             {
                 result += "f";
             }
+
             return result;
         }
 
@@ -174,14 +203,17 @@ namespace SA3D.Common
         {
             string str = number.ToString(NumberFormatInfo.InvariantInfo);
             // if string representation was collapsed from scientific notation, just return it: 
-            if (!str.Contains('E') & !str.Contains('e'))
+            if(!str.Contains('E') & !str.Contains('e'))
+            {
                 return str;
+            }
+
             str = str.ToUpper();
             char decSeparator = '.';
             string[] exponentParts = str.Split('E');
             string[] decimalParts = exponentParts[0].Split(decSeparator);
             // fix missing decimal point: 
-            if (decimalParts.Length == 1)
+            if(decimalParts.Length == 1)
             {
                 decimalParts = new[]
                 {
@@ -189,23 +221,28 @@ namespace SA3D.Common
                     "0"
                 };
             }
+
             int exponentValue = int.Parse(exponentParts[1]);
             string newNumber = decimalParts[0] + decimalParts[1];
             string result;
-            if (exponentValue > 0)
+            if(exponentValue > 0)
+            {
                 result = newNumber + GetZeros(exponentValue - decimalParts[1].Length);
+            }
             else
             {
                 // negative exponent 
                 result = string.Empty;
-                if (newNumber.StartsWith("-"))
+                if(newNumber.StartsWith("-"))
                 {
                     result = "-";
-                    newNumber = newNumber.Substring(1);
+                    newNumber = newNumber[1..];
                 }
+
                 result += "0" + decSeparator + GetZeros(exponentValue + decimalParts[0].Length) + newNumber;
                 result = result.TrimEnd('0');
             }
+
             return result;
         }
 
@@ -216,11 +253,12 @@ namespace SA3D.Common
         /// <returns>The zero string.</returns>
         public static string GetZeros(int zeroCount)
         {
-            if (zeroCount < 0)
+            if(zeroCount < 0)
             {
                 zeroCount = Math.Abs(zeroCount);
 
             }
+
             return new string('0', zeroCount);
         }
 
@@ -232,15 +270,15 @@ namespace SA3D.Common
         public static string MakeIdentifier(this string input)
         {
             StringBuilder result = new(input.Length + 1);
-            foreach (char item in input)
+            foreach(char item in input)
             {
-                if (char.IsAsciiLetter(item) && char.IsAsciiDigit(item))
+                if(char.IsAsciiLetter(item) && char.IsAsciiDigit(item))
                 {
                     result.Append(item);
                 }
             }
 
-            if (result[0] >= '0' & result[0] <= '9')
+            if(result[0] >= '0' & result[0] <= '9')
             {
                 result.Insert(0, '_');
             }

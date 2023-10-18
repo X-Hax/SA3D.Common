@@ -16,7 +16,7 @@ namespace SA3D.Common.Lookup
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <returns>The element at the specified index.</returns>
-        new public T this[int index] { get; }
+        public new T this[int index] { get; }
 
         /// <summary>
         /// Gets the number of elements in the collection.
@@ -27,7 +27,7 @@ namespace SA3D.Common.Lookup
         /// Creates a shallow clone of the array.
         /// </summary>
         /// <returns>A shallow clone of the labeled array.</returns>
-        new public ILabeledArray<T> Clone();
+        public new ILabeledArray<T> Clone();
 
         /// <summary>
         /// Checks whether an object implements <see cref="ILabeledArray{T}"/>.
@@ -36,8 +36,10 @@ namespace SA3D.Common.Lookup
         /// <returns>Whether the object implements <see cref="ILabeledArray{T}"/>.</returns>
         public static bool IsLabeledArray(object? value)
         {
-            if (value == null)
+            if(value == null)
+            {
                 return false;
+            }
 
             return value.GetType().GetInterfaces().Any(x =>
                   x.IsGenericType &&

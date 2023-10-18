@@ -68,7 +68,7 @@ namespace SA3D.Common.IO
             _endianStack = new();
             _endianWriterBuffer = new byte[8];
 
-            fixed (byte* source = _endianWriterBuffer)
+            fixed(byte* source = _endianWriterBuffer)
             {
                 _bigEndianWriter = new(source);
                 _littleEndianWriter = new(source);
@@ -273,14 +273,14 @@ namespace SA3D.Common.IO
         {
             byte[] bytes = encoding.GetBytes(data);
 
-            if (bytes.Length > length)
+            if(bytes.Length > length)
             {
                 Array.Resize(ref bytes, length);
             }
 
             Write(bytes);
 
-            if (bytes.Length < length)
+            if(bytes.Length < length)
             {
                 WriteEmpty((uint)(length - bytes.Length));
             }
@@ -324,8 +324,11 @@ namespace SA3D.Common.IO
         public void Align(uint size, uint offset = 0)
         {
             uint pos = Position + offset;
-            if (pos % size == 0)
+            if(pos % size == 0)
+            {
                 return;
+            }
+
             size -= pos % size;
             WriteEmpty(size);
         }
