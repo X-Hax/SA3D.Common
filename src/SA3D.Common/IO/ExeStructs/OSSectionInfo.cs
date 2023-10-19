@@ -9,8 +9,8 @@
 
 		public OSSectionInfo(uint offset, uint size)
 		{
-			this.Offset = offset;
-			this.Size = size;
+			Offset = offset;
+			Size = size;
 		}
 
 		public static OSSectionInfo Read(EndianStackReader data, uint address)

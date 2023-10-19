@@ -9,8 +9,8 @@
 
 		public OSImportInfo(uint id, uint offset)
 		{
-			this.ID = id;
-			this.Offset = offset;
+			ID = id;
+			Offset = offset;
 		}
 
 		public static OSImportInfo Read(EndianStackReader data, uint address)
