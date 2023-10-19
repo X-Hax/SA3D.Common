@@ -41,13 +41,13 @@
 
 		public OSModuleInfo(uint id, OSModuleLink link, uint numSections, uint sectionInfoOffset, uint nameOffset, uint nameSize, uint version)
 		{
-			this.ID = id;
-			this.Link = link;
-			this.NumSections = numSections;
-			this.SectionInfoOffset = sectionInfoOffset;
-			this.NameOffset = nameOffset;
-			this.NameSize = nameSize;
-			this.Version = version;
+			ID = id;
+			Link = link;
+			NumSections = numSections;
+			SectionInfoOffset = sectionInfoOffset;
+			NameOffset = nameOffset;
+			NameSize = nameSize;
+			Version = version;
 		}
 
 		public static OSModuleInfo Read(EndianStackReader data, uint address)

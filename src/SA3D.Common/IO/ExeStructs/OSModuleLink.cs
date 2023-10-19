@@ -9,8 +9,8 @@
 
 		public OSModuleLink(uint next, uint prev)
 		{
-			this.Next = next;
-			this.Prev = prev;
+			Next = next;
+			Prev = prev;
 		}
 
 		public static OSModuleLink Read(EndianStackReader data, uint address)

@@ -89,20 +89,20 @@
 			uint align,
 			uint bssAlign)
 		{
-			this.Info = info;
-			this.BssSize = bssSize;
-			this.RelOffset = relOffset;
-			this.ImpOffset = impOffset;
-			this.ImpSize = impSize;
-			this.PrologSection = prologSection;
-			this.EpilogSection = epilogSection;
-			this.UnresolvedSection = unresolvedSection;
-			this.Padding0 = padding0;
-			this.Prolog = prolog;
-			this.Epilog = epilog;
-			this.Unresolved = unresolved;
-			this.Align = align;
-			this.BssAlign = bssAlign;
+			Info = info;
+			BssSize = bssSize;
+			RelOffset = relOffset;
+			ImpOffset = impOffset;
+			ImpSize = impSize;
+			PrologSection = prologSection;
+			EpilogSection = epilogSection;
+			UnresolvedSection = unresolvedSection;
+			Padding0 = padding0;
+			Prolog = prolog;
+			Epilog = epilog;
+			Unresolved = unresolved;
+			Align = align;
+			BssAlign = bssAlign;
 		}
 
 		public static OSModuleHeader Read(EndianStackReader data, uint address)

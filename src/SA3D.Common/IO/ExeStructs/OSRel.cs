@@ -17,10 +17,10 @@
 
 		public OSRel(ushort offset, byte type, byte section, uint addend)
 		{
-			this.Offset = offset;
-			this.Type = type;
-			this.Section = section;
-			this.Addend = addend;
+			Offset = offset;
+			Type = type;
+			Section = section;
+			Addend = addend;
 		}
 
 		public static OSRel Read(EndianStackReader data, uint address)
