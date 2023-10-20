@@ -64,44 +64,44 @@ namespace SA3D.Common.Ini
 		/// Converts the provided data to an Ini Dictionary and writes it to a file.
 		/// </summary>
 		/// <param name="data">Data to convert.</param>
-		/// <param name="filename">Path to the file to write to.</param>
+		/// <param name="filepath">Path to the file to write to.</param>
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
 		/// <param name="converter">The converter to use for the data object itself</param>
-		public static void SerializeToFile(object? data, string filename, IniCollectionSettings collectionSettings, TypeConverter? converter)
+		public static void SerializeToFile(object? data, string filepath, IniCollectionSettings collectionSettings, TypeConverter? converter)
 		{
-			IniFile.Write(Serialize(data, collectionSettings, converter), filename);
+			IniFile.Write(Serialize(data, collectionSettings, converter), filepath);
 		}
 
 		/// <summary>
 		/// Converts the provided data to an Ini Dictionary and writes it to a file.
 		/// </summary>
 		/// <param name="data">Data to convert.</param>
-		/// <param name="filename">Path to the file to write to.</param>
+		/// <param name="filepath">Path to the file to write to.</param>
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
-		public static void SerializeToFile(object? data, string filename, IniCollectionSettings collectionSettings)
+		public static void SerializeToFile(object? data, string filepath, IniCollectionSettings collectionSettings)
 		{
-			IniFile.Write(Serialize(data, collectionSettings), filename);
+			IniFile.Write(Serialize(data, collectionSettings), filepath);
 		}
 
 		/// <summary>
 		/// Converts the provided data to an Ini Dictionary and writes it to a file.
 		/// </summary>
 		/// <param name="data">Data to convert.</param>
-		/// <param name="filename">Path to the file to write to.</param>
+		/// <param name="filepath">Path to the file to write to.</param>
 		/// <param name="converter">The converter to use for the data object itself</param>
-		public static void SerializeToFile(object? data, string filename, TypeConverter? converter)
+		public static void SerializeToFile(object? data, string filepath, TypeConverter? converter)
 		{
-			IniFile.Write(Serialize(data, converter), filename);
+			IniFile.Write(Serialize(data, converter), filepath);
 		}
 
 		/// <summary>
 		/// Converts the provided data to an Ini Dictionary and writes it to a file.
 		/// </summary>
 		/// <param name="data">Data to convert.</param>
-		/// <param name="filename">Path to the file to write to.</param>
-		public static void SerializeToFile(object? data, string filename)
+		/// <param name="filepath">Path to the file to write to.</param>
+		public static void SerializeToFile(object? data, string filepath)
 		{
-			IniFile.Write(Serialize(data), filename);
+			IniFile.Write(Serialize(data), filepath);
 		}
 
 		#endregion
@@ -161,48 +161,48 @@ namespace SA3D.Common.Ini
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <param name="type">Type to convert to.</param>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
 		/// <param name="converter">Type converter to use to convert to type.</param>
 		/// <returns>The converted data.</returns>
-		public static object? DeserializeFromFile(Type type, string filename, IniCollectionSettings collectionSettings, TypeConverter? converter)
+		public static object? DeserializeFromFile(Type type, string filepath, IniCollectionSettings collectionSettings, TypeConverter? converter)
 		{
-			return Deserialize(type, IniFile.Read(filename), collectionSettings, converter);
+			return Deserialize(type, IniFile.Read(filepath), collectionSettings, converter);
 		}
 
 		/// <summary>
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <param name="type">Type to convert to.</param>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
 		/// <returns>The converted data.</returns>
-		public static object? DeserializeFromFile(Type type, string filename, IniCollectionSettings collectionSettings)
+		public static object? DeserializeFromFile(Type type, string filepath, IniCollectionSettings collectionSettings)
 		{
-			return Deserialize(type, IniFile.Read(filename), collectionSettings);
+			return Deserialize(type, IniFile.Read(filepath), collectionSettings);
 		}
 
 		/// <summary>
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <param name="type">Type to convert to.</param>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <param name="converter">Type converter to use to convert to type.</param>
 		/// <returns>The converted data.</returns>
-		public static object? DeserializeFromFile(Type type, string filename, TypeConverter? converter)
+		public static object? DeserializeFromFile(Type type, string filepath, TypeConverter? converter)
 		{
-			return Deserialize(type, IniFile.Read(filename), converter);
+			return Deserialize(type, IniFile.Read(filepath), converter);
 		}
 
 		/// <summary>
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <param name="type">Type to convert to.</param>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <returns>The converted data.</returns>
-		public static object? DeserializeFromFile(Type type, string filename)
+		public static object? DeserializeFromFile(Type type, string filepath)
 		{
-			return Deserialize(type, IniFile.Read(filename));
+			return Deserialize(type, IniFile.Read(filepath));
 		}
 
 		#endregion
@@ -262,48 +262,48 @@ namespace SA3D.Common.Ini
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <typeparam name="T">Type to convert to.</typeparam>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
 		/// <param name="converter">Type converter to use to convert to type.</param>
 		/// <returns>The converted data.</returns>
-		public static T? DeserializeFromFile<T>(string filename, IniCollectionSettings collectionSettings, TypeConverter? converter)
+		public static T? DeserializeFromFile<T>(string filepath, IniCollectionSettings collectionSettings, TypeConverter? converter)
 		{
-			return Deserialize<T>(IniFile.Read(filename), collectionSettings, converter);
+			return Deserialize<T>(IniFile.Read(filepath), collectionSettings, converter);
 		}
 
 		/// <summary>
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <typeparam name="T">Type to convert to.</typeparam>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
 		/// <returns>The converted data.</returns>
-		public static T? DeserializeFromFile<T>(string filename, IniCollectionSettings collectionSettings)
+		public static T? DeserializeFromFile<T>(string filepath, IniCollectionSettings collectionSettings)
 		{
-			return Deserialize<T>(IniFile.Read(filename), collectionSettings);
+			return Deserialize<T>(IniFile.Read(filepath), collectionSettings);
 		}
 
 		/// <summary>
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <typeparam name="T">Type to convert to.</typeparam>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <param name="converter">Type converter to use to convert to type.</param>
 		/// <returns>The converted data.</returns>
-		public static T? DeserializeFromFile<T>(string filename, TypeConverter? converter)
+		public static T? DeserializeFromFile<T>(string filepath, TypeConverter? converter)
 		{
-			return Deserialize<T>(IniFile.Read(filename), converter);
+			return Deserialize<T>(IniFile.Read(filepath), converter);
 		}
 
 		/// <summary>
 		/// Converts Ini data from a file to an object of specified type.
 		/// </summary>
 		/// <typeparam name="T">Type to convert to.</typeparam>
-		/// <param name="filename">Path to the ini file that should be converted.</param>
+		/// <param name="filepath">Path to the ini file that should be converted.</param>
 		/// <returns>The converted data.</returns>
-		public static T? DeserializeFromFile<T>(string filename)
+		public static T? DeserializeFromFile<T>(string filepath)
 		{
-			return Deserialize<T>(IniFile.Read(filename));
+			return Deserialize<T>(IniFile.Read(filepath));
 		}
 
 		#endregion

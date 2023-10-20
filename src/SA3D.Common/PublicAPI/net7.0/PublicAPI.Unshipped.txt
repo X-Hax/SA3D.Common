@@ -1,1 +1,14 @@
-﻿
+﻿static SA3D.Common.Ini.IniFile.Read(string! filepath) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, string! filepath) -> void
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath, System.ComponentModel.TypeConverter? converter) -> object?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath) -> void
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> void
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> void
+static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath, System.ComponentModel.TypeConverter? converter) -> void

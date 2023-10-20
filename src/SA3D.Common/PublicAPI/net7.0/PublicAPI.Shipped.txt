@@ -360,11 +360,9 @@ static SA3D.Common.Ini.IniCollectionModeExtensions.IndexFromName(this SA3D.Commo
 static SA3D.Common.Ini.IniCollectionModeExtensions.IndexToName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! index) -> string!
 static SA3D.Common.Ini.IniFile.Combine(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictA, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictB) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniFile.Read(params string![]! data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Read(string! filename) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniFile.Read(System.Collections.Generic.IEnumerable<string!>! data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniFile.Read(System.IO.Stream! stream) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini) -> string![]!
-static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, string! filename) -> void
 static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, System.IO.Stream! stream) -> void
 static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini) -> object?
 static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
@@ -374,22 +372,10 @@ static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.D
 static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
 static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
 static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, System.ComponentModel.TypeConverter? converter) -> T?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename) -> object?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> object?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filename, System.ComponentModel.TypeConverter? converter) -> object?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename) -> T?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
-static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filename, System.ComponentModel.TypeConverter? converter) -> T?
 static SA3D.Common.Ini.IniSerializer.Serialize(object? data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniSerializer.Serialize(object? data, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename) -> void
-static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> void
-static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> void
-static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filename, System.ComponentModel.TypeConverter? converter) -> void
 static SA3D.Common.IO.ExeHelper.FixRELPointers(byte[]! file, uint imageBase = 0) -> void
 static SA3D.Common.IO.ExeHelper.SetupEXE(byte[]! file, out byte[]? result, out uint imageBase) -> bool
 static SA3D.Common.Lookup.LookupExtensions.ContentClone<T>(this SA3D.Common.Lookup.ILabeledArray<T>! labeledArray) -> SA3D.Common.Lookup.ILabeledArray<T>!
