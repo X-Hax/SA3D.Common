@@ -106,11 +106,11 @@ namespace SA3D.Common.Ini
 		/// <summary>
 		/// Loads an Ini dictionary from a file
 		/// </summary>
-		/// <param name="filename">Path to the ini file</param>
+		/// <param name="filepath">Path to the ini file</param>
 		/// <returns></returns>
-		public static IniDictionary Read(string filename)
+		public static IniDictionary Read(string filepath)
 		{
-			return Read(File.ReadAllLines(filename));
+			return Read(File.ReadAllLines(filepath));
 		}
 
 		/// <summary>
@@ -131,13 +131,14 @@ namespace SA3D.Common.Ini
 		public static IniDictionary Read(Stream stream)
 		{
 			List<string> data = new();
-			using StreamReader reader = new(stream);
-
-			string? line;
-			while((line = reader.ReadLine()) != null)
+			using(StreamReader reader = new(stream))
 			{
-				data.Add(line);
+				while(reader.ReadLine() is string line)
+				{
+					data.Add(line);
+				}
 			}
+
 
 			return Read(data.ToArray());
 		}
@@ -192,10 +193,10 @@ namespace SA3D.Common.Ini
 		/// Writes an Ini dictionary to a file
 		/// </summary>
 		/// <param name="Ini">Ini dictionary to write</param>
-		/// <param name="filename">File path to write to</param>
-		public static void Write(IniDictionary Ini, string filename)
+		/// <param name="filepath">File path to write to</param>
+		public static void Write(IniDictionary Ini, string filepath)
 		{
-			File.WriteAllLines(filename, Write(Ini));
+			File.WriteAllLines(filepath, Write(Ini));
 		}
 
 		/// <summary>
@@ -205,10 +206,12 @@ namespace SA3D.Common.Ini
 		/// <param name="stream">Stream to write to</param>
 		public static void Write(IniDictionary Ini, Stream stream)
 		{
-			using StreamWriter writer = new(stream);
-			foreach(string line in Write(Ini))
+			using(StreamWriter writer = new(stream))
 			{
-				writer.WriteLine(line);
+				foreach(string line in Write(Ini))
+				{
+					writer.WriteLine(line);
+				}
 			}
 		}
 
