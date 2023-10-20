@@ -305,7 +305,6 @@ SA3D.Common.Lookup.LabeledArray<T>.Array.get -> T[]!
 SA3D.Common.Lookup.LabeledArray<T>.Array.set -> void
 SA3D.Common.Lookup.LabeledArray<T>.Clone() -> SA3D.Common.Lookup.LabeledArray<T>!
 SA3D.Common.Lookup.LabeledArray<T>.CopyTo(System.Array! array, int index) -> void
-SA3D.Common.Lookup.LabeledArray<T>.GetEnumerator() -> System.Collections.IEnumerator!
 SA3D.Common.Lookup.LabeledArray<T>.IsFixedSize.get -> bool
 SA3D.Common.Lookup.LabeledArray<T>.IsReadOnly.get -> bool
 SA3D.Common.Lookup.LabeledArray<T>.IsSynchronized.get -> bool

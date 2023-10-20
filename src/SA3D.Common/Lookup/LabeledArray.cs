@@ -189,6 +189,11 @@ namespace SA3D.Common.Lookup
 			return ((IEnumerable<T>)Array).GetEnumerator();
 		}
 
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return Array.GetEnumerator();
+		}
+
 		ILabeledArray<T> ILabeledArray<T>.Clone()
 		{
 			return Clone();
@@ -205,12 +210,6 @@ namespace SA3D.Common.Lookup
 		public void CopyTo(Array array, int index)
 		{
 			Array.CopyTo(array, index);
-		}
-
-		/// <inheritdoc/>
-		public IEnumerator GetEnumerator()
-		{
-			return Array.GetEnumerator();
 		}
 
 		/// <inheritdoc/>
