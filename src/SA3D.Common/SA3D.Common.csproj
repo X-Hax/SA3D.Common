@@ -11,7 +11,7 @@
 		<Title>SA3D Common Library</Title>
 		<Product>SA3D Common Library</Product>
 		<Description>Reused code in the SA3D API.</Description>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<RepositoryUrl>https://github.com/X-Hax/SA3D.Common</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/X-Hax/SA3D.Common</PackageProjectUrl>
 		<PackageId>SA3D.Common</PackageId>
@@ -21,7 +21,7 @@
 	<ItemGroup>
 		<None Include="../../README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
-		
+
 	<ItemGroup>
 		<PackageReference Include="Reloaded.Memory" Version="9.1.0" />
 	</ItemGroup>

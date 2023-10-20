@@ -24,3 +24,12 @@ Code reused all throughout the SA3D Code Library.
 | MathHelper           	| Various mathematical functionalities. Primarily contains angle related methods so far. 	|
 | RegionMarker         	| Used to define and check "regions" in a 1 dimensional sequence.                        	|
 | StringExtensions     	| Various extensions for formatting and generating strings.                              	|
+
+## Releasing
+!! Requires authorization via the X-Hax organisation
+
+1. Edit the version number in src/SA3D.Common/SA3D.Common.csproj; Example: `<Version>1.0.0</Version>` -> `<Version>2.0.0</Version>`
+2. Tag the commit: `git tag -a [version number] HEAD -m "Release version [version number]"`
+3. Push with tags: `git push --follow-tags`
+
+This will automatically start the Github `Build and Publish` workflow
