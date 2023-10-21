@@ -1,1 +1,2 @@
-﻿
+﻿virtual SA3D.Common.IO.EndianStackReader.ReadLong(uint address) -> long
+virtual SA3D.Common.IO.EndianStackReader.ReadULong(uint address) -> ulong

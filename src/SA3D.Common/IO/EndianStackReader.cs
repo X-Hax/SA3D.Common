@@ -195,9 +195,9 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <param name="address">The address at which to read the signed long.</param>
 		/// <returns>The signed long that was read.</returns>
-		public virtual ulong ReadLong(uint address)
+		public virtual long ReadLong(uint address)
 		{
-			return _endianReader.ReadULongAtOffset((int)address);
+			return _endianReader.ReadLongAtOffset((int)address);
 		}
 
 		/// <summary>
@@ -205,9 +205,9 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <param name="address">The address at which to read the unsigned long.</param>
 		/// <returns>The unsigned long that was read.</returns>
-		public virtual long ReadULong(uint address)
+		public virtual ulong ReadULong(uint address)
 		{
-			return _endianReader.ReadLongAtOffset((int)address);
+			return _endianReader.ReadULongAtOffset((int)address);
 		}
 
 		/// <summary>

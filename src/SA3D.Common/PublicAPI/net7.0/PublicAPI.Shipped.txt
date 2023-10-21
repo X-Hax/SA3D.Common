@@ -433,12 +433,10 @@ virtual SA3D.Common.IO.EndianStackReader.ReadBytes(uint sourceAddress, byte[]! d
 virtual SA3D.Common.IO.EndianStackReader.ReadDouble(uint address) -> double
 virtual SA3D.Common.IO.EndianStackReader.ReadFloat(uint address) -> float
 virtual SA3D.Common.IO.EndianStackReader.ReadInt(uint address) -> int
-virtual SA3D.Common.IO.EndianStackReader.ReadLong(uint address) -> ulong
 virtual SA3D.Common.IO.EndianStackReader.ReadSByte(uint address) -> sbyte
 virtual SA3D.Common.IO.EndianStackReader.ReadShort(uint address) -> short
 virtual SA3D.Common.IO.EndianStackReader.ReadString(uint address, System.Text.Encoding! encoding, uint count) -> string!
 virtual SA3D.Common.IO.EndianStackReader.ReadUInt(uint address) -> uint
-virtual SA3D.Common.IO.EndianStackReader.ReadULong(uint address) -> long
 virtual SA3D.Common.IO.EndianStackReader.ReadUShort(uint address) -> ushort
 virtual SA3D.Common.IO.EndianStackReader.Slice(int address, int length) -> System.ReadOnlySpan<byte>
 virtual SA3D.Common.IO.EndianStackReader.this[uint index].get -> byte
