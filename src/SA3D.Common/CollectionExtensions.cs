@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace SA3D.Common
@@ -24,6 +25,21 @@ namespace SA3D.Common
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Constructs an enumerable for iterating over the lines read (<see cref="StreamReader.ReadLine"/>) off a stream reader. Ends when reader returns null.
+		/// </summary>
+		/// <param name="reader">The reader to read lines off.</param>
+		/// <returns>The enumerable.</returns>
+		public static IEnumerable<string> StreamReaderAsLineEnumerable(this StreamReader reader)
+		{
+			while(reader.ReadLine() is string line)
+			{
+				yield return line;
+			}
+
+			yield break;
 		}
 
 #pragma warning disable CS8603 // We can manually ignore the possible null return this here

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace SA3D.Common.Ini
 {
@@ -13,11 +12,11 @@ namespace SA3D.Common.Ini
 		#region Loading
 
 		/// <summary>
-		/// Loads an Ini dictionary from strings
+		/// Reads a string enumerator and converts them to an Ini dictionary.
 		/// </summary>
-		/// <param name="data">Ini values to load</param>
-		/// <returns></returns>
-		public static IniDictionary Read(params string[] data)
+		/// <param name="contents">String enumerator holding the contents.</param>
+		/// <returns>The converted contents.</returns>
+		public static IniDictionary Read(IEnumerable<string> contents)
 		{
 			IniDictionary result = new();
 			IniGroup current = new();
@@ -25,9 +24,11 @@ namespace SA3D.Common.Ini
 			result.Add(string.Empty, current);
 
 			string curgroup = string.Empty;
-			for(int i = 0; i < data.Length; i++)
+			int lineNumber = 0;
+			foreach(string rawLine in contents)
 			{
-				string line = System.Text.RegularExpressions.Regex.Unescape(data[i]);
+				lineNumber++;
+				string line = System.Text.RegularExpressions.Regex.Unescape(rawLine);
 
 				bool startswithbracket = false;
 				int firstequals = -1;
@@ -72,7 +73,7 @@ namespace SA3D.Common.Ini
 					}
 					catch(ArgumentException ex)
 					{
-						throw new Exception("INI File error: Group \"" + curgroup + "\" already exists.\nline " + (i + 1), ex);
+						throw new InvalidDataException($"INI File error: Group \"{curgroup}\" already exists.\nline {lineNumber}", ex);
 					}
 				}
 				else if(!string.IsNullOrWhiteSpace(line))
@@ -95,7 +96,7 @@ namespace SA3D.Common.Ini
 					}
 					catch(ArgumentException ex)
 					{
-						throw new Exception("INI File error: Value \"" + key + "\" already exists in group \"" + curgroup + "\".\nline " + (i + 1), ex);
+						throw new InvalidDataException($"INI File error: Value \"{key}\" already exists in group \"{curgroup}\".\nline {lineNumber}", ex);
 					}
 				}
 			}
@@ -104,43 +105,39 @@ namespace SA3D.Common.Ini
 		}
 
 		/// <summary>
-		/// Loads an Ini dictionary from a file
+		/// Reads given strings and converts them to an Ini dictionary.
 		/// </summary>
-		/// <param name="filepath">Path to the ini file</param>
-		/// <returns></returns>
-		public static IniDictionary Read(string filepath)
+		/// <param name="contents">Content to read.</param>
+		/// <returns>The converted contents.</returns>
+		public static IniDictionary Read(params string[] contents)
 		{
-			return Read(File.ReadAllLines(filepath));
+			return Read((IEnumerable<string>)contents);
 		}
 
 		/// <summary>
-		/// Loads an Ini dictionary from a string collection
+		/// Reads lines of a stream and converts them to an Ini dictionary.
 		/// </summary>
-		/// <param name="data">Collection of strings</param>
-		/// <returns></returns>
-		public static IniDictionary Read(IEnumerable<string> data)
+		/// <param name="stream">The Stream to read from.</param>
+		/// <returns>The converted dictionary.</returns>
+		public static IniDictionary ReadFromStream(Stream stream)
 		{
-			return Read(data.ToArray());
-		}
-
-		/// <summary>
-		/// Loads an Ini dictionary from a stream
-		/// </summary>
-		/// <param name="stream">Data stream</param>
-		/// <returns></returns>
-		public static IniDictionary Read(Stream stream)
-		{
-			List<string> data = new();
 			using(StreamReader reader = new(stream))
 			{
-				while(reader.ReadLine() is string line)
-				{
-					data.Add(line);
-				}
+				return Read(reader.StreamReaderAsLineEnumerable());
 			}
+		}
 
-
-			return Read(data.ToArray());
+		/// <summary>
+		/// Reads the lines of a file and converts them to an Ini dictionary.
+		/// </summary>
+		/// <param name="filepath">Path to the file to read.</param>
+		/// <returns>The converted file.</returns>
+		public static IniDictionary ReadFromFile(string filepath)
+		{
+			using(FileStream stream = File.OpenRead(filepath))
+			{
+				return ReadFromStream(stream);
+			}
 		}
 
 		#endregion
@@ -148,70 +145,79 @@ namespace SA3D.Common.Ini
 		#region Writing
 
 		/// <summary>
-		/// Converts an Inidictionary to a string array, ready to be written
+		/// Writes the contents of an Ini dictionary to a writer.
 		/// </summary>
-		/// <param name="Ini">Ini dictionary to write</param>
-		/// <returns></returns>
-		public static string[] Write(IniDictionary Ini)
+		/// <param name="ini">The Ini dictionary to write the contents of.</param>
+		/// <param name="writer">The writer to write to.</param>
+		public static void Write(this IniDictionary ini, TextWriter writer)
 		{
-			bool first = true;
-			List<string> result = new();
-			foreach(IniNameGroup group in Ini)
+			foreach(IniNameGroup group in ini)
 			{
-				string add = "";
-				if(!first)
-				{
-					add += Environment.NewLine;
-				}
-				else
-				{
-					first = false;
-				}
-
 				if(!string.IsNullOrEmpty(group.Key))
 				{
-					add += "[" + group.Key.Replace(@"\", @"\\").Replace("\n", @"\n").Replace("\r", @"\r").Replace(";", @"\;") + "]";
-					result.Add(add);
+					writer.Write('[');
+
+					writer.Write(group.Key
+						.Replace(@"\", @"\\")
+						.Replace("\n", @"\n")
+						.Replace("\r", @"\r")
+						.Replace(";", @"\;"));
+
+					writer.Write(']');
 				}
 
 				foreach(IniNameValue value in group.Value)
 				{
-					string escapedkey = value.Key.Replace(@"\", @"\\").Replace("=", @"\=").Replace("\n", @"\n").Replace("\r", @"\r").Replace(";", @"\;");
-					if(escapedkey.StartsWith("["))
+					string escapedkey = value.Key
+						.Replace(@"\", @"\\")
+						.Replace("=", @"\=")
+						.Replace("\n", @"\n")
+						.Replace("\r", @"\r")
+						.Replace(";", @"\;");
+
+					if(escapedkey.StartsWith('['))
 					{
-						escapedkey = escapedkey.Insert(0, @"\");
+						writer.Write(@"\");
 					}
 
-					result.Add(escapedkey + "=" + value.Value.Replace(@"\", @"\\").Replace("\n", @"\n").Replace("\r", @"\r").Replace(";", @"\;"));
+					writer.Write(escapedkey);
+					writer.Write('=');
+
+					writer.Write(value.Value
+						.Replace(@"\", @"\\")
+						.Replace("\n", @"\n")
+						.Replace("\r", @"\r")
+						.Replace(";", @"\;"));
 				}
+
+				writer.WriteLine();
 			}
-
-			return result.ToArray();
 		}
 
 		/// <summary>
-		/// Writes an Ini dictionary to a file
+		/// Writes the contents of an Ini dictionary to a file.
 		/// </summary>
-		/// <param name="Ini">Ini dictionary to write</param>
-		/// <param name="filepath">File path to write to</param>
-		public static void Write(IniDictionary Ini, string filepath)
+		/// <param name="ini">The Ini dictionary to write the contents of.</param>
+		/// <param name="filepath">Path of the file to write to</param>
+		public static void WriteToFile(this IniDictionary ini, string filepath)
 		{
-			File.WriteAllLines(filepath, Write(Ini));
-		}
-
-		/// <summary>
-		/// Writes an ini dictionary to a stream
-		/// </summary>
-		/// <param name="Ini">Ini dictionary to write</param>
-		/// <param name="stream">Stream to write to</param>
-		public static void Write(IniDictionary Ini, Stream stream)
-		{
-			using(StreamWriter writer = new(stream))
+			using(StreamWriter writer = File.CreateText(filepath))
 			{
-				foreach(string line in Write(Ini))
-				{
-					writer.WriteLine(line);
-				}
+				ini.Write(writer);
+			}
+		}
+
+		/// <summary>
+		/// Converts the contents of an ini dictionary to a string array, where very string is a line as it would be written to a file.
+		/// </summary>
+		/// <param name="ini">The ini dictionary to convert the contents of.</param>
+		/// <returns>The file lines.</returns>
+		public static string[] WriteToFileLines(this IniDictionary ini)
+		{
+			using(StringWriter writer = new())
+			{
+				ini.Write(writer);
+				return writer.ToString().Split(writer.NewLine);
 			}
 		}
 

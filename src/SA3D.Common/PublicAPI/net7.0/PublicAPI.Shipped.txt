@@ -1,9 +1,5 @@
 ﻿#nullable enable
 abstract SA3D.Common.Lookup.BaseLUT.AddEntry(uint address, object! value) -> void
-static readonly SA3D.Common.MathHelper.BAMS2Deg -> float
-static readonly SA3D.Common.MathHelper.BAMS2Rad -> float
-static readonly SA3D.Common.MathHelper.HalfPi -> float
-static readonly SA3D.Common.MathHelper.Rad2Deg -> float
 override SA3D.Common.Converters.BAMS16Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
@@ -348,9 +344,14 @@ SA3D.Common.RegionMarker<T>.HasValue(uint from, uint to, T value) -> bool
 SA3D.Common.RegionMarker<T>.MarkRegion(uint from, uint to, T value) -> void
 SA3D.Common.RegionMarker<T>.RegionMarker() -> void
 SA3D.Common.StringExtensions
+static readonly SA3D.Common.MathHelper.BAMS2Deg -> float
+static readonly SA3D.Common.MathHelper.BAMS2Rad -> float
+static readonly SA3D.Common.MathHelper.HalfPi -> float
+static readonly SA3D.Common.MathHelper.Rad2Deg -> float
 static SA3D.Common.CollectionExtensions.ContentClone<T>(this T[]! input) -> T[]!
 static SA3D.Common.CollectionExtensions.SelectIgnoringNull<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult?>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static SA3D.Common.CollectionExtensions.SelectManyIgnoringNull<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, System.Collections.Generic.IEnumerable<TResult?>?>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
+static SA3D.Common.CollectionExtensions.StreamReaderAsLineEnumerable(this System.IO.StreamReader! reader) -> System.Collections.Generic.IEnumerable<string!>!
 static SA3D.Common.DistinctMap<T>.CreateDistinctMap(System.Collections.Generic.IList<T>! collection) -> SA3D.Common.DistinctMap<T>!
 static SA3D.Common.DistinctMap<T>.TryCreateDistinctMap(System.Collections.Generic.IList<T>! collection, out SA3D.Common.DistinctMap<T>! map) -> bool
 static SA3D.Common.DistinctMapExtensions.CreateDistinctMap<T>(this System.Collections.Generic.IList<T>! collection) -> SA3D.Common.DistinctMap<T>!
@@ -358,11 +359,13 @@ static SA3D.Common.DistinctMapExtensions.TryCreateDistinctMap<T>(this System.Col
 static SA3D.Common.Ini.IniCollectionModeExtensions.IndexFromName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! full) -> string?
 static SA3D.Common.Ini.IniCollectionModeExtensions.IndexToName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! index) -> string!
 static SA3D.Common.Ini.IniFile.Combine(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictA, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictB) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Read(params string![]! data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Read(System.Collections.Generic.IEnumerable<string!>! data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Read(System.IO.Stream! stream) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini) -> string![]!
-static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, System.IO.Stream! stream) -> void
+static SA3D.Common.Ini.IniFile.Read(params string![]! contents) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Read(System.Collections.Generic.IEnumerable<string!>! contents) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.ReadFromFile(string! filepath) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.ReadFromStream(System.IO.Stream! stream) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniFile.Write(this System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, System.IO.TextWriter! writer) -> void
+static SA3D.Common.Ini.IniFile.WriteToFile(this System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, string! filepath) -> void
+static SA3D.Common.Ini.IniFile.WriteToFileLines(this System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini) -> string![]!
 static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini) -> object?
 static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
 static SA3D.Common.Ini.IniSerializer.Deserialize(System.Type! type, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> object?
@@ -371,12 +374,6 @@ static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.D
 static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
 static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
 static SA3D.Common.Ini.IniSerializer.Deserialize<T>(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! ini, System.ComponentModel.TypeConverter? converter) -> T?
-static SA3D.Common.Ini.IniSerializer.Serialize(object? data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniSerializer.Serialize(object? data, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Read(string! filepath) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
-static SA3D.Common.Ini.IniFile.Write(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! Ini, string! filepath) -> void
 static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath) -> object?
 static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> object?
 static SA3D.Common.Ini.IniSerializer.DeserializeFromFile(System.Type! type, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> object?
@@ -385,6 +382,10 @@ static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath) ->
 static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> T?
 static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> T?
 static SA3D.Common.Ini.IniSerializer.DeserializeFromFile<T>(string! filepath, System.ComponentModel.TypeConverter? converter) -> T?
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
+static SA3D.Common.Ini.IniSerializer.Serialize(object? data, System.ComponentModel.TypeConverter? converter) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!
 static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath) -> void
 static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings) -> void
 static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath, SA3D.Common.Ini.IniCollectionSettings! collectionSettings, System.ComponentModel.TypeConverter? converter) -> void
@@ -433,13 +434,13 @@ virtual SA3D.Common.IO.EndianStackReader.ReadBytes(uint sourceAddress, byte[]! d
 virtual SA3D.Common.IO.EndianStackReader.ReadDouble(uint address) -> double
 virtual SA3D.Common.IO.EndianStackReader.ReadFloat(uint address) -> float
 virtual SA3D.Common.IO.EndianStackReader.ReadInt(uint address) -> int
+virtual SA3D.Common.IO.EndianStackReader.ReadLong(uint address) -> long
 virtual SA3D.Common.IO.EndianStackReader.ReadSByte(uint address) -> sbyte
 virtual SA3D.Common.IO.EndianStackReader.ReadShort(uint address) -> short
 virtual SA3D.Common.IO.EndianStackReader.ReadString(uint address, System.Text.Encoding! encoding, uint count) -> string!
 virtual SA3D.Common.IO.EndianStackReader.ReadUInt(uint address) -> uint
-virtual SA3D.Common.IO.EndianStackReader.ReadUShort(uint address) -> ushort
-virtual SA3D.Common.IO.EndianStackReader.ReadLong(uint address) -> long
 virtual SA3D.Common.IO.EndianStackReader.ReadULong(uint address) -> ulong
+virtual SA3D.Common.IO.EndianStackReader.ReadUShort(uint address) -> ushort
 virtual SA3D.Common.IO.EndianStackReader.Slice(int address, int length) -> System.ReadOnlySpan<byte>
 virtual SA3D.Common.IO.EndianStackReader.this[uint index].get -> byte
 virtual SA3D.Common.IO.EndianStackWriter.Write(System.ReadOnlySpan<byte> data) -> void

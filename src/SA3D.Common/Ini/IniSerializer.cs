@@ -69,7 +69,7 @@ namespace SA3D.Common.Ini
 		/// <param name="converter">The converter to use for the data object itself</param>
 		public static void SerializeToFile(object? data, string filepath, IniCollectionSettings collectionSettings, TypeConverter? converter)
 		{
-			IniFile.Write(Serialize(data, collectionSettings, converter), filepath);
+			IniFile.WriteToFile(Serialize(data, collectionSettings, converter), filepath);
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace SA3D.Common.Ini
 		/// <param name="collectionSettings">Settings to use for converting collections.</param>
 		public static void SerializeToFile(object? data, string filepath, IniCollectionSettings collectionSettings)
 		{
-			IniFile.Write(Serialize(data, collectionSettings), filepath);
+			IniFile.WriteToFile(Serialize(data, collectionSettings), filepath);
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace SA3D.Common.Ini
 		/// <param name="converter">The converter to use for the data object itself</param>
 		public static void SerializeToFile(object? data, string filepath, TypeConverter? converter)
 		{
-			IniFile.Write(Serialize(data, converter), filepath);
+			IniFile.WriteToFile(Serialize(data, converter), filepath);
 		}
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace SA3D.Common.Ini
 		/// <param name="filepath">Path to the file to write to.</param>
 		public static void SerializeToFile(object? data, string filepath)
 		{
-			IniFile.Write(Serialize(data), filepath);
+			IniFile.WriteToFile(Serialize(data), filepath);
 		}
 
 		#endregion
@@ -167,7 +167,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static object? DeserializeFromFile(Type type, string filepath, IniCollectionSettings collectionSettings, TypeConverter? converter)
 		{
-			return Deserialize(type, IniFile.Read(filepath), collectionSettings, converter);
+			return Deserialize(type, IniFile.ReadFromFile(filepath), collectionSettings, converter);
 		}
 
 		/// <summary>
@@ -179,7 +179,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static object? DeserializeFromFile(Type type, string filepath, IniCollectionSettings collectionSettings)
 		{
-			return Deserialize(type, IniFile.Read(filepath), collectionSettings);
+			return Deserialize(type, IniFile.ReadFromFile(filepath), collectionSettings);
 		}
 
 		/// <summary>
@@ -191,7 +191,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static object? DeserializeFromFile(Type type, string filepath, TypeConverter? converter)
 		{
-			return Deserialize(type, IniFile.Read(filepath), converter);
+			return Deserialize(type, IniFile.ReadFromFile(filepath), converter);
 		}
 
 		/// <summary>
@@ -202,7 +202,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static object? DeserializeFromFile(Type type, string filepath)
 		{
-			return Deserialize(type, IniFile.Read(filepath));
+			return Deserialize(type, IniFile.ReadFromFile(filepath));
 		}
 
 		#endregion
@@ -268,7 +268,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static T? DeserializeFromFile<T>(string filepath, IniCollectionSettings collectionSettings, TypeConverter? converter)
 		{
-			return Deserialize<T>(IniFile.Read(filepath), collectionSettings, converter);
+			return Deserialize<T>(IniFile.ReadFromFile(filepath), collectionSettings, converter);
 		}
 
 		/// <summary>
@@ -280,7 +280,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static T? DeserializeFromFile<T>(string filepath, IniCollectionSettings collectionSettings)
 		{
-			return Deserialize<T>(IniFile.Read(filepath), collectionSettings);
+			return Deserialize<T>(IniFile.ReadFromFile(filepath), collectionSettings);
 		}
 
 		/// <summary>
@@ -292,7 +292,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static T? DeserializeFromFile<T>(string filepath, TypeConverter? converter)
 		{
-			return Deserialize<T>(IniFile.Read(filepath), converter);
+			return Deserialize<T>(IniFile.ReadFromFile(filepath), converter);
 		}
 
 		/// <summary>
@@ -303,7 +303,7 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted data.</returns>
 		public static T? DeserializeFromFile<T>(string filepath)
 		{
-			return Deserialize<T>(IniFile.Read(filepath));
+			return Deserialize<T>(IniFile.ReadFromFile(filepath));
 		}
 
 		#endregion
