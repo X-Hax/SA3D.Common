@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace SA3D.Common.Lookup
 {
 	/// <summary>
-	/// A dictionary for mapping unique values to addresses.
+	/// A dictionary for mapping unique values to unique addresses.
 	/// </summary>
 	/// <typeparam name="T">Type of the value to map</typeparam>
 	public class PointerDictionary<T> where T : notnull
@@ -73,11 +73,9 @@ namespace SA3D.Common.Lookup
 		/// <param name="result">When this method returns, contains the address associated with the specified value, if the value is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
 		/// <returns><see langword="true"/> if the <see cref="PointerDictionary{T}"/> contains an address with the specified value, otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public bool TryGetAddress(T value, [MaybeNullWhen(false)] out uint? result)
+		public bool TryGetAddress(T value, [MaybeNullWhen(false)] out uint result)
 		{
-			bool found = _toAddr.TryGetValue(value, out uint output);
-			result = found ? output : null;
-			return found;
+			return _toAddr.TryGetValue(value, out result);
 		}
 
 		/// <summary>

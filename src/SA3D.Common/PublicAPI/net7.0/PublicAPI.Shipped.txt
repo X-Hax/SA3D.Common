@@ -336,7 +336,7 @@ SA3D.Common.Lookup.PointerDictionary<T>.GetDictTo() -> System.Collections.Generi
 SA3D.Common.Lookup.PointerDictionary<T>.GetValue(uint address) -> T?
 SA3D.Common.Lookup.PointerDictionary<T>.PointerDictionary() -> void
 SA3D.Common.Lookup.PointerDictionary<T>.TryAdd(uint address, T value) -> bool
-SA3D.Common.Lookup.PointerDictionary<T>.TryGetAddress(T value, out uint? result) -> bool
+SA3D.Common.Lookup.PointerDictionary<T>.TryGetAddress(T value, out uint result) -> bool
 SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(uint address, out T result) -> bool
 SA3D.Common.MathHelper
 SA3D.Common.RegionMarker<T>

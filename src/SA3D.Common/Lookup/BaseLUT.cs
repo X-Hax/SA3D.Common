@@ -60,9 +60,7 @@ namespace SA3D.Common.Lookup
 				return 0;
 			}
 
-			uint result;
-
-			if(!All.TryGetAddress(value, out uint? tryGetResult))
+			if(!All.TryGetAddress(value, out uint result))
 			{
 				result = write(value);
 				All.Add(result, value);
@@ -73,12 +71,9 @@ namespace SA3D.Common.Lookup
 				}
 
 				AddEntry(result, value);
-				return result;
 			}
-			else
-			{
-				return tryGetResult!.Value;
-			}
+
+			return result;
 		}
 
 		private T GetAddValue<T>(uint address, string? genPrefix, Func<uint, T> read) where T : class
