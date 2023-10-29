@@ -46,14 +46,9 @@ namespace SA3D.Common.Lookup
 		/// <param name="value">The value to add.</param>
 		protected abstract void AddEntry(uint address, object value);
 
-		/// <summary>
-		/// Gets an address, or executes a custom handler that adds and returns the address if it is not found.
-		/// </summary>
-		/// <typeparam name="T">Value type.</typeparam>
-		/// <param name="value">Value to get/add the address of.</param>
-		/// <param name="write">The custom handler to write data and return the corresponding address to add.</param>
-		/// <returns>The address for the specified value.</returns>
-		public uint GetAddAddress<T>(T? value, Func<T, uint> write) where T : class
+
+
+		private uint InternalGetAddAddress<T>(T? value, Func<T, uint>? writeValue, Func<uint>? write) where T : class
 		{
 			if(value == null)
 			{
@@ -62,7 +57,7 @@ namespace SA3D.Common.Lookup
 
 			if(!All.TryGetAddress(value, out uint result))
 			{
-				result = write(value);
+				result = writeValue != null ? writeValue(value) : write!();
 				All.Add(result, value);
 
 				if(value is ILabel label)
@@ -76,7 +71,31 @@ namespace SA3D.Common.Lookup
 			return result;
 		}
 
-		private T GetAddValue<T>(uint address, string? genPrefix, Func<uint, T> read) where T : class
+		/// <summary>
+		/// Gets an address, or executes a custom handler that adds and returns the address if it is not found.
+		/// </summary>
+		/// <typeparam name="T">Value type.</typeparam>
+		/// <param name="value">Value to get/add the address of.</param>
+		/// <param name="write">The custom handler to write data and return the corresponding address to add.</param>
+		/// <returns>The address for the specified value.</returns>
+		public uint GetAddAddress<T>(T? value, Func<T, uint> write) where T : class
+		{
+			return InternalGetAddAddress(value, write, null);
+		}
+
+		/// <summary>
+		/// Gets an address, or executes a custom handler that adds and returns the address if it is not found.
+		/// </summary>
+		/// <typeparam name="T">Value type.</typeparam>
+		/// <param name="value">Value to get/add the address of.</param>
+		/// <param name="write">The custom handler to write data and return the corresponding address to add.</param>
+		/// <returns>The address for the specified value.</returns>
+		public uint GetAddAddress<T>(T? value, Func<uint> write) where T : class
+		{
+			return InternalGetAddAddress(value, null, write);
+		}
+
+		private T InternalGetAddValue<T>(uint address, string? genPrefix, Func<uint, T>? readAddr, Func<T>? read) where T : class
 		{
 			if(address == 0)
 			{
@@ -86,7 +105,7 @@ namespace SA3D.Common.Lookup
 			T result;
 			if(!All.TryGetValue(address, out object? gottenValue))
 			{
-				result = read(address);
+				result = readAddr != null ? readAddr(address) : read!();
 
 				All.Add(address, result);
 
@@ -113,7 +132,6 @@ namespace SA3D.Common.Lookup
 			return result;
 		}
 
-
 		/// <summary>
 		/// Executes the read function and stores the resulting value in the LUT.
 		/// <br/> The resulting ILabel value will receive the Label stored in <see cref="Labels"/> if found for the address; otherwise a label generated using the address and prefix
@@ -125,7 +143,7 @@ namespace SA3D.Common.Lookup
 		/// <returns>The result of the read func.</returns>
 		public T GetAddLabeledValue<T>(uint address, string genPrefix, Func<uint, T> read) where T : class, ILabel
 		{
-			return GetAddValue(address, genPrefix, read);
+			return InternalGetAddValue(address, genPrefix, read, null);
 		}
 
 		/// <summary>
@@ -139,7 +157,7 @@ namespace SA3D.Common.Lookup
 		/// <returns>The result of the read func.</returns>
 		public T GetAddLabeledValue<T>(uint address, string genPrefix, Func<T> read) where T : class, ILabel
 		{
-			return GetAddLabeledValue(address, genPrefix, (_) => read());
+			return InternalGetAddValue(address, genPrefix, null, read);
 		}
 
 		/// <summary>
@@ -157,7 +175,7 @@ namespace SA3D.Common.Lookup
 				throw new InvalidOperationException("Please use GetAddLabeledValue for types that implement ILabel!");
 			}
 
-			return GetAddValue(address, null, read);
+			return InternalGetAddValue(address, null, read, null);
 		}
 
 		/// <summary>
@@ -170,7 +188,12 @@ namespace SA3D.Common.Lookup
 		/// <exception cref="InvalidOperationException">Thrown when passing an ILabel type value</exception>
 		public T GetAddValue<T>(uint address, Func<T> read) where T : class
 		{
-			return GetAddValue(address, null, (_) => read());
+			if(typeof(T).IsAssignableTo(typeof(ILabel)))
+			{
+				throw new InvalidOperationException("Please use GetAddLabeledValue for types that implement ILabel!");
+			}
+
+			return InternalGetAddValue(address, null, null, read);
 		}
 	}
 }

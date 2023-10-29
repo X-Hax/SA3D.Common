@@ -1,1 +1,1 @@
-﻿
+﻿SA3D.Common.Lookup.BaseLUT.GetAddAddress<T>(T? value, System.Func<uint>! write) -> uint
