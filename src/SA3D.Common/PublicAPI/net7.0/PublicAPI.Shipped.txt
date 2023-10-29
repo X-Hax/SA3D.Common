@@ -278,6 +278,7 @@ SA3D.Common.Lookup.BaseLUT.All.get -> SA3D.Common.Lookup.PointerDictionary<objec
 SA3D.Common.Lookup.BaseLUT.BaseLUT() -> void
 SA3D.Common.Lookup.BaseLUT.BaseLUT(System.Collections.Generic.Dictionary<uint, string!>! labels) -> void
 SA3D.Common.Lookup.BaseLUT.GetAddAddress<T>(T? value, System.Func<T!, uint>! write) -> uint
+SA3D.Common.Lookup.BaseLUT.GetAddAddress<T>(T? value, System.Func<uint>! write) -> uint
 SA3D.Common.Lookup.BaseLUT.GetAddLabeledValue<T>(uint address, string! genPrefix, System.Func<T!>! read) -> T!
 SA3D.Common.Lookup.BaseLUT.GetAddLabeledValue<T>(uint address, string! genPrefix, System.Func<uint, T!>! read) -> T!
 SA3D.Common.Lookup.BaseLUT.GetAddValue<T>(uint address, System.Func<T!>! read) -> T!
