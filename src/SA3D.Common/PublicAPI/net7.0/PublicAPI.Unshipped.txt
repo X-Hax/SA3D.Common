@@ -1,1 +1,1 @@
-﻿SA3D.Common.IO.EndianStackWriter.Align(uint size, int offset = 0) -> void
+﻿
