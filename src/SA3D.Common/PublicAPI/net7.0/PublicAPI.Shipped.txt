@@ -253,7 +253,6 @@ SA3D.Common.IO.EndianStackReader.Slice(uint address, int length) -> System.ReadO
 SA3D.Common.IO.EndianStackReader.Source.get -> System.ReadOnlySpan<byte>
 SA3D.Common.IO.EndianStackReader.TryReadPointer(uint address, out uint pointer) -> bool
 SA3D.Common.IO.EndianStackWriter
-SA3D.Common.IO.EndianStackWriter.Align(uint size, uint offset = 0) -> void
 SA3D.Common.IO.EndianStackWriter.BigEndian.get -> bool
 SA3D.Common.IO.EndianStackWriter.EndianStackWriter(System.IO.Stream! stream, uint imageBase = 0, bool bigEndian = false) -> void
 SA3D.Common.IO.EndianStackWriter.ImageBase.get -> uint

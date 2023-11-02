@@ -321,9 +321,9 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <param name="size">Size to align with.</param>
 		/// <param name="offset">Offset (to the current position) from which to start measuring the length.</param>
-		public void Align(uint size, uint offset = 0)
+		public void Align(uint size, int offset = 0)
 		{
-			uint pos = Position + offset;
+			uint pos = (uint)(Position + offset);
 			if(pos % size == 0)
 			{
 				return;
