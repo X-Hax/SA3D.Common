@@ -317,19 +317,28 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
-		/// Writes 0 bytes to the stream until the length of the stream is a multiple of the size to align with.
+		/// Writes 0-bytes to the stream until the length of the stream is a multiple of the size to align with.
 		/// </summary>
 		/// <param name="size">Size to align with.</param>
-		/// <param name="offset">Offset (to the current position) from which to start measuring the length.</param>
-		public void Align(uint size, int offset = 0)
+		public void Align(uint size)
 		{
-			uint pos = (uint)(Position + offset);
-			if(pos % size == 0)
+			AlignFrom(size, 0);
+		}
+
+		/// <summary>
+		/// Writes 0-bytes to the stream until the length of the stream from <paramref name="start"/> is a multiple of the size to align with.
+		/// </summary>
+		/// <param name="size">Size to align with.</param>
+		/// <param name="start">Stream position from which to start measuring.</param>
+		public void AlignFrom(uint size, uint start)
+		{
+			uint bytesFromStart = Position - start;
+			if(bytesFromStart % size == 0)
 			{
 				return;
 			}
 
-			size -= pos % size;
+			size -= bytesFromStart % size;
 			WriteEmpty(size);
 		}
 
