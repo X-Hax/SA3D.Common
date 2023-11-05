@@ -1,1 +1,2 @@
-﻿
+﻿SA3D.Common.IO.EndianStackReader.Dispose() -> void
+SA3D.Common.IO.EndianStackReader.~EndianStackReader() -> void

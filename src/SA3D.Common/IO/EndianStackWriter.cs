@@ -1,8 +1,9 @@
-﻿using Reloaded.Memory.Streams;
-using Reloaded.Memory.Utilities;
+﻿using Reloaded.Memory.Extensions;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SA3D.Common.IO
@@ -13,15 +14,6 @@ namespace SA3D.Common.IO
 	[DebuggerNonUserCode]
 	public class EndianStackWriter : EndianStack
 	{
-		#region Private Fields
-
-		private readonly byte[] _endianWriterBuffer;
-		private readonly Pinnable<byte> _endianWriterBufferPin;
-		private readonly BigEndianWriter _bigEndianWriter;
-		private readonly LittleEndianWriter _littleEndianWriter;
-
-		#endregion
-
 		#region Properties
 
 		/// <summary>
@@ -56,12 +48,6 @@ namespace SA3D.Common.IO
 		{
 			Stream = stream;
 			ImageBase = imageBase;
-
-			_endianWriterBuffer = new byte[8];
-			_endianWriterBufferPin = new Pinnable<byte>(_endianWriterBuffer);
-			_bigEndianWriter = new(_endianWriterBufferPin.Pointer);
-			_littleEndianWriter = new(_endianWriterBufferPin.Pointer);
-
 		}
 
 		#region Methods
@@ -127,148 +113,90 @@ namespace SA3D.Common.IO
 			Stream.Write(data);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private unsafe void WriteRaw(void* source, int length)
+		{
+			Stream.Write(MemoryMarshal.CreateSpan(ref Unsafe.AsRef<byte>(source), length));
+		}
+
 		/// <summary>
 		/// Writes a signed short to the stream.
 		/// </summary>
 		/// <param name="data">The signed short to write.</param>
-		public virtual void WriteShort(short data)
+		public virtual unsafe void WriteShort(short data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 2);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(short));
 		}
 
 		/// <summary>
 		/// Writes an unsigned short to the stream.
 		/// </summary>
 		/// <param name="data">The unsigned short to write.</param>
-		public virtual void WriteUShort(ushort data)
+		public virtual unsafe void WriteUShort(ushort data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 2);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(ushort));
 		}
 
 		/// <summary>
 		/// Writes a signed integer to the stream.
 		/// </summary>
 		/// <param name="data">The signed integer to write.</param>
-		public virtual void WriteInt(int data)
+		public virtual unsafe void WriteInt(int data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 4);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(int));
 		}
 
 		/// <summary>
 		/// Writes an unsigned integer to the stream.
 		/// </summary>
 		/// <param name="data">The unsigned integer to write.</param>
-		public virtual void WriteUInt(uint data)
+		public virtual unsafe void WriteUInt(uint data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 4);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(uint));
 		}
 
 		/// <summary>
 		/// Writes a signed long to the stream.
 		/// </summary>
 		/// <param name="data">The signed long to write.</param>
-		public virtual void WriteLong(long data)
+		public virtual unsafe void WriteLong(long data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 8);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(long));
 		}
 
 		/// <summary>
 		/// Writes an unsigned long to the stream.
 		/// </summary>
 		/// <param name="data">The unsigned long to write.</param>
-		public virtual void WriteULong(ulong data)
+		public virtual unsafe void WriteULong(ulong data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 8);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(ulong));
 		}
 
 		/// <summary>
 		/// Writes a float to the stream.
 		/// </summary>
 		/// <param name="data">The float to write.</param>
-		public virtual void WriteFloat(float data)
+		public virtual unsafe void WriteFloat(float data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 4);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(float));
 		}
 
 		/// <summary>
 		/// Writes a double to the stream.
 		/// </summary>
 		/// <param name="data">The double to write.</param>
-		public virtual void WriteDouble(double data)
+		public virtual unsafe void WriteDouble(double data)
 		{
-			if(BigEndian)
-			{
-				_bigEndianWriter.WriteAtOffset(data, 0);
-			}
-			else
-			{
-				_littleEndianWriter.WriteAtOffset(data, 0);
-			}
-
-			Stream.Write(_endianWriterBuffer, 0, 8);
+			data = BigEndian ? data.AsBigEndian() : data.AsLittleEndian();
+			WriteRaw(&data, sizeof(double));
 		}
 
 

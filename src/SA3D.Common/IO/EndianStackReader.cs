@@ -1,7 +1,7 @@
 ﻿using Reloaded.Memory.Streams;
-using Reloaded.Memory.Utilities;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SA3D.Common.IO
@@ -10,14 +10,15 @@ namespace SA3D.Common.IO
 	/// Allows for interchangeably reading little and big endian from an array. The changed endian gets stored on a stack and can be popped later.
 	/// </summary>
 	[DebuggerNonUserCode]
-	public class EndianStackReader : EndianStack
+	public class EndianStackReader : EndianStack, IDisposable
 	{
 		#region Private fields
 
 		private readonly byte[] _source;
-		private readonly Pinnable<byte> _sourcePin;
+		private readonly GCHandle _sourceHandle;
 		private readonly BigEndianReader _bigEndianReader;
 		private readonly LittleEndianReader _littleEndianReader;
+		private bool _disposed;
 
 		#endregion
 
@@ -26,7 +27,7 @@ namespace SA3D.Common.IO
 		/// <summary>
 		/// Readonly access to the Source
 		/// </summary>
-		public ReadOnlySpan<byte> Source => new(_source);
+		public ReadOnlySpan<byte> Source => _source;
 
 		/// <summary>
 		/// Imagebase (pointer offset) to use when reading pointers with <see cref="ReadPointer(uint)"/> or <see cref="TryReadPointer(uint, out uint)"/>
@@ -54,15 +55,33 @@ namespace SA3D.Common.IO
 		public unsafe EndianStackReader(byte[] source, uint imageBase = 0, bool bigEndian = false) : base(bigEndian)
 		{
 			_source = source;
+			_sourceHandle = GCHandle.Alloc(_source);
 			ImageBase = imageBase;
 
-			_sourcePin = new(source);
-			_bigEndianReader = new(_sourcePin.Pointer);
-			_littleEndianReader = new(_sourcePin.Pointer);
+			_bigEndianReader = new((byte*)_sourceHandle.AddrOfPinnedObject());
+			_littleEndianReader = new((byte*)_sourceHandle.AddrOfPinnedObject());
 		}
 
-		#region Methods
+		/// <inheritdoc/>
+		public void Dispose()
+		{
+			if(_disposed)
+			{
+				return;
+			}
 
+			_disposed = true;
+			_sourceHandle.Free();
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Finalizer for freeing up the GC handle.
+		/// </summary>
+		~EndianStackReader() => Dispose();
+
+
+		#region Methods
 
 		/// <summary>
 		/// Returns the byte at a specific index from the source.
