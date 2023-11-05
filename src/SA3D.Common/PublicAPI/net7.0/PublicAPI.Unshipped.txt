@@ -1,8 +1,1 @@
-﻿abstract SA3D.Common.IO.EndianStack.OnEndianUpdate() -> void
-override SA3D.Common.IO.EndianStackReader.OnEndianUpdate() -> void
-override SA3D.Common.IO.EndianStackWriter.OnEndianUpdate() -> void
-SA3D.Common.IO.EndianStack
-SA3D.Common.IO.EndianStack.BigEndian.get -> bool
-SA3D.Common.IO.EndianStack.EndianStack(bool bigEndian) -> void
-SA3D.Common.IO.EndianStack.PopEndian() -> void
-SA3D.Common.IO.EndianStack.PushBigEndian(bool bigEndian) -> void
+﻿
