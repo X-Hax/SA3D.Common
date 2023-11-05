@@ -36,6 +36,7 @@ namespace SA3D.Common.IO
 		{
 			_endianStack.Push(bigEndian);
 			BigEndian = bigEndian;
+			OnEndianUpdate();
 		}
 
 		/// <summary>
