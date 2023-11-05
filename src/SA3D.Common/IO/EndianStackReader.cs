@@ -1,8 +1,7 @@
-﻿using Reloaded.Memory.Interfaces;
-using Reloaded.Memory.Streams;
+﻿using Reloaded.Memory.Streams;
+using Reloaded.Memory.Utilities;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace SA3D.Common.IO
@@ -16,7 +15,7 @@ namespace SA3D.Common.IO
 		#region Private fields
 
 		private readonly byte[] _source;
-		private IEndianReader _endianReader;
+		private readonly Pinnable<byte> _sourcePin;
 		private readonly BigEndianReader _bigEndianReader;
 		private readonly LittleEndianReader _littleEndianReader;
 
@@ -57,23 +56,13 @@ namespace SA3D.Common.IO
 			_source = source;
 			ImageBase = imageBase;
 
-			fixed(byte* src = _source)
-			{
-				_bigEndianReader = new(src);
-				_littleEndianReader = new(src);
-			}
-
-			OnEndianUpdate();
+			_sourcePin = new(source);
+			_bigEndianReader = new(_sourcePin.Pointer);
+			_littleEndianReader = new(_sourcePin.Pointer);
 		}
 
 		#region Methods
 
-		/// <inheritdoc/>
-		[MemberNotNull(nameof(_endianReader))]
-		protected override void OnEndianUpdate()
-		{
-			_endianReader = BigEndian ? _bigEndianReader : _littleEndianReader;
-		}
 
 		/// <summary>
 		/// Returns the byte at a specific index from the source.
@@ -132,7 +121,14 @@ namespace SA3D.Common.IO
 		/// <returns>The unsigned short that was read.</returns>
 		public virtual short ReadShort(uint address)
 		{
-			return _endianReader.ReadShortAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadShortAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadShortAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -142,7 +138,14 @@ namespace SA3D.Common.IO
 		/// <returns>The unsigned short that was read.</returns>
 		public virtual ushort ReadUShort(uint address)
 		{
-			return _endianReader.ReadUShortAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadUShortAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadUShortAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -152,7 +155,14 @@ namespace SA3D.Common.IO
 		/// <returns>The signed integer that was read.</returns>
 		public virtual int ReadInt(uint address)
 		{
-			return _endianReader.ReadIntAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadIntAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadIntAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -162,7 +172,14 @@ namespace SA3D.Common.IO
 		/// <returns>The unsigned integer that was read.</returns>
 		public virtual uint ReadUInt(uint address)
 		{
-			return _endianReader.ReadUIntAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadUIntAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadUIntAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -172,7 +189,14 @@ namespace SA3D.Common.IO
 		/// <returns>The signed long that was read.</returns>
 		public virtual long ReadLong(uint address)
 		{
-			return _endianReader.ReadLongAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadLongAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadLongAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -182,7 +206,14 @@ namespace SA3D.Common.IO
 		/// <returns>The unsigned long that was read.</returns>
 		public virtual ulong ReadULong(uint address)
 		{
-			return _endianReader.ReadULongAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadULongAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadULongAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -192,7 +223,14 @@ namespace SA3D.Common.IO
 		/// <returns>The float that was read.</returns>
 		public virtual float ReadFloat(uint address)
 		{
-			return _endianReader.ReadFloatAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadFloatAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadFloatAtOffset((int)address);
+			}
 		}
 
 		/// <summary>
@@ -202,7 +240,14 @@ namespace SA3D.Common.IO
 		/// <returns>The double that was read.</returns>
 		public virtual double ReadDouble(uint address)
 		{
-			return _endianReader.ReadDoubleAtOffset((int)address);
+			if(BigEndian)
+			{
+				return _bigEndianReader.ReadDoubleAtOffset((int)address);
+			}
+			else
+			{
+				return _littleEndianReader.ReadDoubleAtOffset((int)address);
+			}
 		}
 
 

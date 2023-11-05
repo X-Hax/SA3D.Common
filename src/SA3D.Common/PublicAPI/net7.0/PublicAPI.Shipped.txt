@@ -1,5 +1,4 @@
 ﻿#nullable enable
-abstract SA3D.Common.IO.EndianStack.OnEndianUpdate() -> void
 abstract SA3D.Common.Lookup.BaseLUT.AddEntry(uint address, object! value) -> void
 override SA3D.Common.Converters.BAMS16Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
@@ -38,8 +37,6 @@ override SA3D.Common.Converters.Vector3Converter.CanConvertFrom(System.Component
 override SA3D.Common.Converters.Vector3Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
 override SA3D.Common.Converters.Vector3Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
 override SA3D.Common.Converters.Vector3Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
-override SA3D.Common.IO.EndianStackReader.OnEndianUpdate() -> void
-override SA3D.Common.IO.EndianStackWriter.OnEndianUpdate() -> void
 override SA3D.Common.Lookup.LabeledArray<T>.ToString() -> string!
 override SA3D.Common.Lookup.LabeledReadOnlyArray<T>.ToString() -> string!
 SA3D.Common.CollectionExtensions

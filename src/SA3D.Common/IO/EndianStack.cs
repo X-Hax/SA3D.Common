@@ -36,7 +36,6 @@ namespace SA3D.Common.IO
 		{
 			_endianStack.Push(bigEndian);
 			BigEndian = bigEndian;
-			OnEndianUpdate();
 		}
 
 		/// <summary>
@@ -46,12 +45,6 @@ namespace SA3D.Common.IO
 		{
 			_endianStack.Pop();
 			BigEndian = _endianStack.Peek();
-			OnEndianUpdate();
 		}
-
-		/// <summary>
-		/// Gets called when the endiannes updates.
-		/// </summary>
-		protected abstract void OnEndianUpdate();
 	}
 }

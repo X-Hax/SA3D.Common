@@ -1,8 +1,7 @@
-﻿using Reloaded.Memory.Interfaces;
-using Reloaded.Memory.Streams;
+﻿using Reloaded.Memory.Streams;
+using Reloaded.Memory.Utilities;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -17,7 +16,7 @@ namespace SA3D.Common.IO
 		#region Private Fields
 
 		private readonly byte[] _endianWriterBuffer;
-		private IEndianWriter _endianWriter;
+		private readonly Pinnable<byte> _endianWriterBufferPin;
 		private readonly BigEndianWriter _bigEndianWriter;
 		private readonly LittleEndianWriter _littleEndianWriter;
 
@@ -59,24 +58,13 @@ namespace SA3D.Common.IO
 			ImageBase = imageBase;
 
 			_endianWriterBuffer = new byte[8];
+			_endianWriterBufferPin = new Pinnable<byte>(_endianWriterBuffer);
+			_bigEndianWriter = new(_endianWriterBufferPin.Pointer);
+			_littleEndianWriter = new(_endianWriterBufferPin.Pointer);
 
-			fixed(byte* source = _endianWriterBuffer)
-			{
-				_bigEndianWriter = new(source);
-				_littleEndianWriter = new(source);
-			}
-
-			OnEndianUpdate();
 		}
 
 		#region Methods
-
-		/// <inheritdoc/>
-		[MemberNotNull(nameof(_endianWriter))]
-		protected override void OnEndianUpdate()
-		{
-			_endianWriter = BigEndian ? _bigEndianWriter : _littleEndianWriter;
-		}
 
 		/// <summary>
 		/// Sets the stream position to the beginning of the stream.
@@ -145,7 +133,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The signed short to write.</param>
 		public virtual void WriteShort(short data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 2);
 		}
 
@@ -155,7 +151,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The unsigned short to write.</param>
 		public virtual void WriteUShort(ushort data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 2);
 		}
 
@@ -165,7 +169,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The signed integer to write.</param>
 		public virtual void WriteInt(int data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 4);
 		}
 
@@ -175,7 +187,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The unsigned integer to write.</param>
 		public virtual void WriteUInt(uint data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 4);
 		}
 
@@ -185,7 +205,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The signed long to write.</param>
 		public virtual void WriteLong(long data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 8);
 		}
 
@@ -195,7 +223,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The unsigned long to write.</param>
 		public virtual void WriteULong(ulong data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 8);
 		}
 
@@ -205,7 +241,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The float to write.</param>
 		public virtual void WriteFloat(float data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 4);
 		}
 
@@ -215,7 +259,15 @@ namespace SA3D.Common.IO
 		/// <param name="data">The double to write.</param>
 		public virtual void WriteDouble(double data)
 		{
-			_endianWriter.WriteAtOffset(data, 0);
+			if(BigEndian)
+			{
+				_bigEndianWriter.WriteAtOffset(data, 0);
+			}
+			else
+			{
+				_littleEndianWriter.WriteAtOffset(data, 0);
+			}
+
 			Stream.Write(_endianWriterBuffer, 0, 8);
 		}
 
