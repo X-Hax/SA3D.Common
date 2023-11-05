@@ -23,9 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Reloaded.Memory" Version="9.1.0">
-		  <PrivateAssets>all</PrivateAssets>
-		</PackageReference>
+		<PackageReference Include="Reloaded.Memory" Version="9.1.0"/>
 	</ItemGroup>
 
 </Project>
