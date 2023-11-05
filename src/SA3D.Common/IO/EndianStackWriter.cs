@@ -97,7 +97,8 @@ namespace SA3D.Common.IO
 		[MemberNotNull(nameof(_endianWriter))]
 		public void PopEndian()
 		{
-			BigEndian = _endianStack.Pop();
+			_endianStack.Pop();
+			BigEndian = _endianStack.Peek();
 			_endianWriter = BigEndian ? _bigEndianWriter : _littleEndianWriter;
 		}
 
