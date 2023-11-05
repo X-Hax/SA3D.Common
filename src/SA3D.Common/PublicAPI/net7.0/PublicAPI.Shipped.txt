@@ -234,8 +234,10 @@ SA3D.Common.IO.EndianStack.EndianStack(bool bigEndian) -> void
 SA3D.Common.IO.EndianStack.PopEndian() -> void
 SA3D.Common.IO.EndianStack.PushBigEndian(bool bigEndian) -> void
 SA3D.Common.IO.EndianStackReader
+SA3D.Common.IO.EndianStackReader.~EndianStackReader() -> void
 SA3D.Common.IO.EndianStackReader.CheckBigEndian16(uint address) -> bool
 SA3D.Common.IO.EndianStackReader.CheckBigEndian32(uint address) -> bool
+SA3D.Common.IO.EndianStackReader.Dispose() -> void
 SA3D.Common.IO.EndianStackReader.EndianStackReader(byte[]! source, uint imageBase = 0, bool bigEndian = false) -> void
 SA3D.Common.IO.EndianStackReader.ImageBase.get -> uint
 SA3D.Common.IO.EndianStackReader.ImageBase.set -> void
