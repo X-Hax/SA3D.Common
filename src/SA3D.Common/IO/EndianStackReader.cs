@@ -55,7 +55,7 @@ namespace SA3D.Common.IO
 		public unsafe EndianStackReader(byte[] source, uint imageBase = 0, bool bigEndian = false) : base(bigEndian)
 		{
 			_source = source;
-			_sourceHandle = GCHandle.Alloc(_source);
+			_sourceHandle = GCHandle.Alloc(_source, GCHandleType.Pinned);
 			ImageBase = imageBase;
 
 			_bigEndianReader = new((byte*)_sourceHandle.AddrOfPinnedObject());
