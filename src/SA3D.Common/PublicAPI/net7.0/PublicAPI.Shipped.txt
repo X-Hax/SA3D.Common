@@ -229,7 +229,6 @@ SA3D.Common.Ini.IniCollectionSettings.ValueConverter.set -> void
 SA3D.Common.Ini.IniFile
 SA3D.Common.Ini.IniSerializer
 SA3D.Common.IO.EndianStackReader
-SA3D.Common.IO.EndianStackReader.BigEndian.get -> bool
 SA3D.Common.IO.EndianStackReader.CheckBigEndian16(uint address) -> bool
 SA3D.Common.IO.EndianStackReader.CheckBigEndian32(uint address) -> bool
 SA3D.Common.IO.EndianStackReader.EndianStackReader(byte[]! source, uint imageBase = 0, bool bigEndian = false) -> void
@@ -237,8 +236,6 @@ SA3D.Common.IO.EndianStackReader.ImageBase.get -> uint
 SA3D.Common.IO.EndianStackReader.ImageBase.set -> void
 SA3D.Common.IO.EndianStackReader.Length.get -> int
 SA3D.Common.IO.EndianStackReader.LongLength.get -> long
-SA3D.Common.IO.EndianStackReader.PopEndian() -> void
-SA3D.Common.IO.EndianStackReader.PushBigEndian(bool bigEndian) -> void
 SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address) -> string!
 SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, out uint byteLength) -> string!
 SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, System.Text.Encoding! encoding) -> string!
@@ -255,14 +252,11 @@ SA3D.Common.IO.EndianStackReader.TryReadPointer(uint address, out uint pointer) 
 SA3D.Common.IO.EndianStackWriter
 SA3D.Common.IO.EndianStackWriter.Align(uint size) -> void
 SA3D.Common.IO.EndianStackWriter.AlignFrom(uint size, uint start) -> void
-SA3D.Common.IO.EndianStackWriter.BigEndian.get -> bool
 SA3D.Common.IO.EndianStackWriter.EndianStackWriter(System.IO.Stream! stream, uint imageBase = 0, bool bigEndian = false) -> void
 SA3D.Common.IO.EndianStackWriter.ImageBase.get -> uint
 SA3D.Common.IO.EndianStackWriter.ImageBase.set -> void
 SA3D.Common.IO.EndianStackWriter.PointerPosition.get -> uint
-SA3D.Common.IO.EndianStackWriter.PopEndian() -> void
 SA3D.Common.IO.EndianStackWriter.Position.get -> uint
-SA3D.Common.IO.EndianStackWriter.PushBigEndian(bool bigEndian) -> void
 SA3D.Common.IO.EndianStackWriter.Seek(uint offset, System.IO.SeekOrigin origin) -> void
 SA3D.Common.IO.EndianStackWriter.SeekEnd() -> void
 SA3D.Common.IO.EndianStackWriter.SeekStart() -> void

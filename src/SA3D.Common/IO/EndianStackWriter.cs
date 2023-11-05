@@ -1,7 +1,6 @@
 ﻿using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Streams;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -13,11 +12,10 @@ namespace SA3D.Common.IO
 	/// Allows for interchangeably writing little and big endian to a stream. The changed endian gets stored on a stack and can be popped later.
 	/// </summary>
 	[DebuggerNonUserCode]
-	public class EndianStackWriter
+	public class EndianStackWriter : EndianStack
 	{
 		#region Private Fields
 
-		private readonly Stack<bool> _endianStack;
 		private readonly byte[] _endianWriterBuffer;
 		private IEndianWriter _endianWriter;
 		private readonly BigEndianWriter _bigEndianWriter;
@@ -47,11 +45,6 @@ namespace SA3D.Common.IO
 		/// </summary>
 		public uint PointerPosition => Position + ImageBase;
 
-		/// <summary>
-		/// Whether bytes should be read in big endian. Set with <see cref="PushBigEndian(bool)"/> and freed afterwards with <see cref="PopEndian"/>.
-		/// </summary>
-		public bool BigEndian { get; private set; }
-
 		#endregion
 
 		/// <summary>
@@ -60,12 +53,11 @@ namespace SA3D.Common.IO
 		/// <param name="stream">The stream to write to.</param>
 		/// <param name="imageBase">The pointer offset to use.</param>
 		/// <param name="bigEndian">Whether to start with big endian.</param>
-		public unsafe EndianStackWriter(Stream stream, uint imageBase = 0, bool bigEndian = false)
+		public unsafe EndianStackWriter(Stream stream, uint imageBase = 0, bool bigEndian = false) : base(bigEndian)
 		{
 			Stream = stream;
 			ImageBase = imageBase;
 
-			_endianStack = new();
 			_endianWriterBuffer = new byte[8];
 
 			fixed(byte* source = _endianWriterBuffer)
@@ -74,34 +66,17 @@ namespace SA3D.Common.IO
 				_littleEndianWriter = new(source);
 			}
 
-			PushBigEndian(bigEndian);
+			OnEndianUpdate();
 		}
 
 		#region Methods
 
-		/// <summary>
-		/// Sets the endian. Has to be freed afterwards using <see cref="PopEndian"/>.
-		/// </summary>
-		/// <param name="bigEndian">New bigendian mode.</param>
+		/// <inheritdoc/>
 		[MemberNotNull(nameof(_endianWriter))]
-		public void PushBigEndian(bool bigEndian)
+		protected override void OnEndianUpdate()
 		{
-			_endianStack.Push(bigEndian);
-			BigEndian = bigEndian;
 			_endianWriter = BigEndian ? _bigEndianWriter : _littleEndianWriter;
 		}
-
-		/// <summary>
-		/// Pops the last endian set via <see cref="PushBigEndian(bool)"/>
-		/// </summary>
-		[MemberNotNull(nameof(_endianWriter))]
-		public void PopEndian()
-		{
-			_endianStack.Pop();
-			BigEndian = _endianStack.Peek();
-			_endianWriter = BigEndian ? _bigEndianWriter : _littleEndianWriter;
-		}
-
 
 		/// <summary>
 		/// Sets the stream position to the beginning of the stream.

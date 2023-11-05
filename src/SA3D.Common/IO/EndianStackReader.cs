@@ -1,7 +1,6 @@
 ﻿using Reloaded.Memory.Interfaces;
 using Reloaded.Memory.Streams;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -12,12 +11,11 @@ namespace SA3D.Common.IO
 	/// Allows for interchangeably reading little and big endian from an array. The changed endian gets stored on a stack and can be popped later.
 	/// </summary>
 	[DebuggerNonUserCode]
-	public class EndianStackReader
+	public class EndianStackReader : EndianStack
 	{
 		#region Private fields
 
 		private readonly byte[] _source;
-		private readonly Stack<bool> _endianStack;
 		private IEndianReader _endianReader;
 		private readonly BigEndianReader _bigEndianReader;
 		private readonly LittleEndianReader _littleEndianReader;
@@ -30,12 +28,6 @@ namespace SA3D.Common.IO
 		/// Readonly access to the Source
 		/// </summary>
 		public ReadOnlySpan<byte> Source => new(_source);
-
-		/// <summary>
-		/// Whether bytes should be read in big endian. 
-		/// <br/> Set with <see cref="PushBigEndian(bool)"/> and free afterwards with <see cref="PopEndian"/>.
-		/// </summary>
-		public bool BigEndian { get; private set; }
 
 		/// <summary>
 		/// Imagebase (pointer offset) to use when reading pointers with <see cref="ReadPointer(uint)"/> or <see cref="TryReadPointer(uint, out uint)"/>
@@ -60,7 +52,7 @@ namespace SA3D.Common.IO
 		/// <param name="source">Byte source that should be read from.</param>
 		/// <param name="imageBase">The pointer offset to use.</param>
 		/// <param name="bigEndian">Whether to start with big endian.</param>
-		public unsafe EndianStackReader(byte[] source, uint imageBase = 0, bool bigEndian = false)
+		public unsafe EndianStackReader(byte[] source, uint imageBase = 0, bool bigEndian = false) : base(bigEndian)
 		{
 			_source = source;
 			ImageBase = imageBase;
@@ -71,34 +63,17 @@ namespace SA3D.Common.IO
 				_littleEndianReader = new(src);
 			}
 
-			_endianStack = new();
-			PushBigEndian(bigEndian);
+			OnEndianUpdate();
 		}
 
 		#region Methods
 
-		/// <summary>
-		/// Sets an endian. Dont forget to free it afterwards as well using <see cref="PopEndian"/>
-		/// </summary>
-		/// <param name="bigEndian">New bigendian mode</param>
+		/// <inheritdoc/>
 		[MemberNotNull(nameof(_endianReader))]
-		public void PushBigEndian(bool bigEndian)
+		protected override void OnEndianUpdate()
 		{
-			_endianStack.Push(bigEndian);
-			BigEndian = bigEndian;
 			_endianReader = BigEndian ? _bigEndianReader : _littleEndianReader;
 		}
-
-		/// <summary>
-		/// Pops the last endian set via <see cref="PushBigEndian(bool)"/>
-		/// </summary>
-		[MemberNotNull(nameof(_endianReader))]
-		public void PopEndian()
-		{
-			BigEndian = _endianStack.Pop();
-			_endianReader = BigEndian ? _bigEndianReader : _littleEndianReader;
-		}
-
 
 		/// <summary>
 		/// Returns the byte at a specific index from the source.
