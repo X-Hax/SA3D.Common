@@ -163,7 +163,7 @@ namespace SA3D.Common.Ini
 						.Replace("\r", @"\r")
 						.Replace(";", @"\;"));
 
-					writer.Write(']');
+					writer.WriteLine(']');
 				}
 
 				foreach(IniNameValue value in group.Value)
@@ -183,7 +183,7 @@ namespace SA3D.Common.Ini
 					writer.Write(escapedkey);
 					writer.Write('=');
 
-					writer.Write(value.Value
+					writer.WriteLine(value.Value
 						.Replace(@"\", @"\\")
 						.Replace("\n", @"\n")
 						.Replace("\r", @"\r")
