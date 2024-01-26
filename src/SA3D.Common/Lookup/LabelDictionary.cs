@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SA3D.Common.Lookup
 {
 	/// <summary>
 	/// A dictionary for mapping labels to addresses.
 	/// </summary>
-	public class LabelDictionary : PointerDictionary<string>
+	public partial class LabelDictionary : PointerDictionary<string>
 	{
+		[GeneratedRegex("(?![A-Za-z_]).")]
+		private static partial Regex IllegalCharactersCheck();
+
 		/// <summary>
 		/// Creates a new empty label dictionary.
 		/// </summary>
@@ -33,6 +37,8 @@ namespace SA3D.Common.Lookup
 		/// <exception cref="ArgumentException"/>
 		public string AddSafe(uint address, string label)
 		{
+			label = IllegalCharactersCheck().Replace(label, "_");
+
 			if(_toAddr.ContainsKey(label))
 			{
 				int append = 1;
