@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Reloaded.Memory" Version="9.2.0" />
+		<PackageReference Include="Reloaded.Memory" Version="9.3.2" />
 	</ItemGroup>
 
 </Project>
