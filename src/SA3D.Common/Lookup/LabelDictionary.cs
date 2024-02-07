@@ -9,7 +9,7 @@ namespace SA3D.Common.Lookup
 	/// </summary>
 	public partial class LabelDictionary : PointerDictionary<string>
 	{
-		[GeneratedRegex("(?![A-Za-z_]).")]
+		[GeneratedRegex("(?![0-9A-Za-z_]).")]
 		private static partial Regex IllegalCharactersCheck();
 
 		/// <summary>
