@@ -392,7 +392,7 @@ namespace SA3D.Common.IO
 		public string ReadStringLimited(uint address, Encoding encoding, int limit, out uint byteLength)
 		{
 			byteLength = 0;
-			while(byteLength <= limit && _source[address + byteLength] != 0)
+			while(byteLength < limit && _source[address + byteLength] != 0)
 			{
 				byteLength++;
 			}
