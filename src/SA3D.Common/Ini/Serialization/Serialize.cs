@@ -35,7 +35,7 @@ namespace SA3D.Common.Ini.Serialization
 			{
 				if(collectionSettings.Mode == IniCollectionMode.SingleLine)
 				{
-					List<string> line = new();
+					List<string> line = [];
 					foreach(object item in listValue)
 					{
 						line.Add(item.ConvertToString(collectionSettings.ValueConverter));
@@ -81,7 +81,7 @@ namespace SA3D.Common.Ini.Serialization
 				}
 
 				newgroup += name;
-				ini.Add(newgroup, new());
+				ini.Add(newgroup, []);
 			}
 
 			foreach(MemberInfo member in value.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance))

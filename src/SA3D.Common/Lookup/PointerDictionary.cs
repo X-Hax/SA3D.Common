@@ -18,8 +18,8 @@ namespace SA3D.Common.Lookup
 		/// </summary>
 		public PointerDictionary()
 		{
-			_fromAddr = new();
-			_toAddr = new();
+			_fromAddr = [];
+			_toAddr = [];
 		}
 
 		/// <summary>

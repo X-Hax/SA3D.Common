@@ -18,8 +18,8 @@ namespace SA3D.Common.Ini
 		/// <returns>The converted contents.</returns>
 		public static IniDictionary Read(IEnumerable<string> contents)
 		{
-			IniDictionary result = new();
-			IniGroup current = new();
+			IniDictionary result = [];
+			IniGroup current = [];
 
 			result.Add(string.Empty, current);
 
@@ -66,7 +66,7 @@ namespace SA3D.Common.Ini
 				if(startswithbracket & endbracket != -1)
 				{
 					curgroup = line[1..endbracket];
-					current = new IniGroup();
+					current = [];
 					try
 					{
 						result.Add(curgroup, current);
@@ -231,7 +231,7 @@ namespace SA3D.Common.Ini
 		/// <returns></returns>
 		public static IniDictionary Combine(IniDictionary dictA, IniDictionary dictB)
 		{
-			IniDictionary result = new();
+			IniDictionary result = [];
 
 			foreach(IniNameGroup group in dictA)
 			{

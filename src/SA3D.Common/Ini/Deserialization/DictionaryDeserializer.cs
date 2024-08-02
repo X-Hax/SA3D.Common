@@ -18,7 +18,7 @@ namespace SA3D.Common.Ini.Deserialization
 				throw new InvalidOperationException("Cannot deserialize IDictionary<TKey, TValue> with IniCollectionMode.SingleLine!");
 			}
 
-			List<string> items = new();
+			List<string> items = [];
 
 			if(!valuetype.IsComplexType(collectionSettings.ValueConverter))
 			{

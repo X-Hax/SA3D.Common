@@ -13,7 +13,7 @@ namespace SA3D.Common.Ini.Deserialization
 		internal static object? DeserializeInternal(Type type, IniDictionary ini, IniCollectionSettings CollectionSettings, TypeConverter? Converter)
 		{
 			object? result;
-			IniDictionary iniClone = new();
+			IniDictionary iniClone = [];
 			iniClone = IniFile.Combine(iniClone, ini);
 			result = DeserializeInternal("value", type, type.GetDefaultValue(), iniClone, string.Empty, true, CollectionSettings, Converter);
 			return result;

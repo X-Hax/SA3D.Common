@@ -3,7 +3,7 @@
 	<Import Project="../SA3D.ProjectConfigurations/NuGet.Build.props" />
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>SA3D.Common</RootNamespace>
 	</PropertyGroup>
 
@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Reloaded.Memory" Version="9.4.1" />
+		<PackageReference Include="Reloaded.Memory" Version="9.4.2" />
 	</ItemGroup>
 
 </Project>
