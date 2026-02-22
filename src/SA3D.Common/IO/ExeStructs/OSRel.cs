@@ -1,6 +1,8 @@
-﻿namespace SA3D.Common.IO.ExeStructs
+﻿using Amicitia.IO.Binary;
+
+namespace SA3D.Common.IO.ExeStructs
 {
-	internal struct OSRel
+	internal struct OSRel : IBinarySerializable
 	{
 		public const uint StructSize = 8;
 
@@ -15,21 +17,21 @@
 
 		public uint Addend { get; set; }
 
-		public OSRel(ushort offset, byte type, byte section, uint addend)
+
+		public void Read(BinaryObjectReader reader)
 		{
-			Offset = offset;
-			Type = type;
-			Section = section;
-			Addend = addend;
+			Offset = reader.ReadUInt16();
+			Type = reader.ReadByte();
+			Section = reader.ReadByte();
+			Addend = reader.ReadUInt32();
 		}
 
-		public static OSRel Read(EndianStackReader data, uint address)
+		public readonly void Write(BinaryObjectWriter writer)
 		{
-			return new(
-				data.ReadUShort(address),
-				data[address + 2],
-				data[address + 3],
-				data.ReadUInt(address + 4));
+			writer.WriteUInt16(Offset);
+			writer.WriteByte(Type);
+			writer.WriteByte(Section);
+			writer.WriteUInt32(Addend);
 		}
 	}
 }

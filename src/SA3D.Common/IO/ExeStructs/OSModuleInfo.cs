@@ -1,6 +1,8 @@
-﻿namespace SA3D.Common.IO.ExeStructs
+﻿using Amicitia.IO.Binary;
+
+namespace SA3D.Common.IO.ExeStructs
 {
-	internal struct OSModuleInfo
+	internal struct OSModuleInfo : IBinarySerializable
 	{
 		public const uint StructSize = 0x20;
 
@@ -39,27 +41,27 @@
 		/// </summary>
 		public uint Version { get; set; }
 
-		public OSModuleInfo(uint id, OSModuleLink link, uint numSections, uint sectionInfoOffset, uint nameOffset, uint nameSize, uint version)
+
+		public void Read(BinaryObjectReader reader)
 		{
-			ID = id;
-			Link = link;
-			NumSections = numSections;
-			SectionInfoOffset = sectionInfoOffset;
-			NameOffset = nameOffset;
-			NameSize = nameSize;
-			Version = version;
+			ID = reader.ReadUInt32();
+			Link = reader.Read<OSModuleLink>();
+			NumSections = reader.ReadUInt32();
+			SectionInfoOffset = reader.ReadUInt32();
+			NameOffset = reader.ReadUInt32();
+			NameSize = reader.ReadUInt32();
+			Version = reader.ReadUInt32();
 		}
 
-		public static OSModuleInfo Read(EndianStackReader data, uint address)
+		public readonly void Write(BinaryObjectWriter writer)
 		{
-			return new(
-				data.ReadUInt(address),
-				OSModuleLink.Read(data, address + 4),
-				data.ReadUInt(address + 0xC),
-				data.ReadUInt(address + 0x10),
-				data.ReadUInt(address + 0x14),
-				data.ReadUInt(address + 0x18),
-				data.ReadUInt(address + 0x1C));
+			writer.WriteUInt32(ID);
+			writer.WriteObject(Link);
+			writer.WriteUInt32(NumSections);
+			writer.WriteUInt32(SectionInfoOffset);
+			writer.WriteUInt32(NameOffset);
+			writer.WriteUInt32(NameSize);
+			writer.WriteUInt32(Version);
 		}
 	}
 }

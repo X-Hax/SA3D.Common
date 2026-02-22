@@ -1,23 +1,25 @@
-﻿namespace SA3D.Common.IO.ExeStructs
+﻿using Amicitia.IO.Binary;
+
+namespace SA3D.Common.IO.ExeStructs
 {
-	internal struct OSModuleLink
+	internal struct OSModuleLink : IBinarySerializable
 	{
 		public const uint StructSize = 8;
 
 		public uint Next { get; set; }
 		public uint Prev { get; set; }
 
-		public OSModuleLink(uint next, uint prev)
+
+		public void Read(BinaryObjectReader reader)
 		{
-			Next = next;
-			Prev = prev;
+			Next = reader.ReadUInt32();
+			Prev = reader.ReadUInt32();
 		}
 
-		public static OSModuleLink Read(EndianStackReader data, uint address)
+		public readonly void Write(BinaryObjectWriter writer)
 		{
-			return new(
-				data.ReadUInt(address),
-				data.ReadUInt(address + 4));
+			writer.WriteUInt32(Next);
+			writer.WriteUInt32(Prev);
 		}
 	}
 }

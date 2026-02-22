@@ -1,6 +1,8 @@
-﻿namespace SA3D.Common.IO.ExeStructs
+﻿using Amicitia.IO.Binary;
+
+namespace SA3D.Common.IO.ExeStructs
 {
-	internal struct OSModuleHeader
+	internal struct OSModuleHeader : IBinarySerializable
 	{
 		public const uint StructSize = 0x48;
 
@@ -73,56 +75,40 @@
 
 		#endregion
 
-		public OSModuleHeader(
-			OSModuleInfo info,
-			uint bssSize,
-			uint relOffset,
-			uint impOffset,
-			uint impSize,
-			byte prologSection,
-			byte epilogSection,
-			byte unresolvedSection,
-			byte padding0,
-			uint prolog,
-			uint epilog,
-			uint unresolved,
-			uint align,
-			uint bssAlign)
+		public void Read(BinaryObjectReader reader)
 		{
-			Info = info;
-			BssSize = bssSize;
-			RelOffset = relOffset;
-			ImpOffset = impOffset;
-			ImpSize = impSize;
-			PrologSection = prologSection;
-			EpilogSection = epilogSection;
-			UnresolvedSection = unresolvedSection;
-			Padding0 = padding0;
-			Prolog = prolog;
-			Epilog = epilog;
-			Unresolved = unresolved;
-			Align = align;
-			BssAlign = bssAlign;
+			Info = reader.ReadObject<OSModuleInfo>();
+			BssSize = reader.ReadUInt32();
+			RelOffset = reader.ReadUInt32();
+			ImpOffset = reader.ReadUInt32();
+			ImpSize = reader.ReadUInt32();
+			PrologSection = reader.ReadByte();
+			EpilogSection = reader.ReadByte();
+			UnresolvedSection = reader.ReadByte();
+			Padding0 = reader.ReadByte();
+			Prolog = reader.ReadUInt32();
+			Epilog = reader.ReadUInt32();
+			Unresolved = reader.ReadUInt32();
+			Align = reader.ReadUInt32();
+			BssAlign = reader.ReadUInt32();
 		}
 
-		public static OSModuleHeader Read(EndianStackReader data, uint address)
+		public readonly void Write(BinaryObjectWriter writer)
 		{
-			return new(
-				OSModuleInfo.Read(data, address),
-				data.ReadUInt(address + 0x20),
-				data.ReadUInt(address + 0x24),
-				data.ReadUInt(address + 0x28),
-				data.ReadUInt(address + 0x2C),
-				data[address + 0x30],
-				data[address + 0x31],
-				data[address + 0x32],
-				data[address + 0x33],
-				data.ReadUInt(address + 0x34),
-				data.ReadUInt(address + 0x38),
-				data.ReadUInt(address + 0x3C),
-				data.ReadUInt(address + 0x40),
-				data.ReadUInt(address + 0x44));
+			writer.WriteObject(Info);
+			writer.WriteUInt32(BssSize);
+			writer.WriteUInt32(RelOffset);
+			writer.WriteUInt32(ImpOffset);
+			writer.WriteUInt32(ImpSize);
+			writer.WriteByte(PrologSection);
+			writer.WriteByte(EpilogSection);
+			writer.WriteByte(UnresolvedSection);
+			writer.WriteByte(Padding0);
+			writer.WriteUInt32(Prolog);
+			writer.WriteUInt32(Epilog);
+			writer.WriteUInt32(Unresolved);
+			writer.WriteUInt32(Align);
+			writer.WriteUInt32(BssAlign);
 		}
-
 	}
 }

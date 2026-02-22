@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Reloaded.Memory" Version="9.4.2" />
+	  <PackageReference Include="Amicitia.IO" Version="1.2.1" />
 	</ItemGroup>
 
 </Project>
