@@ -56,17 +56,6 @@ SA3D.Common.Converters.Vector2Converter
 SA3D.Common.Converters.Vector2Converter.Vector2Converter() -> void
 SA3D.Common.Converters.Vector3Converter
 SA3D.Common.Converters.Vector3Converter.Vector3Converter() -> void
-SA3D.Common.DistinctMap<T>
-SA3D.Common.DistinctMap<T>.DistinctMap(System.Collections.Generic.IList<T>! values, int[]? map) -> void
-SA3D.Common.DistinctMap<T>.GetValue(int absoluteIndex) -> T
-SA3D.Common.DistinctMap<T>.Map.get -> int[]?
-SA3D.Common.DistinctMap<T>.this[int absoluteIndex].get -> int
-SA3D.Common.DistinctMap<T>.this[short absoluteIndex].get -> short
-SA3D.Common.DistinctMap<T>.this[uint absoluteIndex].get -> uint
-SA3D.Common.DistinctMap<T>.this[ushort absoluteIndex].get -> ushort
-SA3D.Common.DistinctMap<T>.ValueArray.get -> T[]!
-SA3D.Common.DistinctMap<T>.Values.get -> System.Collections.Generic.IList<T>!
-SA3D.Common.DistinctMapExtensions
 SA3D.Common.Flag16
 SA3D.Common.Flag16.B0 = 1 -> SA3D.Common.Flag16
 SA3D.Common.Flag16.B1 = 2 -> SA3D.Common.Flag16
@@ -228,52 +217,6 @@ SA3D.Common.Ini.IniCollectionSettings.ValueConverter.get -> System.ComponentMode
 SA3D.Common.Ini.IniCollectionSettings.ValueConverter.set -> void
 SA3D.Common.Ini.IniFile
 SA3D.Common.Ini.IniSerializer
-SA3D.Common.IO.EndianStack
-SA3D.Common.IO.EndianStack.BigEndian.get -> bool
-SA3D.Common.IO.EndianStack.EndianStack(bool bigEndian) -> void
-SA3D.Common.IO.EndianStack.PopEndian() -> void
-SA3D.Common.IO.EndianStack.PushBigEndian(bool bigEndian) -> void
-SA3D.Common.IO.EndianStackReader
-SA3D.Common.IO.EndianStackReader.CheckBigEndian16(uint address) -> bool
-SA3D.Common.IO.EndianStackReader.CheckBigEndian32(uint address) -> bool
-SA3D.Common.IO.EndianStackReader.Dispose() -> void
-SA3D.Common.IO.EndianStackReader.EndianStackReader(byte[]! source, uint imageBase = 0, bool bigEndian = false) -> void
-SA3D.Common.IO.EndianStackReader.ImageBase.get -> uint
-SA3D.Common.IO.EndianStackReader.ImageBase.set -> void
-SA3D.Common.IO.EndianStackReader.Length.get -> int
-SA3D.Common.IO.EndianStackReader.LongLength.get -> long
-SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address) -> string!
-SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, out uint byteLength) -> string!
-SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, System.Text.Encoding! encoding) -> string!
-SA3D.Common.IO.EndianStackReader.ReadNullterminatedString(uint address, System.Text.Encoding! encoding, out uint byteLength) -> string!
-SA3D.Common.IO.EndianStackReader.ReadPointer(uint address) -> uint
-SA3D.Common.IO.EndianStackReader.ReadString(uint address, uint count) -> string!
-SA3D.Common.IO.EndianStackReader.ReadStringLimited(uint address, int limit, out uint byteLength) -> string!
-SA3D.Common.IO.EndianStackReader.ReadStringLimited(uint address, System.Text.Encoding! encoding, int limit, out uint byteLength) -> string!
-SA3D.Common.IO.EndianStackReader.Slice(int address) -> System.ReadOnlySpan<byte>
-SA3D.Common.IO.EndianStackReader.Slice(uint address) -> System.ReadOnlySpan<byte>
-SA3D.Common.IO.EndianStackReader.Slice(uint address, int length) -> System.ReadOnlySpan<byte>
-SA3D.Common.IO.EndianStackReader.Source.get -> System.ReadOnlySpan<byte>
-SA3D.Common.IO.EndianStackReader.TryReadPointer(uint address, out uint pointer) -> bool
-SA3D.Common.IO.EndianStackReader.~EndianStackReader() -> void
-SA3D.Common.IO.EndianStackWriter
-SA3D.Common.IO.EndianStackWriter.Align(uint size) -> void
-SA3D.Common.IO.EndianStackWriter.AlignFrom(uint size, uint start) -> void
-SA3D.Common.IO.EndianStackWriter.EndianStackWriter(System.IO.Stream! stream, uint imageBase = 0, bool bigEndian = false) -> void
-SA3D.Common.IO.EndianStackWriter.ImageBase.get -> uint
-SA3D.Common.IO.EndianStackWriter.ImageBase.set -> void
-SA3D.Common.IO.EndianStackWriter.PointerPosition.get -> uint
-SA3D.Common.IO.EndianStackWriter.Position.get -> uint
-SA3D.Common.IO.EndianStackWriter.Seek(uint offset, System.IO.SeekOrigin origin) -> void
-SA3D.Common.IO.EndianStackWriter.SeekEnd() -> void
-SA3D.Common.IO.EndianStackWriter.SeekStart() -> void
-SA3D.Common.IO.EndianStackWriter.Stream.get -> System.IO.Stream!
-SA3D.Common.IO.EndianStackWriter.WriteString(string! data) -> void
-SA3D.Common.IO.EndianStackWriter.WriteString(string! data, int length) -> void
-SA3D.Common.IO.EndianStackWriter.WriteString(string! data, int length, System.Text.Encoding! encoding) -> void
-SA3D.Common.IO.EndianStackWriter.WriteString(string! data, System.Text.Encoding! encoding) -> void
-SA3D.Common.IO.EndianStackWriter.WriteStringNullterminated(string! data) -> void
-SA3D.Common.IO.EndianStackWriter.WriteStringNullterminated(string! data, System.Text.Encoding! encoding) -> void
 SA3D.Common.IO.ExeHelper
 SA3D.Common.Lookup.BaseLUT
 SA3D.Common.Lookup.BaseLUT.All.get -> SA3D.Common.Lookup.PointerDictionary<object!>!
@@ -432,30 +375,3 @@ static SA3D.Common.StringExtensions.ToCHex(this uint number) -> string!
 static SA3D.Common.StringExtensions.ToCHex(this ulong number) -> string!
 static SA3D.Common.StringExtensions.ToCHex(this ushort number) -> string!
 static SA3D.Common.StringExtensions.ToLongString(this float number) -> string!
-virtual SA3D.Common.IO.EndianStackReader.ReadByte(uint address) -> byte
-virtual SA3D.Common.IO.EndianStackReader.ReadBytes(uint address, int length) -> byte[]!
-virtual SA3D.Common.IO.EndianStackReader.ReadBytes(uint sourceAddress, byte[]! destination, uint destinationAddress, int length) -> void
-virtual SA3D.Common.IO.EndianStackReader.ReadDouble(uint address) -> double
-virtual SA3D.Common.IO.EndianStackReader.ReadFloat(uint address) -> float
-virtual SA3D.Common.IO.EndianStackReader.ReadInt(uint address) -> int
-virtual SA3D.Common.IO.EndianStackReader.ReadLong(uint address) -> long
-virtual SA3D.Common.IO.EndianStackReader.ReadSByte(uint address) -> sbyte
-virtual SA3D.Common.IO.EndianStackReader.ReadShort(uint address) -> short
-virtual SA3D.Common.IO.EndianStackReader.ReadString(uint address, System.Text.Encoding! encoding, uint count) -> string!
-virtual SA3D.Common.IO.EndianStackReader.ReadUInt(uint address) -> uint
-virtual SA3D.Common.IO.EndianStackReader.ReadULong(uint address) -> ulong
-virtual SA3D.Common.IO.EndianStackReader.ReadUShort(uint address) -> ushort
-virtual SA3D.Common.IO.EndianStackReader.Slice(int address, int length) -> System.ReadOnlySpan<byte>
-virtual SA3D.Common.IO.EndianStackReader.this[uint index].get -> byte
-virtual SA3D.Common.IO.EndianStackWriter.Write(System.ReadOnlySpan<byte> data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteByte(byte data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteDouble(double data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteEmpty(uint length) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteFloat(float data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteInt(int data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteLong(long data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteSByte(sbyte data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteShort(short data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteUInt(uint data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteULong(ulong data) -> void
-virtual SA3D.Common.IO.EndianStackWriter.WriteUShort(ushort data) -> void
