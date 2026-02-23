@@ -1,5 +1,4 @@
 ﻿#nullable enable
-abstract SA3D.Common.Lookup.BaseLUT.AddEntry(uint address, object! value) -> void
 override SA3D.Common.Converters.BAMS16Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
 override SA3D.Common.Converters.BAMS16Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
@@ -221,13 +220,6 @@ SA3D.Common.IO.ExeHelper
 SA3D.Common.Lookup.BaseLUT
 SA3D.Common.Lookup.BaseLUT.All.get -> SA3D.Common.Lookup.PointerDictionary<object!>!
 SA3D.Common.Lookup.BaseLUT.BaseLUT() -> void
-SA3D.Common.Lookup.BaseLUT.BaseLUT(System.Collections.Generic.Dictionary<uint, string!>! labels) -> void
-SA3D.Common.Lookup.BaseLUT.GetAddAddress<T>(T? value, System.Func<T!, uint>! write) -> uint
-SA3D.Common.Lookup.BaseLUT.GetAddAddress<T>(T? value, System.Func<uint>! write) -> uint
-SA3D.Common.Lookup.BaseLUT.GetAddLabeledValue<T>(uint address, string! genPrefix, System.Func<T!>! read) -> T!
-SA3D.Common.Lookup.BaseLUT.GetAddLabeledValue<T>(uint address, string! genPrefix, System.Func<uint, T!>! read) -> T!
-SA3D.Common.Lookup.BaseLUT.GetAddValue<T>(uint address, System.Func<T!>! read) -> T!
-SA3D.Common.Lookup.BaseLUT.GetAddValue<T>(uint address, System.Func<uint, T!>! read) -> T!
 SA3D.Common.Lookup.BaseLUT.Labels.get -> SA3D.Common.Lookup.LabelDictionary!
 SA3D.Common.Lookup.ILabel
 SA3D.Common.Lookup.ILabel.Label.get -> string!
@@ -238,10 +230,7 @@ SA3D.Common.Lookup.ILabeledArray<T>.IsLabeledArray(object? value) -> bool
 SA3D.Common.Lookup.ILabeledArray<T>.Length.get -> int
 SA3D.Common.Lookup.ILabeledArray<T>.this[int index].get -> T
 SA3D.Common.Lookup.LabelDictionary
-SA3D.Common.Lookup.LabelDictionary.AddSafe(uint address, string! label) -> string!
-SA3D.Common.Lookup.LabelDictionary.GetGenerateValue(uint address, string! prefix) -> string!
 SA3D.Common.Lookup.LabelDictionary.LabelDictionary() -> void
-SA3D.Common.Lookup.LabelDictionary.LabelDictionary(System.Collections.Generic.Dictionary<uint, string!>! labels) -> void
 SA3D.Common.Lookup.LabeledArray<T>
 SA3D.Common.Lookup.LabeledArray<T>.Array.get -> T[]!
 SA3D.Common.Lookup.LabeledArray<T>.Array.set -> void
@@ -275,19 +264,9 @@ SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Length.get -> int
 SA3D.Common.Lookup.LabeledReadOnlyArray<T>.this[int index].get -> T
 SA3D.Common.Lookup.LookupExtensions
 SA3D.Common.Lookup.PointerDictionary<T>
-SA3D.Common.Lookup.PointerDictionary<T>.Add(uint address, T value) -> void
-SA3D.Common.Lookup.PointerDictionary<T>.GetAddress(T value) -> uint?
-SA3D.Common.Lookup.PointerDictionary<T>.GetDictFrom() -> System.Collections.Generic.Dictionary<uint, T>!
-SA3D.Common.Lookup.PointerDictionary<T>.GetDictTo() -> System.Collections.Generic.Dictionary<T, uint>!
-SA3D.Common.Lookup.PointerDictionary<T>.GetValue(uint address) -> T?
 SA3D.Common.Lookup.PointerDictionary<T>.PointerDictionary() -> void
-SA3D.Common.Lookup.PointerDictionary<T>.TryAdd(uint address, T value) -> bool
-SA3D.Common.Lookup.PointerDictionary<T>.TryGetAddress(T value, out uint result) -> bool
-SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(uint address, out T result) -> bool
 SA3D.Common.MathHelper
 SA3D.Common.RegionMarker<T>
-SA3D.Common.RegionMarker<T>.HasValue(uint from, uint to, T value) -> bool
-SA3D.Common.RegionMarker<T>.MarkRegion(uint from, uint to, T value) -> void
 SA3D.Common.RegionMarker<T>.RegionMarker() -> void
 SA3D.Common.RegionMarker<T>.RegionMarker(T defaultValue) -> void
 SA3D.Common.StringExtensions
@@ -299,10 +278,6 @@ static SA3D.Common.CollectionExtensions.ContentClone<T>(this T[]! input) -> T[]!
 static SA3D.Common.CollectionExtensions.SelectIgnoringNull<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, TResult?>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static SA3D.Common.CollectionExtensions.SelectManyIgnoringNull<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource>! source, System.Func<TSource, System.Collections.Generic.IEnumerable<TResult?>?>! selector) -> System.Collections.Generic.IEnumerable<TResult>!
 static SA3D.Common.CollectionExtensions.StreamReaderAsLineEnumerable(this System.IO.StreamReader! reader) -> System.Collections.Generic.IEnumerable<string!>!
-static SA3D.Common.DistinctMap<T>.CreateDistinctMap(System.Collections.Generic.IList<T>! collection) -> SA3D.Common.DistinctMap<T>!
-static SA3D.Common.DistinctMap<T>.TryCreateDistinctMap(System.Collections.Generic.IList<T>! collection, out SA3D.Common.DistinctMap<T>! map) -> bool
-static SA3D.Common.DistinctMapExtensions.CreateDistinctMap<T>(this System.Collections.Generic.IList<T>! collection) -> SA3D.Common.DistinctMap<T>!
-static SA3D.Common.DistinctMapExtensions.TryCreateDistinctMap<T>(this System.Collections.Generic.IList<T>! collection, out SA3D.Common.DistinctMap<T>! map) -> bool
 static SA3D.Common.Ini.IniCollectionModeExtensions.IndexFromName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! full) -> string?
 static SA3D.Common.Ini.IniCollectionModeExtensions.IndexToName(this SA3D.Common.Ini.IniCollectionMode mode, string! name, string! index) -> string!
 static SA3D.Common.Ini.IniFile.Combine(System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictA, System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>! dictB) -> System.Collections.Generic.Dictionary<string!, System.Collections.Generic.Dictionary<string!, string!>!>!

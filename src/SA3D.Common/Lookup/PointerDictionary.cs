@@ -10,8 +10,8 @@ namespace SA3D.Common.Lookup
 	/// <typeparam name="T">Type of the value to map</typeparam>
 	public class PointerDictionary<T> where T : notnull
 	{
-		private protected readonly Dictionary<uint, T> _fromAddr;
-		private protected readonly Dictionary<T, uint> _toAddr;
+		private protected readonly Dictionary<long, T> _fromAddr;
+		private protected readonly Dictionary<T, long> _toAddr;
 
 		/// <summary>
 		/// Creates a new pointer dictionary
@@ -28,7 +28,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="address">The address of the value to get.</param>
 		/// <returns>The value if successful; <see langword="default"/> if unsuccessful.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public T? GetValue(uint address)
+		public T? GetValue(long address)
 		{
 			if(_fromAddr.TryGetValue(address, out T? value))
 			{
@@ -44,9 +44,9 @@ namespace SA3D.Common.Lookup
 		/// <param name="value">The value of the address to get.</param>
 		/// <returns>The address if successful; <see langword="null"/> if unsuccessful.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public uint? GetAddress(T value)
+		public long? GetAddress(T value)
 		{
-			if(_toAddr.TryGetValue(value, out uint address))
+			if(_toAddr.TryGetValue(value, out long address))
 			{
 				return address;
 			}
@@ -61,7 +61,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="result">When this method returns, contains the value associated with the specified address, if the address is found; otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
 		/// <returns><see langword="true"/> if the <see cref="PointerDictionary{T}"/> contains a value with the specified address, otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public bool TryGetValue(uint address, [MaybeNullWhen(false)] out T result)
+		public bool TryGetValue(long address, [MaybeNullWhen(false)] out T result)
 		{
 			return _fromAddr.TryGetValue(address, out result);
 		}
@@ -73,7 +73,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="result">When this method returns, contains the address associated with the specified value, if the value is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
 		/// <returns><see langword="true"/> if the <see cref="PointerDictionary{T}"/> contains an address with the specified value, otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public bool TryGetAddress(T value, [MaybeNullWhen(false)] out uint result)
+		public bool TryGetAddress(T value, [MaybeNullWhen(false)] out long result)
 		{
 			return _toAddr.TryGetValue(value, out result);
 		}
@@ -84,7 +84,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="address">The address to add.</param>
 		/// <param name="value">The value to add.</param>
 		/// <exception cref="ArgumentException"/>
-		public void Add(uint address, T value)
+		public void Add(long address, T value)
 		{
 			if(!_fromAddr.TryAdd(address, value))
 			{
@@ -104,7 +104,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="address"></param>
 		/// <param name="value"></param>
 		/// <returns><see langword="true"/> if the address/value pair was successfully added to the dictionary; otherwise <see langword="false"/>.</returns>
-		public bool TryAdd(uint address, T value)
+		public bool TryAdd(long address, T value)
 		{
 			if(!_fromAddr.TryAdd(address, value))
 			{
@@ -124,7 +124,7 @@ namespace SA3D.Common.Lookup
 		/// Get a copy of the dictionary mapping values to addresses.
 		/// </summary>
 		/// <returns></returns>
-		public Dictionary<uint, T> GetDictFrom()
+		public Dictionary<long, T> GetDictFrom()
 		{
 			return new(_fromAddr);
 		}
@@ -133,7 +133,7 @@ namespace SA3D.Common.Lookup
 		/// Get a copy of the dictionary mapping addresses to values.
 		/// </summary>
 		/// <returns></returns>
-		public Dictionary<T, uint> GetDictTo()
+		public Dictionary<T, long> GetDictTo()
 		{
 			return new(_toAddr);
 		}

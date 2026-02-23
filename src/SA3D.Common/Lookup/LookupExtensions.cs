@@ -162,6 +162,19 @@ namespace SA3D.Common.Lookup
 			return result != null;
 		}
 
+		/// <summary>
+		/// Utility function for checking whether dictionary is null. Needed for reliable Amicitia.IO serialization
+		/// </summary>
+		/// <param name="pointerDictionary">The dictionary to check for null</param>
+		/// <exception cref="NullReferenceException"></exception>
+		public static void NullReferenceCheck<T>([NotNull] this PointerDictionary<T>? pointerDictionary) where T : notnull
+		{
+			if(pointerDictionary == null)
+			{
+				throw new NullReferenceException("No pointer lookup dictionary!");
+			}
+		}
+
 		#endregion
 
 		#region BaseLUT extensions

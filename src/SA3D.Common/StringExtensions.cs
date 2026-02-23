@@ -10,7 +10,7 @@ namespace SA3D.Common
 	public static class StringExtensions
 	{
 		/// <summary>
-		/// Global random generator for <see cref="GenerateIdentifier"/>
+		/// Global random generator for <see cref="GenerateIdentifier()"/>
 		/// </summary>
 		private static readonly Random _rand = new();
 
@@ -293,6 +293,16 @@ namespace SA3D.Common
 		public static string GenerateIdentifier()
 		{
 			return DateTime.Now.Ticks.ToString("X") + _rand.Next(0, 65536).ToString("X4");
+		}
+
+		/// <summary>
+		/// Generates a unique, random hexadecimal identifier string consisting of the current Tick number and a random number between 0 and 65536.
+		/// </summary>
+		/// <param name="prefix">Prefix to attach to the identifier</param>
+		/// <returns></returns>
+		public static string GenerateIdentifier(this string prefix)
+		{
+			return prefix + GenerateIdentifier();
 		}
 	}
 }

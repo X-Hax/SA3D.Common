@@ -20,9 +20,9 @@ namespace SA3D.Common.Lookup
 		/// <summary>
 		/// Creates a new label dictionary and copies labels from a pre-existing dictionary.
 		/// </summary>
-		public LabelDictionary(Dictionary<uint, string> labels) : base()
+		public LabelDictionary(Dictionary<long, string> labels) : base()
 		{
-			foreach(KeyValuePair<uint, string> label in labels)
+			foreach(KeyValuePair<long, string> label in labels)
 			{
 				Add(label.Key, label.Value);
 			}
@@ -35,7 +35,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="label">The label to add.</param>
 		/// <returns>The label as it was added.</returns>
 		/// <exception cref="ArgumentException"/>
-		public string AddSafe(uint address, string label)
+		public string AddSafe(long address, string label)
 		{
 			label = IllegalCharactersCheck().Replace(label, "_");
 
@@ -55,17 +55,32 @@ namespace SA3D.Common.Lookup
 		}
 
 		/// <summary>
+		/// Returns either the found address, or assembled a custom label for the address
+		/// </summary>
+		/// <param name="address">The lookup address</param>
+		/// <param name="prefix">The prefix to use when creating a custom label</param>
+		/// <returns></returns>
+		public string GetSafe(long address, string prefix)
+		{
+			if(!TryGetValue(address, out string? result))
+			{
+				result = prefix + address.ToString("X8");
+			}
+
+			return result;
+		}
+
+		/// <summary>
 		/// Attempts to get the label for the specified address. If none is found, it will return a hexadecimal representation of the address prefixed with the specified prefix.
 		/// </summary>
 		/// <param name="address">The address to get the label for.</param>
 		/// <param name="prefix">The prefix to add when no label is found.</param>
 		/// <returns>The found or generated label.</returns>
-		public string GetGenerateValue(uint address, string prefix)
+		public string GetGenerateValue(long address, string prefix)
 		{
 			return TryGetValue(address, out string? result)
 				? result
 				: $"{prefix}{address:X8}";
 		}
-
 	}
 }
