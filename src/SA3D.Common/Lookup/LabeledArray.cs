@@ -11,6 +11,9 @@ namespace SA3D.Common.Lookup
 	public class LabeledArray<T> : ILabeledArray<T>
 	{
 		/// <inheritdoc/>
+		public string LabelPrefix { get; } = "array_";
+
+		/// <inheritdoc/>
 		public string Label { get; set; }
 
 		/// <summary>
@@ -56,10 +59,10 @@ namespace SA3D.Common.Lookup
 		}
 
 		/// <summary>
-		/// Creates a new labeled array with an <see cref="string.Empty"/> label and an array.
+		/// Creates a new labeled array with a generated label and an array.
 		/// </summary>
 		/// <param name="array">The array.</param>
-		public LabeledArray(T[] array) : this(string.Empty, array) { }
+		public LabeledArray(T[] array) : this("array_".GenerateIdentifier(), array) { }
 
 		/// <summary>
 		/// Creates a new labeled array with a label and a new array with specified size.
@@ -69,10 +72,10 @@ namespace SA3D.Common.Lookup
 		public LabeledArray(string label, int size) : this(label, new T[size]) { }
 
 		/// <summary>
-		/// Creates a new labeled array with an <see cref="string.Empty"/> label and a new array with specified size.
+		/// Creates a new labeled array with a generated label and a new array with specified size.
 		/// </summary>
 		/// <param name="size">The size of the array.</param>
-		public LabeledArray(int size) : this(string.Empty, size) { }
+		public LabeledArray(int size) : this("array_".GenerateIdentifier(), size) { }
 
 		/// <summary>
 		/// Creates a new labeled array with a label and a new array with specified size.
@@ -82,10 +85,10 @@ namespace SA3D.Common.Lookup
 		public LabeledArray(string label, uint size) : this(label, new T[size]) { }
 
 		/// <summary>
-		/// Creates a new labeled array with an <see cref="string.Empty"/> label and a new array with specified size.
+		/// Creates a new labeled array with a generated label and a new array with specified size.
 		/// </summary>
 		/// <param name="size">The size of the array.</param>
-		public LabeledArray(uint size) : this(string.Empty, size) { }
+		public LabeledArray(uint size) : this("array_".GenerateIdentifier(), size) { }
 
 		#endregion
 

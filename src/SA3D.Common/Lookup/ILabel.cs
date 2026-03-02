@@ -6,6 +6,11 @@
 	public interface ILabel
 	{
 		/// <summary>
+		/// Label prefix for automatic label generation
+		/// </summary>
+		public string LabelPrefix { get; }
+
+		/// <summary>
 		/// Object label
 		/// </summary>
 		public string Label { get; set; }

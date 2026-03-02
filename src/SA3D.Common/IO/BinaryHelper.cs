@@ -13,6 +13,24 @@ namespace SA3D.Common.IO
 	public static class BinaryHelper
 	{
 		/// <summary>
+		/// Gets the current pointer address
+		/// </summary>
+		/// <param name="reader">The reader to get the pointer address from</param>
+		public static long GetPointerPosition(this BinaryObjectReader reader)
+		{
+			return reader.OffsetHandler.CalculateOffset(reader.Position);
+		}
+
+		/// <summary>
+		/// Gets the current pointer address
+		/// </summary>
+		/// <param name="writer">The writer to get the pointer address from</param>
+		public static long GetPointerPosition(this BinaryObjectWriter writer)
+		{
+			return writer.OffsetHandler.CalculateOffset(writer.Position);
+		}
+
+		/// <summary>
 		/// Seek from <see cref="SeekOrigin.Begin"/>
 		/// </summary>
 		/// <param name="reader">The reader to seek for</param>
@@ -107,6 +125,7 @@ namespace SA3D.Common.IO
 			writer.WriteOffset(alignment, instance, instance, (w, o) => action(), priority);
 		}
 
+
 		/// <summary>
 		/// Reads a string at the the offset of the current position
 		/// </summary>
@@ -139,6 +158,22 @@ namespace SA3D.Common.IO
 		}
 
 
+		internal static void ReadObjectArray<T>(this BinaryObjectReader reader, T[] output) where T : IBinarySerializable, new()
+		{
+			for(int i = 0; i < output.Length; i++)
+			{
+				output[i] = reader.ReadObject<T>();
+			}
+		}
+
+		internal static void ReadObjectArray<T, TContext>(this BinaryObjectReader reader, TContext context, T[] output) where T : IBinarySerializable<TContext>, new()
+		{
+			for(int i = 0; i < output.Length; i++)
+			{
+				output[i] = reader.ReadObject<T, TContext>(context);
+			}
+		}
+
 		/// <summary>
 		/// Reads an array of objects at the current location
 		/// </summary>
@@ -148,11 +183,7 @@ namespace SA3D.Common.IO
 		public static T[] ReadObjectArray<T>(this BinaryObjectReader reader, int count) where T : IBinarySerializable, new()
 		{
 			T[] result = new T[count];
-			for(int i = 0; i < count; i++)
-			{
-				result[i] = reader.ReadObject<T>();
-			}
-
+			reader.ReadObjectArray(result);
 			return result;
 		}
 
@@ -164,58 +195,10 @@ namespace SA3D.Common.IO
 		/// <param name="reader">Reader to read from</param>
 		/// <param name="context">Reader context to use</param>
 		/// <param name="count">Number of items in the array to read</param>
-		public static T[] ReadObjectArray<T, TContext>(this BinaryObjectReader reader, TContext context, int count) where T : IBinarySerializable<TContext>, new()
+		public static T[] ReadObjectArray<T, TContext>(this BinaryObjectReader reader, int count, TContext context) where T : IBinarySerializable<TContext>, new()
 		{
 			T[] result = new T[count];
-			for(int i = 0; i < count; i++)
-			{
-				result[i] = reader.ReadObject<T, TContext>(context);
-			}
-
-			return result;
-		}
-
-		/// <summary>
-		/// Reads an array of objects at the offset stored at the current position
-		/// </summary>
-		/// <typeparam name="T">Object type to read</typeparam>
-		/// <param name="reader">Reader to read from</param>
-		/// <param name="count">Number of items in the array to read</param>
-		public static T[] ReadObjectArrayOffset<T>(this BinaryObjectReader reader, int count) where T : IBinarySerializable, new()
-		{
-			T[] result = new T[count];
-
-			reader.ReadOffset(() =>
-			{
-				for(int i = 0; i < count; i++)
-				{
-					result[i] = reader.ReadObject<T>();
-				}
-			});
-
-			return result;
-		}
-
-		/// <summary>
-		/// Reads an array of objects at the offset stored at the current position
-		/// </summary>
-		/// <typeparam name="T">Object type to read</typeparam>
-		/// <typeparam name="TContext">Reader context type</typeparam>
-		/// <param name="reader">Reader to read from</param>
-		/// <param name="context">Reader context to use</param>
-		/// <param name="count">Number of items in the array to read</param>
-		public static T[] ReadObjectArrayOffset<T, TContext>(this BinaryObjectReader reader, TContext context, int count) where T : IBinarySerializable<TContext>, new()
-		{
-			T[] result = new T[count];
-
-			reader.ReadOffset(() =>
-			{
-				for(int i = 0; i < count; i++)
-				{
-					result[i] = reader.ReadObject<T, TContext>(context);
-				}
-			});
-
+			reader.ReadObjectArray(context, result);
 			return result;
 		}
 
@@ -228,16 +211,13 @@ namespace SA3D.Common.IO
 		/// <param name="count">Number of items in the array to read</param>
 		public static T[] ReadObjectArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count) where T : IBinarySerializable, new()
 		{
-			T[] result = new T[count];
-
-			reader.ReadAtOffset(offset, () =>
+			if(count == 0)
 			{
-				for(int i = 0; i < count; i++)
-				{
-					result[i] = reader.ReadObject<T>();
-				}
-			});
+				return [];
+			}
 
+			T[] result = new T[count];
+			reader.ReadAtOffset(offset, () => reader.ReadObjectArray(result));
 			return result;
 		}
 
@@ -247,22 +227,43 @@ namespace SA3D.Common.IO
 		/// <typeparam name="T">Object type to read</typeparam>
 		/// <typeparam name="TContext">Reader context type</typeparam>
 		/// <param name="reader">Reader to read from</param>
-		/// <param name="context">Reader context to use</param>
 		/// <param name="offset">The offset to read at</param>
 		/// <param name="count">Number of items in the array to read</param>
-		public static T[] ReadObjectArrayAtOffset<T, TContext>(this BinaryObjectReader reader, TContext context, long offset, int count) where T : IBinarySerializable<TContext>, new()
+		/// <param name="context">Reader context to use</param>
+		public static T[] ReadObjectArrayAtOffset<T, TContext>(this BinaryObjectReader reader, long offset, int count, TContext context) where T : IBinarySerializable<TContext>, new()
 		{
-			T[] result = new T[count];
-
-			reader.ReadAtOffset(offset, () =>
+			if(count == 0)
 			{
-				for(int i = 0; i < count; i++)
-				{
-					result[i] = reader.ReadObject<T, TContext>(context);
-				}
-			});
+				return [];
+			}
 
+			T[] result = new T[count];
+			reader.ReadAtOffset(offset, () => reader.ReadObjectArray(context, result));
 			return result;
+		}
+
+		/// <summary>
+		/// Reads an array of objects at the offset stored at the current position
+		/// </summary>
+		/// <typeparam name="T">Object type to read</typeparam>
+		/// <param name="reader">Reader to read from</param>
+		/// <param name="count">Number of items in the array to read</param>
+		public static T[] ReadObjectArrayOffset<T>(this BinaryObjectReader reader, int count) where T : IBinarySerializable, new()
+		{
+			return reader.ReadObjectArrayAtOffset<T>(reader.ReadOffsetValue(), count);
+		}
+
+		/// <summary>
+		/// Reads an array of objects at the offset stored at the current position
+		/// </summary>
+		/// <typeparam name="T">Object type to read</typeparam>
+		/// <typeparam name="TContext">Reader context type</typeparam>
+		/// <param name="reader">Reader to read from</param>
+		/// <param name="count">Number of items in the array to read</param>
+		/// <param name="context">Reader context to use</param>
+		public static T[] ReadObjectArrayOffset<T, TContext>(this BinaryObjectReader reader, int count, TContext context) where T : IBinarySerializable<TContext>, new()
+		{
+			return reader.ReadObjectArrayAtOffset<T, TContext>(reader.ReadOffsetValue(), count, context);
 		}
 
 
@@ -288,7 +289,7 @@ namespace SA3D.Common.IO
 		/// <param name="writer">Writer to write to</param>
 		/// <param name="context">Writer context to use</param>
 		/// <param name="items">Items to write</param>
-		public static void WriteObjectArray<T, TContext>(this BinaryObjectWriter writer, TContext context, IEnumerable<T> items) where T : IBinarySerializable<TContext>
+		public static void WriteObjectArray<T, TContext>(this BinaryObjectWriter writer, IEnumerable<T> items, TContext context) where T : IBinarySerializable<TContext>
 		{
 			foreach(T item in items)
 			{
@@ -304,13 +305,7 @@ namespace SA3D.Common.IO
 		/// <param name="items">Items to write</param>
 		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, IEnumerable<T> items) where T : IBinarySerializable
 		{
-			writer.WriteOffset(() =>
-			{
-				foreach(T item in items)
-				{
-					writer.WriteObject(item);
-				}
-			});
+			writer.WriteOffset(items, () => writer.WriteObjectArray(items));
 		}
 
 		/// <summary>
@@ -321,15 +316,10 @@ namespace SA3D.Common.IO
 		/// <param name="writer">Writer to write to</param>
 		/// <param name="context">Writer context to use</param>
 		/// <param name="items">Items to write</param>
-		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, TContext context, IEnumerable<T> items) where T : IBinarySerializable<TContext>
+		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, IEnumerable<T> items, TContext context) where T : IBinarySerializable<TContext>
 		{
-			writer.WriteOffset(() =>
-			{
-				foreach(T item in items)
-				{
-					writer.WriteObject(item, context);
-				}
-			});
+			writer.WriteOffset(items, () => writer.WriteObjectArray(items, context));
 		}
+
 	}
 }
