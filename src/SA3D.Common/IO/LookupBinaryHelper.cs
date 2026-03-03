@@ -39,6 +39,7 @@ namespace SA3D.Common.IO
 			return result;
 		}
 
+		#region Read unmanaged array
 
 		/// <summary>
 		/// 
@@ -46,26 +47,12 @@ namespace SA3D.Common.IO
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
 		/// <param name="offset"></param>
+		/// <param name="count"></param>
 		/// <param name="lut"></param>
 		/// <returns></returns>
-		public static T? ReadObjectAtOffset<T>(this BinaryObjectReader reader, long offset, BaseLUT lut) where T : class, IBinarySerializable, new()
+		public static T[]? ReadArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, BaseLUT lut) where T : unmanaged
 		{
-			return ReadLUTItemAtOffset(reader, offset, lut, null, reader.ReadObject<T>);
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="TContext"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="offset"></param>
-		/// <param name="context"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T? ReadObjectAtOffset<T, TContext>(this BinaryObjectReader reader, long offset, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>, new()
-		{
-			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadObject<T, TContext>(context));
+			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadArray<T>(count));
 		}
 
 		/// <summary>
@@ -73,27 +60,13 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
+		/// <param name="count"></param>
 		/// <param name="lut"></param>
 		/// <returns></returns>
-		public static T? ReadObjectOffset<T>(this BinaryObjectReader reader, BaseLUT lut) where T : class, IBinarySerializable, new()
+		public static T[]? ReadArrayOffset<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : unmanaged
 		{
 			long offset = reader.ReadOffsetValue();
-			return reader.ReadObjectAtOffset<T>(offset, lut);
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="TContext"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="context"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T? ReadObjectOffset<T, TContext>(this BinaryObjectReader reader, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>, new()
-		{
-			long offset = reader.ReadOffsetValue();
-			return reader.ReadObjectAtOffset<T, TContext>(offset, context, lut);
+			return reader.ReadArrayAtOffset<T>(offset, count, lut)!;
 		}
 
 		/// <summary>
@@ -101,27 +74,13 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
+		/// <param name="count"></param>
 		/// <param name="lut"></param>
 		/// <returns></returns>
-		public static T ReadObject<T>(this BinaryObjectReader reader, BaseLUT lut) where T : class, IBinarySerializable, new()
+		public static T[] ReadArray<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : unmanaged
 		{
 			long pointer = reader.GetPointerPosition();
-			return reader.ReadObjectAtOffset<T>(pointer, lut)!;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="TContext"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="context"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T ReadObject<T, TContext>(this BinaryObjectReader reader, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>, new()
-		{
-			long pointer = reader.GetPointerPosition();
-			return reader.ReadObjectAtOffset<T, TContext>(pointer, context, lut)!;
+			return reader.ReadArrayAtOffset<T>(pointer, count, lut)!;
 		}
 
 
@@ -175,6 +134,281 @@ namespace SA3D.Common.IO
 			return reader.ReadLabeledArrayAtOffset<T>(pointer, count, labelPrefix, lut)!;
 		}
 
+		#endregion
+
+		#region Read object
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="offset"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T? ReadObjectAtOffset<T>(this BinaryObjectReader reader, long offset, BaseLUT lut) where T : class, IBinarySerializable, new()
+		{
+			return ReadLUTItemAtOffset(reader, offset, lut, null, reader.ReadObject<T>);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="offset"></param>
+		/// <param name="context"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T? ReadObjectAtOffset<T, TContext>(this BinaryObjectReader reader, long offset, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>, new()
+		{
+			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadObject<T, TContext>(context));
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="offset"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T? ReadObjectAtOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, long offset, BaseLUT lut) where T : class
+		{
+			return ReadLUTItemAtOffset(reader, offset, lut, null, () => read(reader));
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T? ReadObjectOffset<T>(this BinaryObjectReader reader, BaseLUT lut) where T : class, IBinarySerializable, new()
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadObjectAtOffset<T>(offset, lut);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="context"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T? ReadObjectOffset<T, TContext>(this BinaryObjectReader reader, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>, new()
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadObjectAtOffset<T, TContext>(offset, context, lut);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T? ReadObjectOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, BaseLUT lut) where T : class
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadObjectAtOffset(read, offset, lut);
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T ReadObject<T>(this BinaryObjectReader reader, BaseLUT lut) where T : class, IBinarySerializable, new()
+		{
+			long pointer = reader.GetPointerPosition();
+			return reader.ReadObjectAtOffset<T>(pointer, lut)!;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="context"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T ReadObject<T, TContext>(this BinaryObjectReader reader, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>, new()
+		{
+			long pointer = reader.GetPointerPosition();
+			return reader.ReadObjectAtOffset<T, TContext>(pointer, context, lut)!;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T ReadObject<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, BaseLUT lut) where T : class
+		{
+			long pointer = reader.GetPointerPosition();
+			return reader.ReadObjectAtOffset(read, pointer, lut)!;
+		}
+
+		#endregion
+
+
+		#region Read Object Array
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[]? ReadObjectArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, BaseLUT lut) where T : IBinarySerializable, new()
+		{
+			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadObjectArray<T>(count));
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <param name="context"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[]? ReadObjectArrayAtOffset<T, TContext>(this BinaryObjectReader reader, long offset, int count, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
+		{
+			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadObjectArray<T, TContext>(count, context));
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[]? ReadObjectArrayAtOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, long offset, int count, BaseLUT lut)
+		{
+			return ReadLUTItemAtOffset<T[]>(reader, offset, lut, null, () => reader.ReadObjectArray<T>(read, count));
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[]? ReadObjectArrayOffset<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : IBinarySerializable, new()
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadObjectArrayAtOffset<T>(offset, count, lut)!;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="count"></param>
+		/// <param name="context"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[]? ReadObjectArrayOffset<T, TContext>(this BinaryObjectReader reader, int count, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadObjectArrayAtOffset<T, TContext>(offset, count, context, lut)!;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[]? ReadObjectArrayOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count, BaseLUT lut)
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadObjectArrayAtOffset<T>(read, offset, count, lut)!;
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[] ReadObjectArray<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : IBinarySerializable, new()
+		{
+			long pointer = reader.GetPointerPosition();
+			return reader.ReadObjectArrayAtOffset<T>(pointer, count, lut)!;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="TContext"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="count"></param>
+		/// <param name="context"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[] ReadObjectArray<T, TContext>(this BinaryObjectReader reader, int count, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
+		{
+			long pointer = reader.GetPointerPosition();
+			return reader.ReadObjectArrayAtOffset<T, TContext>(pointer, count, context, lut)!;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static T[] ReadObjectArray<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count, BaseLUT lut)
+		{
+			long pointer = reader.GetPointerPosition();
+			return reader.ReadObjectArrayAtOffset<T>(read, pointer, count, lut)!;
+		}
+
+		#endregion
+
+		#region Read Labeled Object Array
 
 		/// <summary>
 		/// 
@@ -223,6 +457,28 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <param name="labelPrefix"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static ILabeledArray<T>? ReadLabeledObjectArrayAtOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, long offset, int count, string labelPrefix, BaseLUT lut)
+		{
+			return ReadLUTItemAtOffset<ILabeledArray<T>>(reader, offset, lut, labelPrefix, () =>
+			{
+				LabeledArray<T> result = new(count);
+				reader.ReadObjectArray(read, result.Array);
+				return result;
+			});
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
 		/// <param name="count"></param>
 		/// <param name="labelPrefix"></param>
 		/// <param name="lut"></param>
@@ -249,6 +505,23 @@ namespace SA3D.Common.IO
 			long offset = reader.ReadOffsetValue();
 			return reader.ReadLabeledObjectArrayAtOffset<T, TContext>(offset, count, labelPrefix, context, lut)!;
 		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="count"></param>
+		/// <param name="labelPrefix"></param>
+		/// <param name="lut"></param>
+		/// <returns></returns>
+		public static ILabeledArray<T>? ReadLabeledObjectArrayOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count, string labelPrefix, BaseLUT lut)
+		{
+			long offset = reader.ReadOffsetValue();
+			return reader.ReadLabeledObjectArrayAtOffset(read, offset, count, labelPrefix, lut)!;
+		}
+
 
 		/// <summary>
 		/// 
@@ -282,139 +555,23 @@ namespace SA3D.Common.IO
 			return reader.ReadLabeledObjectArrayAtOffset<T, TContext>(pointer, count, labelPrefix, context, lut)!;
 		}
 
-
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
-		/// <param name="offset"></param>
+		/// <param name="read"></param>
 		/// <param name="count"></param>
+		/// <param name="labelPrefix"></param>
 		/// <param name="lut"></param>
 		/// <returns></returns>
-		public static T[]? ReadObjectArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, BaseLUT lut) where T : IBinarySerializable, new()
-		{
-			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadObjectArray<T>(count));
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="TContext"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <param name="context"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[]? ReadObjectArrayAtOffset<T, TContext>(this BinaryObjectReader reader, long offset, int count, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
-		{
-			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadObjectArray<T, TContext>(count, context));
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="count"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[]? ReadObjectArrayOffset<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : IBinarySerializable, new()
-		{
-			long offset = reader.ReadOffsetValue();
-			return reader.ReadObjectArrayAtOffset<T>(offset, count, lut)!;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="TContext"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="count"></param>
-		/// <param name="context"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[]? ReadObjectArrayOffset<T, TContext>(this BinaryObjectReader reader, int count, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
-		{
-			long offset = reader.ReadOffsetValue();
-			return reader.ReadObjectArrayAtOffset<T, TContext>(offset, count, context, lut)!;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="count"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[] ReadObjectArray<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : IBinarySerializable, new()
+		public static ILabeledArray<T> ReadLabeledObjectArray<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count, string labelPrefix, BaseLUT lut)
 		{
 			long pointer = reader.GetPointerPosition();
-			return reader.ReadObjectArrayAtOffset<T>(pointer, count, lut)!;
+			return reader.ReadLabeledObjectArrayAtOffset<T>(read, pointer, count, labelPrefix, lut)!;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <typeparam name="TContext"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="count"></param>
-		/// <param name="context"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[] ReadObjectArray<T, TContext>(this BinaryObjectReader reader, int count, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
-		{
-			long pointer = reader.GetPointerPosition();
-			return reader.ReadObjectArrayAtOffset<T, TContext>(pointer, count, context, lut)!;
-		}
-
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[]? ReadArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, BaseLUT lut) where T : unmanaged
-		{
-			return ReadLUTItemAtOffset(reader, offset, lut, null, () => reader.ReadArray<T>(count));
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="count"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[]? ReadArrayOffset<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : unmanaged
-		{
-			long offset = reader.ReadOffsetValue();
-			return reader.ReadArrayAtOffset<T>(offset, count, lut)!;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="count"></param>
-		/// <param name="lut"></param>
-		/// <returns></returns>
-		public static T[] ReadArray<T>(this BinaryObjectReader reader, int count, BaseLUT lut) where T : unmanaged
-		{
-			long pointer = reader.GetPointerPosition();
-			return reader.ReadArrayAtOffset<T>(pointer, count, lut)!;
-		}
+		#endregion
 
 
 		/// <summary>

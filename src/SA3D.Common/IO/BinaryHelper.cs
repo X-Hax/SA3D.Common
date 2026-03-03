@@ -12,6 +12,8 @@ namespace SA3D.Common.IO
 	/// </summary>
 	public static class BinaryHelper
 	{
+		#region Offsets / Pointers
+
 		/// <summary>
 		/// Gets the current pointer address
 		/// </summary>
@@ -29,6 +31,10 @@ namespace SA3D.Common.IO
 		{
 			return writer.OffsetHandler.CalculateOffset(writer.Position);
 		}
+
+		#endregion
+
+		#region Seek / Endian
 
 		/// <summary>
 		/// Seek from <see cref="SeekOrigin.Begin"/>
@@ -92,6 +98,44 @@ namespace SA3D.Common.IO
 			return new(writer, endianness);
 		}
 
+		#endregion
+
+		#region Basic Reads
+
+		/// <summary>
+		/// Reads a string at the the offset of the current position
+		/// </summary>
+		/// <param name="reader">The reader to read the string from</param>
+		/// <param name="format">The format to read the string in</param>
+		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
+		/// <returns></returns>
+		public static string? ReadStringOffset(this BinaryObjectReader reader, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
+		{
+			long offset = reader.ReadOffsetValue();
+			if(offset == 0)
+			{
+				return null;
+			}
+
+			using SeekToken token = reader.AtOffset(offset);
+			return reader.ReadString(format, fixedLength);
+		}
+
+		/// <summary>
+		/// Reads a string at the the offset of the current position. Returns an empty string instead of null
+		/// </summary>
+		/// <param name="reader">The reader to read the string from</param>
+		/// <param name="format">The format to read the string in</param>
+		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
+		/// <returns></returns>
+		public static string ReadStringOffsetOrEmpty(this BinaryObjectReader reader, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
+		{
+			return reader.ReadStringOffset(format, fixedLength) ?? string.Empty;
+		}
+
+		#endregion
+
+		#region Basic Writes
 
 		/// <summary>
 		/// Write an offset value
@@ -125,38 +169,9 @@ namespace SA3D.Common.IO
 			writer.WriteOffset(alignment, instance, instance, (w, o) => action(), priority);
 		}
 
+		#endregion
 
-		/// <summary>
-		/// Reads a string at the the offset of the current position
-		/// </summary>
-		/// <param name="reader">The reader to read the string from</param>
-		/// <param name="format">The format to read the string in</param>
-		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
-		/// <returns></returns>
-		public static string? ReadStringOffset(this BinaryObjectReader reader, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
-		{
-			long offset = reader.ReadOffsetValue();
-			if(offset == 0)
-			{
-				return null;
-			}
-
-			using SeekToken token = reader.AtOffset(offset);
-			return reader.ReadString(format, fixedLength);
-		}
-
-		/// <summary>
-		/// Reads a string at the the offset of the current position. Returns an empty string instead of null
-		/// </summary>
-		/// <param name="reader">The reader to read the string from</param>
-		/// <param name="format">The format to read the string in</param>
-		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
-		/// <returns></returns>
-		public static string ReadStringOffsetOrEmpty(this BinaryObjectReader reader, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
-		{
-			return reader.ReadStringOffset(format, fixedLength) ?? string.Empty;
-		}
-
+		#region Read Object Array
 
 		internal static void ReadObjectArray<T>(this BinaryObjectReader reader, T[] output) where T : IBinarySerializable, new()
 		{
@@ -173,6 +188,15 @@ namespace SA3D.Common.IO
 				output[i] = reader.ReadObject<T, TContext>(context);
 			}
 		}
+
+		internal static void ReadObjectArray<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, T[] output)
+		{
+			for(int i = 0; i < output.Length; i++)
+			{
+				output[i] = read(reader);
+			}
+		}
+
 
 		/// <summary>
 		/// Reads an array of objects at the current location
@@ -201,6 +225,22 @@ namespace SA3D.Common.IO
 			reader.ReadObjectArray(context, result);
 			return result;
 		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
+		public static T[] ReadObjectArray<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count)
+		{
+			T[] result = new T[count];
+			reader.ReadObjectArray(read, result);
+			return result;
+		}
+
 
 		/// <summary>
 		/// Reads an array of objects at a specific offset 
@@ -243,6 +283,28 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="read"></param>
+		/// <param name="offset"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
+		public static T[] ReadObjectArrayAtOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, long offset, int count)
+		{
+			if(count == 0)
+			{
+				return [];
+			}
+
+			T[] result = new T[count];
+			reader.ReadAtOffset(offset, () => reader.ReadObjectArray(read, result));
+			return result;
+		}
+
+
+		/// <summary>
 		/// Reads an array of objects at the offset stored at the current position
 		/// </summary>
 		/// <typeparam name="T">Object type to read</typeparam>
@@ -266,6 +328,20 @@ namespace SA3D.Common.IO
 			return reader.ReadObjectArrayAtOffset<T, TContext>(reader.ReadOffsetValue(), count, context);
 		}
 
+		/// <summary>
+		/// Reads an array of objects at the offset stored at the current position
+		/// </summary>
+		/// <typeparam name="T">Object type to read</typeparam>
+		/// <param name="reader">Reader to read from</param>
+		/// <param name="count">Number of items in the array to read</param>
+		public static T[] ReadObjectArrayOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count)
+		{
+			return reader.ReadObjectArrayAtOffset(read, reader.ReadOffsetValue(), count);
+		}
+
+		#endregion
+
+		#region Write Object Array
 
 		/// <summary>
 		/// Writes a collection of objects to a <see cref="BinaryObjectWriter"/> as an array
@@ -321,5 +397,6 @@ namespace SA3D.Common.IO
 			writer.WriteOffset(items, () => writer.WriteObjectArray(items, context));
 		}
 
+		#endregion
 	}
 }
