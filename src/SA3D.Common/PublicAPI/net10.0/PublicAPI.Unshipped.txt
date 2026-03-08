@@ -18,15 +18,12 @@ SA3D.Common.Lookup.BaseLUT.AddTryLabel<T>(long address, T! value) -> void
 SA3D.Common.Lookup.BaseLUT.BaseLUT(System.Collections.Generic.Dictionary<long, string!>! labels) -> void
 SA3D.Common.Lookup.BaseLUT.TryGetValue<T>(long address, out T? value) -> bool
 SA3D.Common.Lookup.ILabel.LabelPrefix.get -> string!
-SA3D.Common.Lookup.ILabeledArray<T>.DeepClone() -> SA3D.Common.Lookup.ILabeledArray<T>!
 SA3D.Common.Lookup.LabelDictionary.AddSafe(long address, string! label) -> string!
-SA3D.Common.Lookup.LabelDictionary.GetGenerateAddValue(long address, string! prefix) -> string!
 SA3D.Common.Lookup.LabelDictionary.GetGenerateValue(long address, string! prefix) -> string!
 SA3D.Common.Lookup.LabelDictionary.GetSafe(long address, string! prefix) -> string!
 SA3D.Common.Lookup.LabelDictionary.LabelDictionary(System.Collections.Generic.Dictionary<long, string!>! labels) -> void
 SA3D.Common.Lookup.LabeledArray<T>.GetEnumerator() -> System.Collections.IEnumerator!
 SA3D.Common.Lookup.LabeledArray<T>.LabelPrefix.get -> string!
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabelPrefix.get -> string!
 SA3D.Common.Lookup.PointerDictionary<T>.Add(long address, T value) -> void
 SA3D.Common.Lookup.PointerDictionary<T>.GetAddress(T value) -> long?
 SA3D.Common.Lookup.PointerDictionary<T>.GetDictFrom() -> System.Collections.Generic.Dictionary<long, T>!

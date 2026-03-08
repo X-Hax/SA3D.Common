@@ -8,7 +8,7 @@ namespace SA3D.Common.Lookup
 	/// An array with a label.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class LabeledArray<T> : ILabel, IList, IList<T>
+	public class LabeledArray<T> : ILabel, IList, IList<T>, ICloneable
 	{
 		private const string _labelPrefix = "array_";
 
@@ -233,5 +233,26 @@ namespace SA3D.Common.Lookup
 		}
 
 		#endregion
+
+		/// <inheritdoc/>
+		public override string ToString()
+		{
+			return Label;
+		}
+
+		/// <inheritdoc/>
+		object ICloneable.Clone()
+		{
+			return Clone();
+		}
+
+		/// <summary>
+		/// Creates a shallow copy of <see cref="Array"/> with the same <see cref="Label"/>
+		/// </summary>
+		/// <returns></returns>
+		public LabeledArray<T> Clone()
+		{
+			return new LabeledArray<T>(Label, (T[])Array.Clone());
+		}
 	}
 }

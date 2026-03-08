@@ -283,13 +283,12 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
-		/// 
+		/// Reads an array of objects at the current location
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="read"></param>
-		/// <param name="count"></param>
-		/// <returns></returns>
+		/// <typeparam name="T">Object type to read</typeparam>
+		/// <param name="reader">Reader to read from</param>
+		/// <param name="read">The read callback</param>
+		/// <param name="count">Number of items in the array to read</param>
 		public static T[] ReadObjectArray<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count)
 		{
 			T[] result = new T[count];
@@ -339,14 +338,13 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
-		/// 
+		/// Reads an array of objects at a specific offset 
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <param name="read"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <returns></returns>
+		/// <typeparam name="T">Object type to read</typeparam>
+		/// <param name="reader">Reader to read from</param>
+		/// <param name="read">The read callback</param>
+		/// <param name="offset">The offset to read at</param>
+		/// <param name="count">Number of items in the array to read</param>
 		public static T[] ReadObjectArrayAtOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, long offset, int count)
 		{
 			if(count == 0)
@@ -389,6 +387,7 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <typeparam name="T">Object type to read</typeparam>
 		/// <param name="reader">Reader to read from</param>
+		/// <param name="read">The read callback</param>
 		/// <param name="count">Number of items in the array to read</param>
 		public static T[] ReadObjectArrayOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count)
 		{

@@ -3,6 +3,8 @@ using SA3D.Common.Lookup;
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable RS0026 // Do not add multiple public overloads with optional parameters
+
 namespace SA3D.Common.IO
 {
 	/// <summary>
@@ -214,6 +216,7 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
+		/// <param name="read"></param>
 		/// <param name="lut"></param>
 		/// <returns></returns>
 		public static T? ReadObjectOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, BaseLUT lut) where T : class
@@ -256,6 +259,7 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
+		/// <param name="read"></param>
 		/// <param name="lut"></param>
 		/// <returns></returns>
 		public static T ReadObject<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, BaseLUT lut) where T : class
