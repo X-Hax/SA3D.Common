@@ -8,10 +8,12 @@ namespace SA3D.Common.Lookup
 	/// An array with a label.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class LabeledArray<T> : ILabeledArray<T>
+	public class LabeledArray<T> : ILabel, IList, IList<T>
 	{
+		private const string _labelPrefix = "array_";
+
 		/// <inheritdoc/>
-		public string LabelPrefix { get; } = "array_";
+		public string LabelPrefix { get; } = _labelPrefix;
 
 		/// <inheritdoc/>
 		public string Label { get; set; }
@@ -21,21 +23,6 @@ namespace SA3D.Common.Lookup
 		/// </summary>
 		public T[] Array { get; set; }
 
-		/// <inheritdoc/>
-		public bool IsFixedSize => Array.IsFixedSize;
-
-		/// <inheritdoc/>
-		public bool IsSynchronized => Array.IsSynchronized;
-
-		/// <inheritdoc/>
-		public object SyncRoot => Array.SyncRoot;
-
-		/// <inheritdoc/>
-		public bool IsReadOnly => Array.IsReadOnly;
-
-		/// <inheritdoc/>
-		public int Length
-			=> Array.Length;
 
 		/// <inheritdoc/>
 		public T this[int index]
@@ -44,8 +31,12 @@ namespace SA3D.Common.Lookup
 			set => Array[index] = value;
 		}
 
+		/// <inheritdoc/>
+		public int Length => Array.Length;
+
 
 		#region Constructors
+
 
 		/// <summary>
 		/// Creates a new labeled array from a label and an array.
@@ -62,7 +53,7 @@ namespace SA3D.Common.Lookup
 		/// Creates a new labeled array with a generated label and an array.
 		/// </summary>
 		/// <param name="array">The array.</param>
-		public LabeledArray(T[] array) : this("array_".GenerateIdentifier(), array) { }
+		public LabeledArray(T[] array) : this(_labelPrefix.GenerateIdentifier(), array) { }
 
 		/// <summary>
 		/// Creates a new labeled array with a label and a new array with specified size.
@@ -75,7 +66,7 @@ namespace SA3D.Common.Lookup
 		/// Creates a new labeled array with a generated label and a new array with specified size.
 		/// </summary>
 		/// <param name="size">The size of the array.</param>
-		public LabeledArray(int size) : this("array_".GenerateIdentifier(), size) { }
+		public LabeledArray(int size) : this(new T[size]) { }
 
 		/// <summary>
 		/// Creates a new labeled array with a label and a new array with specified size.
@@ -88,34 +79,84 @@ namespace SA3D.Common.Lookup
 		/// Creates a new labeled array with a generated label and a new array with specified size.
 		/// </summary>
 		/// <param name="size">The size of the array.</param>
-		public LabeledArray(uint size) : this("array_".GenerateIdentifier(), size) { }
+		public LabeledArray(uint size) : this(new T[size]) { }
 
 		#endregion
 
-		#region Hidden implementations 
+		#region Enumerable & Enumerable<T>
 
-		T IList<T>.this[int index]
+		/// <inheritdoc/>
+		public IEnumerator GetEnumerator()
 		{
-			get => ((IList<T>)Array)[index];
-			set => ((IList<T>)Array)[index] = value;
+			return Array.GetEnumerator();
 		}
 
-		int IList<T>.IndexOf(T item)
+		IEnumerator<T> IEnumerable<T>.GetEnumerator()
 		{
-			return ((IList<T>)Array).IndexOf(item);
+			return ((IEnumerable<T>)Array).GetEnumerator();
 		}
 
-		void IList<T>.Insert(int index, T item)
+		#endregion
+
+		#region ICollection
+
+		private ICollection Collection => Array;
+
+		int ICollection.Count => Collection.Count;
+
+		bool ICollection.IsSynchronized => Collection.IsSynchronized;
+
+		object ICollection.SyncRoot => Collection.SyncRoot;
+
+		/// <inheritdoc/>
+		public void CopyTo(Array array, int index)
 		{
-			((IList<T>)Array).Insert(index, item);
+			Array.CopyTo(array, index);
 		}
 
-		void IList<T>.RemoveAt(int index)
+		#endregion
+
+		#region ICollection<T>
+
+		private ICollection<T> CollectionG => Array;
+
+
+		void ICollection<T>.Add(T item)
 		{
-			((IList<T>)Array).RemoveAt(index);
+			CollectionG.Add(item);
 		}
 
-		bool IList.IsReadOnly => Array.IsReadOnly;
+		void ICollection<T>.Clear()
+		{
+			CollectionG.Clear();
+		}
+
+		bool ICollection<T>.Contains(T item)
+		{
+			return CollectionG.Contains(item);
+		}
+
+		void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+		{
+			CollectionG.CopyTo(array, arrayIndex);
+		}
+
+		bool ICollection<T>.Remove(T item)
+		{
+			return CollectionG.Remove(item);
+		}
+
+		#endregion
+
+		#region IList
+
+		private IList List => Array;
+
+
+		bool IList.IsFixedSize => List.IsFixedSize;
+
+		bool IList.IsReadOnly => List.IsReadOnly;
+
 
 		object? IList.this[int index]
 		{
@@ -125,112 +166,72 @@ namespace SA3D.Common.Lookup
 
 		int IList.Add(object? value)
 		{
-			return ((IList)Array).Add(value);
-		}
-
-		bool IList.Contains(object? value)
-		{
-			return ((IList)Array).Contains(value);
-		}
-
-		int IList.IndexOf(object? value)
-		{
-			return ((IList)Array).IndexOf(value);
-		}
-
-		void IList.Insert(int index, object? value)
-		{
-			((IList)Array).Insert(index, value);
-		}
-
-		void IList.Remove(object? value)
-		{
-			((IList)Array).Remove(value);
-		}
-
-		void IList.RemoveAt(int index)
-		{
-			((IList)Array).RemoveAt(index);
+			return List.Add(value);
 		}
 
 		void IList.Clear()
 		{
-			((IList)Array).Clear();
+			List.Clear();
 		}
 
-		int ICollection.Count => ((ICollection)Array).Count;
-		int IReadOnlyCollection<T>.Count => ((IReadOnlyCollection<T>)Array).Count;
-		int ICollection<T>.Count => ((ICollection<T>)Array).Count;
-		bool ICollection<T>.IsReadOnly => ((ICollection<T>)Array).IsReadOnly;
-		void ICollection<T>.Add(T item)
+		bool IList.Contains(object? value)
 		{
-			((ICollection<T>)Array).Add(item);
+			return List.Contains(value);
 		}
 
-		void ICollection<T>.Clear()
+		int IList.IndexOf(object? value)
 		{
-			((ICollection<T>)Array).Clear();
+			return List.IndexOf(value);
 		}
 
-		bool ICollection<T>.Contains(T item)
+		void IList.Insert(int index, object? value)
 		{
-			return ((ICollection<T>)Array).Contains(item);
+			List.Insert(index, value);
 		}
 
-		void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+		void IList.Remove(object? value)
 		{
-			((ICollection<T>)Array).CopyTo(array, arrayIndex);
+			List.Remove(value);
 		}
 
-		bool ICollection<T>.Remove(T item)
+		void IList.RemoveAt(int index)
 		{
-			return ((ICollection<T>)Array).Remove(item);
-		}
-
-		IEnumerator<T> IEnumerable<T>.GetEnumerator()
-		{
-			return ((IEnumerable<T>)Array).GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return Array.GetEnumerator();
-		}
-
-		ILabeledArray<T> ILabeledArray<T>.Clone()
-		{
-			return Clone();
-		}
-
-		object ICloneable.Clone()
-		{
-			return Clone();
+			List.RemoveAt(index);
 		}
 
 		#endregion
 
-		/// <inheritdoc/>
-		public void CopyTo(Array array, int index)
+		#region IList<T>
+
+		private IList<T> ListG => Array;
+
+
+		int ICollection<T>.Count => ListG.Count;
+
+		bool ICollection<T>.IsReadOnly => ListG.IsReadOnly;
+
+		T IList<T>.this[int index]
 		{
-			Array.CopyTo(array, index);
+			get => ListG[index];
+			set => ListG[index] = value;
 		}
 
-		/// <inheritdoc/>
-		public LabeledArray<T> Clone()
-		{
-			LabeledArray<T> result = new(Label, new T[Length]);
-			for(int i = 0; i < Length; i++)
-			{
-				result[i] = this[i];
-			}
 
-			return result;
+		int IList<T>.IndexOf(T item)
+		{
+			return ListG.IndexOf(item);
 		}
 
-		/// <inheritdoc/>
-		public override string ToString()
+		void IList<T>.Insert(int index, T item)
 		{
-			return $"{Label}: {Array}";
+			ListG.Insert(index, item);
 		}
+
+		void IList<T>.RemoveAt(int index)
+		{
+			ListG.RemoveAt(index);
+		}
+
+		#endregion
 	}
 }

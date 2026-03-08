@@ -37,7 +37,6 @@ override SA3D.Common.Converters.Vector3Converter.CanConvertTo(System.ComponentMo
 override SA3D.Common.Converters.Vector3Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
 override SA3D.Common.Converters.Vector3Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
 override SA3D.Common.Lookup.LabeledArray<T>.ToString() -> string!
-override SA3D.Common.Lookup.LabeledReadOnlyArray<T>.ToString() -> string!
 SA3D.Common.CollectionExtensions
 SA3D.Common.Converters.BAMS16Converter
 SA3D.Common.Converters.BAMS16Converter.BAMS16Converter() -> void
@@ -224,11 +223,6 @@ SA3D.Common.Lookup.BaseLUT.Labels.get -> SA3D.Common.Lookup.LabelDictionary!
 SA3D.Common.Lookup.ILabel
 SA3D.Common.Lookup.ILabel.Label.get -> string!
 SA3D.Common.Lookup.ILabel.Label.set -> void
-SA3D.Common.Lookup.ILabeledArray<T>
-SA3D.Common.Lookup.ILabeledArray<T>.Clone() -> SA3D.Common.Lookup.ILabeledArray<T>!
-SA3D.Common.Lookup.ILabeledArray<T>.IsLabeledArray(object? value) -> bool
-SA3D.Common.Lookup.ILabeledArray<T>.Length.get -> int
-SA3D.Common.Lookup.ILabeledArray<T>.this[int index].get -> T
 SA3D.Common.Lookup.LabelDictionary
 SA3D.Common.Lookup.LabelDictionary.LabelDictionary() -> void
 SA3D.Common.Lookup.LabeledArray<T>
@@ -236,9 +230,6 @@ SA3D.Common.Lookup.LabeledArray<T>.Array.get -> T[]!
 SA3D.Common.Lookup.LabeledArray<T>.Array.set -> void
 SA3D.Common.Lookup.LabeledArray<T>.Clone() -> SA3D.Common.Lookup.LabeledArray<T>!
 SA3D.Common.Lookup.LabeledArray<T>.CopyTo(System.Array! array, int index) -> void
-SA3D.Common.Lookup.LabeledArray<T>.IsFixedSize.get -> bool
-SA3D.Common.Lookup.LabeledArray<T>.IsReadOnly.get -> bool
-SA3D.Common.Lookup.LabeledArray<T>.IsSynchronized.get -> bool
 SA3D.Common.Lookup.LabeledArray<T>.Label.get -> string!
 SA3D.Common.Lookup.LabeledArray<T>.Label.set -> void
 SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(int size) -> void
@@ -248,20 +239,8 @@ SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(string! label, uint size) -> voi
 SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(T[]! array) -> void
 SA3D.Common.Lookup.LabeledArray<T>.LabeledArray(uint size) -> void
 SA3D.Common.Lookup.LabeledArray<T>.Length.get -> int
-SA3D.Common.Lookup.LabeledArray<T>.SyncRoot.get -> object!
 SA3D.Common.Lookup.LabeledArray<T>.this[int index].get -> T
 SA3D.Common.Lookup.LabeledArray<T>.this[int index].set -> void
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Array.get -> System.Collections.ObjectModel.ReadOnlyCollection<T>!
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Clone() -> SA3D.Common.Lookup.LabeledReadOnlyArray<T>!
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Label.get -> string!
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Label.set -> void
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(string! label, System.Collections.Generic.IList<T>! list) -> void
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(string! label, System.Collections.ObjectModel.ReadOnlyCollection<T>! array) -> void
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(System.Collections.Generic.IList<T>! list) -> void
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.LabeledReadOnlyArray(System.Collections.ObjectModel.ReadOnlyCollection<T>! array) -> void
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.Length.get -> int
-SA3D.Common.Lookup.LabeledReadOnlyArray<T>.this[int index].get -> T
 SA3D.Common.Lookup.LookupExtensions
 SA3D.Common.Lookup.PointerDictionary<T>
 SA3D.Common.Lookup.PointerDictionary<T>.PointerDictionary() -> void
@@ -314,20 +293,6 @@ static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filep
 static SA3D.Common.Ini.IniSerializer.SerializeToFile(object? data, string! filepath, System.ComponentModel.TypeConverter? converter) -> void
 static SA3D.Common.IO.ExeHelper.FixRELPointers(byte[]! file, uint imageBase = 0) -> void
 static SA3D.Common.IO.ExeHelper.SetupEXE(byte[]! file, out byte[]? result, out uint imageBase) -> bool
-static SA3D.Common.Lookup.LookupExtensions.ContentClone<T>(this SA3D.Common.Lookup.ILabeledArray<T>! labeledArray) -> SA3D.Common.Lookup.ILabeledArray<T>!
-static SA3D.Common.Lookup.LookupExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! labeledArray) -> SA3D.Common.Lookup.LabeledArray<T>!
-static SA3D.Common.Lookup.LookupExtensions.GetILabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address) -> SA3D.Common.Lookup.ILabeledArray<T>?
-static SA3D.Common.Lookup.LookupExtensions.GetILabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address) -> SA3D.Common.Lookup.ILabeledArray<T>?
-static SA3D.Common.Lookup.LookupExtensions.GetLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address) -> SA3D.Common.Lookup.LabeledArray<T>?
-static SA3D.Common.Lookup.LookupExtensions.GetLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address) -> SA3D.Common.Lookup.LabeledArray<T>?
-static SA3D.Common.Lookup.LookupExtensions.GetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address) -> SA3D.Common.Lookup.LabeledReadOnlyArray<T>?
-static SA3D.Common.Lookup.LookupExtensions.GetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address) -> SA3D.Common.Lookup.LabeledReadOnlyArray<T>?
-static SA3D.Common.Lookup.LookupExtensions.TryGetILabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address, out SA3D.Common.Lookup.ILabeledArray<T>! result) -> bool
-static SA3D.Common.Lookup.LookupExtensions.TryGetILabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address, out SA3D.Common.Lookup.ILabeledArray<T>! result) -> bool
-static SA3D.Common.Lookup.LookupExtensions.TryGetLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address, out SA3D.Common.Lookup.LabeledArray<T>! result) -> bool
-static SA3D.Common.Lookup.LookupExtensions.TryGetLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address, out SA3D.Common.Lookup.LabeledArray<T>! result) -> bool
-static SA3D.Common.Lookup.LookupExtensions.TryGetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.BaseLUT! lut, uint address, out SA3D.Common.Lookup.LabeledReadOnlyArray<T>! result) -> bool
-static SA3D.Common.Lookup.LookupExtensions.TryGetReadOnlyLabeledArray<T>(this SA3D.Common.Lookup.PointerDictionary<object!>! dict, uint address, out SA3D.Common.Lookup.LabeledReadOnlyArray<T>! result) -> bool
 static SA3D.Common.MathHelper.BAMSToDeg(int BAMS) -> float
 static SA3D.Common.MathHelper.BAMSToRad(int BAMS) -> float
 static SA3D.Common.MathHelper.DegToBAMS(float deg) -> int

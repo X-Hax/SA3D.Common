@@ -12,6 +12,18 @@ namespace SA3D.Common.IO
 	/// </summary>
 	public static class BinaryHelper
 	{
+		/// <summary>
+		/// Create a new <see cref="ReadNullReferenceException"/> for thr reader
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="structName"></param>
+		/// <param name="fieldname"></param>
+		/// <returns></returns>
+		public static ReadNullReferenceException ReadNullReference(this BinaryValueReader reader, string structName, string fieldname)
+		{
+			return new(reader, structName, fieldname);
+		}
+
 		#region Offsets / Pointers
 
 		/// <summary>
@@ -30,6 +42,50 @@ namespace SA3D.Common.IO
 		public static long GetPointerPosition(this BinaryObjectWriter writer)
 		{
 			return writer.OffsetHandler.CalculateOffset(writer.Position);
+		}
+
+		#endregion
+
+		#region BAMS
+
+		/// <summary>
+		/// Writes a radians angle as a 16 bit BAMS value
+		/// </summary>
+		/// <param name="writer">The writer to write to</param>
+		/// <param name="radians">The radians value to write</param>
+		public static void WriteBAMS16(this BinaryValueWriter writer, float radians)
+		{
+			writer.WriteInt16((short)MathHelper.RadToBAMS(radians));
+		}
+
+		/// <summary>
+		/// Writes a radians angle as a 32 bit BAMS value
+		/// </summary>
+		/// <param name="writer">The writer to write to</param>
+		/// <param name="radians">The radians value to write</param>
+		public static void WriteBAMS32(this BinaryValueWriter writer, float radians)
+		{
+			writer.WriteInt32(MathHelper.RadToBAMS(radians));
+		}
+
+		/// <summary>
+		/// Reads a 16 bit BAMS value as a radians angle
+		/// </summary>
+		/// <param name="reader">The reader to read from</param>
+		/// <returns></returns>
+		public static float ReadBAMS16(this BinaryValueReader reader)
+		{
+			return MathHelper.BAMSToRad(reader.ReadInt16());
+		}
+
+		/// <summary>
+		/// Reads a 32 bit BAMS value as a radians angle
+		/// </summary>
+		/// <param name="reader">The reader to read from</param>
+		/// <returns></returns>
+		public static float ReadBAMS32(this BinaryValueReader reader)
+		{
+			return MathHelper.BAMSToRad(reader.ReadInt32());
 		}
 
 		#endregion
@@ -374,6 +430,22 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
+		/// Writes a collection of objects to a <see cref="BinaryObjectWriter"/> as an array
+		/// </summary>
+		/// <typeparam name="T">Type of the object to write</typeparam>
+		/// <param name="writer">Writer to write to</param>
+		/// <param name="write">The write callback</param>
+		/// <param name="items">Items to write</param>
+		public static void WriteObjectArray<T>(this BinaryObjectWriter writer, Action<BinaryObjectWriter, T> write, IEnumerable<T> items)
+		{
+			foreach(T item in items)
+			{
+				write(writer, item);
+			}
+		}
+
+
+		/// <summary>
 		/// Writes the offset to a collection of objects to a <see cref="BinaryObjectWriter"/> as an array
 		/// </summary>
 		/// <typeparam name="T">Type of the object to write</typeparam>
@@ -395,6 +467,18 @@ namespace SA3D.Common.IO
 		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, IEnumerable<T> items, TContext context) where T : IBinarySerializable<TContext>
 		{
 			writer.WriteOffset(items, () => writer.WriteObjectArray(items, context));
+		}
+
+		/// <summary>
+		/// Writes the offset to a collection of objects to a <see cref="BinaryObjectWriter"/> as an array
+		/// </summary>
+		/// <typeparam name="T">Type of the object to write</typeparam>
+		/// <param name="writer">Writer to write to</param>
+		/// <param name="write">The write callback</param>
+		/// <param name="items">Items to write</param>
+		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, Action<BinaryObjectWriter, T> write, IEnumerable<T> items)
+		{
+			writer.WriteOffset(items, () => writer.WriteObjectArray(write, items));
 		}
 
 		#endregion
