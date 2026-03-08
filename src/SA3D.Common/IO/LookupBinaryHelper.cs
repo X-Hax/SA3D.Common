@@ -615,9 +615,9 @@ namespace SA3D.Common.IO
 		/// <param name="lut"></param>
 		/// <param name="alignment"></param>
 		/// <param name="priority"></param>
-		public static void WriteObjectOffset<T>(this BinaryObjectWriter writer, T value, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable
+		public static void WriteObjectOffset<T>(this BinaryObjectWriter writer, T? value, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable
 		{
-			writer.WriteOffset(value, () => writer.WriteObject(value, lut), alignment, priority);
+			writer.WriteOffset(value, () => writer.WriteObject(value!, lut), alignment, priority);
 		}
 
 		/// <summary>
@@ -631,9 +631,9 @@ namespace SA3D.Common.IO
 		/// <param name="lut"></param>
 		/// <param name="alignment"></param>
 		/// <param name="priority"></param>
-		public static void WriteObjectOffset<T, TContext>(this BinaryObjectWriter writer, T value, TContext context, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable<TContext>
+		public static void WriteObjectOffset<T, TContext>(this BinaryObjectWriter writer, T? value, TContext context, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable<TContext>
 		{
-			writer.WriteOffset(value, () => writer.WriteObject(value, context, lut), alignment, priority);
+			writer.WriteOffset(value, () => writer.WriteObject(value!, context, lut), alignment, priority);
 		}
 
 
@@ -662,7 +662,7 @@ namespace SA3D.Common.IO
 		/// <param name="items"></param>
 		/// <param name="context"></param>
 		/// <param name="lut"></param>
-		public static void WriteObjectArray<T, TContext>(this BinaryObjectWriter writer, LabeledArray<T> items, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>
+		public static void WriteObjectArray<T, TContext>(this BinaryObjectWriter writer, IEnumerable<T> items, TContext context, BaseLUT lut) where T : class, IBinarySerializable<TContext>
 		{
 			lut.AddForWriter(writer, items);
 			foreach(T item in items)
@@ -698,9 +698,9 @@ namespace SA3D.Common.IO
 		/// <param name="lut"></param>
 		/// <param name="alignment"></param>
 		/// <param name="priority"></param>
-		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, LabeledArray<T> items, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable
+		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, LabeledArray<T>? items, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable
 		{
-			writer.WriteOffset(items, () => writer.WriteObjectArray(items, lut), alignment, priority);
+			writer.WriteOffset(items, () => writer.WriteObjectArray(items!, lut), alignment, priority);
 		}
 
 		/// <summary>
@@ -714,9 +714,9 @@ namespace SA3D.Common.IO
 		/// <param name="lut"></param>
 		/// <param name="alignment"></param>
 		/// <param name="priority"></param>
-		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, LabeledArray<T> items, TContext context, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable<TContext>
+		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, LabeledArray<T>? items, TContext context, BaseLUT lut, int alignment = 0, int priority = 0) where T : class, IBinarySerializable<TContext>
 		{
-			writer.WriteOffset(items, () => writer.WriteObjectArray(items, context, lut), alignment, priority);
+			writer.WriteOffset(items, () => writer.WriteObjectArray(items!, context, lut), alignment, priority);
 		}
 
 		/// <summary>
@@ -729,9 +729,9 @@ namespace SA3D.Common.IO
 		/// <param name="lut"></param>
 		/// <param name="alignment"></param>
 		/// <param name="priority"></param>
-		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, Action<BinaryObjectWriter, T> write, LabeledArray<T> items, BaseLUT lut, int alignment = 0, int priority = 0)
+		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, Action<BinaryObjectWriter, T> write, LabeledArray<T>? items, BaseLUT lut, int alignment = 0, int priority = 0)
 		{
-			writer.WriteOffset(items, () => writer.WriteObjectArray(write, items, lut), alignment, priority);
+			writer.WriteOffset(items, () => writer.WriteObjectArray(write, items!, lut), alignment, priority);
 		}
 	}
 }

@@ -220,8 +220,14 @@ namespace SA3D.Common.IO
 		/// <param name="alignment">The byte alignment to apply after writing</param>
 		/// <param name="priority">Writing priotiy</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void WriteOffset(this BinaryObjectWriter writer, object instance, Action action, int alignment = 0, int priority = 0)
+		public static void WriteOffset(this BinaryObjectWriter writer, object? instance, Action action, int alignment = 0, int priority = 0)
 		{
+			if(instance == null)
+			{
+				writer.WriteOffsetValue(writer.OffsetHandler.NullOffset);
+				return;
+			}
+
 			writer.WriteOffset(alignment, instance, instance, (w, o) => action(), priority);
 		}
 
@@ -450,9 +456,9 @@ namespace SA3D.Common.IO
 		/// <typeparam name="T">Type of the object to write</typeparam>
 		/// <param name="writer">Writer to write to</param>
 		/// <param name="items">Items to write</param>
-		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, IEnumerable<T> items) where T : IBinarySerializable
+		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, IEnumerable<T>? items) where T : IBinarySerializable
 		{
-			writer.WriteOffset(items, () => writer.WriteObjectArray(items));
+			writer.WriteOffset(items, () => writer.WriteObjectArray(items!));
 		}
 
 		/// <summary>
@@ -463,9 +469,9 @@ namespace SA3D.Common.IO
 		/// <param name="writer">Writer to write to</param>
 		/// <param name="context">Writer context to use</param>
 		/// <param name="items">Items to write</param>
-		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, IEnumerable<T> items, TContext context) where T : IBinarySerializable<TContext>
+		public static void WriteObjectArrayOffset<T, TContext>(this BinaryObjectWriter writer, IEnumerable<T>? items, TContext context) where T : IBinarySerializable<TContext>
 		{
-			writer.WriteOffset(items, () => writer.WriteObjectArray(items, context));
+			writer.WriteOffset(items, () => writer.WriteObjectArray(items!, context));
 		}
 
 		/// <summary>
@@ -475,9 +481,9 @@ namespace SA3D.Common.IO
 		/// <param name="writer">Writer to write to</param>
 		/// <param name="write">The write callback</param>
 		/// <param name="items">Items to write</param>
-		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, Action<BinaryObjectWriter, T> write, IEnumerable<T> items)
+		public static void WriteObjectArrayOffset<T>(this BinaryObjectWriter writer, Action<BinaryObjectWriter, T> write, IEnumerable<T>? items)
 		{
-			writer.WriteOffset(items, () => writer.WriteObjectArray(write, items));
+			writer.WriteOffset(items, () => writer.WriteObjectArray(write, items!));
 		}
 
 		#endregion
