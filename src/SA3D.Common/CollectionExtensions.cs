@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SA3D.Common.Lookup;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,23 @@ namespace SA3D.Common
 		public static T[] ContentClone<T>(this T[] input) where T : ICloneable
 		{
 			T[] result = new T[input.Length];
+
+			for(int i = 0; i < result.Length; i++)
+			{
+				result[i] = (T)input[i].Clone();
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Returns a clone of an array where each field has been cloned too
+		/// </summary>
+		/// <param name="input">Array to clone</param>
+		/// <returns></returns>
+		public static LabeledArray<T> ContentClone<T>(this LabeledArray<T> input) where T : ICloneable
+		{
+			LabeledArray<T> result = new(input.Label, input.Length);
 
 			for(int i = 0; i < result.Length; i++)
 			{

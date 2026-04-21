@@ -21,7 +21,7 @@ namespace SA3D.Common
 		/// <returns>A C hexadecimal constant.</returns>
 		public static string ToCHex(this short number)
 		{
-			if(number is > (-1) and < 10)
+			if(number is > -1 and < 10)
 			{
 				return number.ToString(NumberFormatInfo.InvariantInfo);
 			}
@@ -51,7 +51,7 @@ namespace SA3D.Common
 		/// <returns>A C hexadecimal constant.</returns>
 		public static string ToCHex(this int number)
 		{
-			if(number is > (-1) and < 10)
+			if(number is > -1 and < 10)
 			{
 				return number.ToString(NumberFormatInfo.InvariantInfo);
 			}
@@ -81,7 +81,7 @@ namespace SA3D.Common
 		/// <returns>A C hexadecimal constant.</returns>
 		public static string ToCHex(this long number)
 		{
-			if(number is > (-1) and < 10)
+			if(number is > -1 and < 10)
 			{
 				return number.ToString(NumberFormatInfo.InvariantInfo);
 			}

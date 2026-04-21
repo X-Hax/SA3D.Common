@@ -34,7 +34,6 @@ namespace SA3D.Common.Lookup
 		/// <inheritdoc/>
 		public int Length => Array.Length;
 
-
 		#region Constructors
 
 

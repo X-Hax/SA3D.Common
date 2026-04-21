@@ -34,13 +34,29 @@ namespace SA3D.Common.IO
 		/// <param name="reader"></param>
 		/// <param name="structName"></param>
 		/// <param name="fieldName"></param>
-		public ReadNullReferenceException(BinaryValueReader reader, string structName, string fieldName) 
+		public ReadNullReferenceException(BinaryValueReader reader, string structName, string fieldName)
 			: base($"THe field \"{structName}.{fieldName}\" at {reader.Position:X8} yielded a null reference")
 		{
 			Reader = reader;
 			StructName = structName;
 			FieldName = fieldName;
 			Offset = reader.Position;
+		}
+
+		/// <summary>
+		/// Creates a new exception
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="structName"></param>
+		/// <param name="fieldName"></param>
+		/// <param name="offset"></param>
+		public ReadNullReferenceException(BinaryValueReader reader, string structName, string fieldName, long offset)
+			: base($"THe field \"{structName}.{fieldName}\" at {offset:X8} yielded a null reference")
+		{
+			Reader = reader;
+			StructName = structName;
+			FieldName = fieldName;
+			Offset = offset;
 		}
 	}
 }

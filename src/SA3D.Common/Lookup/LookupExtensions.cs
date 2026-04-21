@@ -1,6 +1,7 @@
 ﻿using Amicitia.IO.Binary;
 using SA3D.Common.IO;
 using System;
+using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SA3D.Common.Lookup
@@ -44,7 +45,23 @@ namespace SA3D.Common.Lookup
 		/// <param name="value">The value to add</param>
 		public static void AddForWriter<T>(this BaseLUT lut, BinaryObjectWriter writer, T value) where T : class
 		{
+			if(value is IList list && list.Count == 0)
+			{
+				return;
+			}
+
 			lut.AddSafeLabel(writer.GetPointerPosition(), value);
+		}
+
+		/// <summary>
+		/// returns null if <paramref name="array"/> is null or has a length of 0, otherwise returns <paramref name="array"/> again.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="array"></param>
+		/// <returns></returns>
+		public static LabeledArray<T>? EmptyNull<T>(this LabeledArray<T>? array)
+		{
+			return array?.Length > 0 ? array : null;
 		}
 	}
 }

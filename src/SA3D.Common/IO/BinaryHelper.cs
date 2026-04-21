@@ -13,7 +13,7 @@ namespace SA3D.Common.IO
 	public static class BinaryHelper
 	{
 		/// <summary>
-		/// Create a new <see cref="ReadNullReferenceException"/> for thr reader
+		/// Create a new <see cref="ReadNullReferenceException"/> for the reader
 		/// </summary>
 		/// <param name="reader"></param>
 		/// <param name="structName"></param>
@@ -22,6 +22,19 @@ namespace SA3D.Common.IO
 		public static ReadNullReferenceException ReadNullReference(this BinaryValueReader reader, string structName, string fieldname)
 		{
 			return new(reader, structName, fieldname);
+		}
+
+		/// <summary>
+		/// Create a new <see cref="ReadNullReferenceException"/> for the reader
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="structName"></param>
+		/// <param name="fieldname"></param>
+		/// <param name="offset"></param>
+		/// <returns></returns>
+		public static ReadNullReferenceException ReadNullReference(this BinaryValueReader reader, string structName, string fieldname, long offset)
+		{
+			return new(reader, structName, fieldname, offset);
 		}
 
 		#region Offsets / Pointers
