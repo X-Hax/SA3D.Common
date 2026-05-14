@@ -40,19 +40,19 @@ namespace SA3D.Common.IO
 		#region Offsets / Pointers
 
 		/// <summary>
-		/// Gets the current pointer address
+		/// Gets the current offset position in the stream
 		/// </summary>
 		/// <param name="reader">The reader to get the pointer address from</param>
-		public static long GetPointerPosition(this BinaryObjectReader reader)
+		public static long GetPositionOffset(this BinaryObjectReader reader)
 		{
 			return reader.OffsetHandler.CalculateOffset(reader.Position);
 		}
 
 		/// <summary>
-		/// Gets the current pointer address
+		/// Gets the current offset position in the stream
 		/// </summary>
 		/// <param name="writer">The writer to get the pointer address from</param>
-		public static long GetPointerPosition(this BinaryObjectWriter writer)
+		public static long GetPositionOffset(this BinaryObjectWriter writer)
 		{
 			return writer.OffsetHandler.CalculateOffset(writer.Position);
 		}
@@ -131,7 +131,7 @@ namespace SA3D.Common.IO
 		/// <param name="reader">The reader to create the token for</param>
 		/// <param name="endianness">The endianness to set</param>
 		/// <returns></returns>
-		public static EndiannessToken DisposableEndian(this BinaryValueReader reader, Endianness endianness)
+		public static EndiannessToken WithEndian(this BinaryValueReader reader, Endianness endianness)
 		{
 			return new(reader, endianness);
 		}
@@ -162,9 +162,63 @@ namespace SA3D.Common.IO
 		/// <param name="writer">The writer to create the token for</param>
 		/// <param name="endianness">The endianness to set</param>
 		/// <returns></returns>
-		public static EndiannessToken DisposableEndian(this BinaryValueWriter writer, Endianness endianness)
+		public static EndiannessToken WithEndian(this BinaryValueWriter writer, Endianness endianness)
 		{
 			return new(writer, endianness);
+		}
+
+		/// <summary>
+		/// Peeks the 2 bytes at the current position. Returns the endianness in which it would be the smaller value
+		/// </summary>
+		/// <returns></returns>
+		public static Endianness CheckEndianness16(this BinaryValueReader reader)
+		{
+			ushort little, big;
+
+			using(reader.WithEndian(Endianness.Little))
+			{
+				using(reader.At())
+				{
+					little = reader.ReadUInt16();
+				}
+			}
+
+			using(reader.WithEndian(Endianness.Big))
+			{
+				using(reader.At())
+				{
+					big = reader.ReadUInt16();
+				}
+			}
+
+			return little < big ? Endianness.Little : Endianness.Big;
+		}
+
+		/// <summary>
+		/// Peeks the 4 bytes at the current position. Returns the endianness in which it would be the smaller value
+		/// </summary>
+		/// <returns></returns>
+		public static Endianness CheckEndianness32(this BinaryValueReader reader)
+		{
+			uint little, big;
+
+			using(reader.WithEndian(Endianness.Little))
+			{
+				using(reader.At())
+				{
+					little = reader.ReadUInt32();
+				}
+			}
+
+			using(reader.WithEndian(Endianness.Big))
+			{
+				using(reader.At())
+				{
+					big = reader.ReadUInt32();
+				}
+			}
+
+			return little < big ? Endianness.Little : Endianness.Big;
 		}
 
 		#endregion

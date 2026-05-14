@@ -38,10 +38,10 @@ SA3D.Common.RegionMarker<T>.MarkRegion(long from, long to, T value) -> void
 static SA3D.Common.CollectionExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! input) -> SA3D.Common.Lookup.LabeledArray<T>!
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Streams.SeekToken
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueWriter! writer) -> Amicitia.IO.Streams.SeekToken
-static SA3D.Common.IO.BinaryHelper.DisposableEndian(this Amicitia.IO.Binary.BinaryValueReader! reader, Amicitia.IO.Binary.Endianness endianness) -> SA3D.Common.IO.EndiannessToken
-static SA3D.Common.IO.BinaryHelper.DisposableEndian(this Amicitia.IO.Binary.BinaryValueWriter! writer, Amicitia.IO.Binary.Endianness endianness) -> SA3D.Common.IO.EndiannessToken
-static SA3D.Common.IO.BinaryHelper.GetPointerPosition(this Amicitia.IO.Binary.BinaryObjectReader! reader) -> long
-static SA3D.Common.IO.BinaryHelper.GetPointerPosition(this Amicitia.IO.Binary.BinaryObjectWriter! writer) -> long
+static SA3D.Common.IO.BinaryHelper.CheckEndianness16(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Binary.Endianness
+static SA3D.Common.IO.BinaryHelper.CheckEndianness32(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Binary.Endianness
+static SA3D.Common.IO.BinaryHelper.GetPositionOffset(this Amicitia.IO.Binary.BinaryObjectReader! reader) -> long
+static SA3D.Common.IO.BinaryHelper.GetPositionOffset(this Amicitia.IO.Binary.BinaryObjectWriter! writer) -> long
 static SA3D.Common.IO.BinaryHelper.ReadBAMS16(this Amicitia.IO.Binary.BinaryValueReader! reader) -> float
 static SA3D.Common.IO.BinaryHelper.ReadBAMS32(this Amicitia.IO.Binary.BinaryValueReader! reader) -> float
 static SA3D.Common.IO.BinaryHelper.ReadNullReference(this Amicitia.IO.Binary.BinaryValueReader! reader, string! structName, string! fieldname) -> SA3D.Common.IO.ReadNullReferenceException!
@@ -59,6 +59,8 @@ static SA3D.Common.IO.BinaryHelper.ReadStringOffset(this Amicitia.IO.Binary.Bina
 static SA3D.Common.IO.BinaryHelper.ReadStringOffsetOrEmpty(this Amicitia.IO.Binary.BinaryObjectReader! reader, Amicitia.IO.Binary.StringBinaryFormat format = Amicitia.IO.Binary.StringBinaryFormat.NullTerminated, int fixedLength = -1) -> string!
 static SA3D.Common.IO.BinaryHelper.SeekOffset(this Amicitia.IO.Binary.BinaryValueReader! reader, long position) -> void
 static SA3D.Common.IO.BinaryHelper.SeekOffset(this Amicitia.IO.Binary.BinaryValueWriter! writer, long position) -> void
+static SA3D.Common.IO.BinaryHelper.WithEndian(this Amicitia.IO.Binary.BinaryValueReader! reader, Amicitia.IO.Binary.Endianness endianness) -> SA3D.Common.IO.EndiannessToken
+static SA3D.Common.IO.BinaryHelper.WithEndian(this Amicitia.IO.Binary.BinaryValueWriter! writer, Amicitia.IO.Binary.Endianness endianness) -> SA3D.Common.IO.EndiannessToken
 static SA3D.Common.IO.BinaryHelper.WriteBAMS16(this Amicitia.IO.Binary.BinaryValueWriter! writer, float radians) -> void
 static SA3D.Common.IO.BinaryHelper.WriteBAMS32(this Amicitia.IO.Binary.BinaryValueWriter! writer, float radians) -> void
 static SA3D.Common.IO.BinaryHelper.WriteObjectArray<T, TContext>(this Amicitia.IO.Binary.BinaryObjectWriter! writer, System.Collections.Generic.IEnumerable<T>! items, TContext context) -> void

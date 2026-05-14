@@ -50,7 +50,7 @@ namespace SA3D.Common.Lookup
 				return;
 			}
 
-			lut.AddSafeLabel(writer.GetPointerPosition(), value);
+			lut.AddSafeLabel(writer.GetPositionOffset(), value);
 		}
 
 		/// <summary>

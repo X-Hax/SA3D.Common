@@ -11,7 +11,7 @@
 		public string LabelPrefix { get; }
 
 		/// <summary>
-		/// Object label
+		/// Object label / C struct label
 		/// </summary>
 		public string Label { get; set; }
 	}
