@@ -31,26 +31,26 @@ namespace SA3D.Common.IO
 				return false;
 			}
 
-			reader.SeekOffset(0x3C);
+			reader.SeekPosition(0x3C);
 			uint ptr = reader.ReadUInt32();
 
-			reader.SeekOffset(ptr);
+			reader.SeekPosition(ptr);
 			if(reader.ReadUInt32() != 0x4550) //PE\0\0
 			{
 				return false;
 			}
 
-			reader.SeekOffset(ptr + 6);
+			reader.SeekPosition(ptr + 6);
 			ushort numsects = reader.ReadUInt16();
 
-			reader.SeekOffset(ptr + 0x34);
+			reader.SeekPosition(ptr + 0x34);
 			imageBase = reader.ReadUInt32();
 
-			reader.SeekOffset(ptr + 0x50);
+			reader.SeekPosition(ptr + 0x50);
 			result = new byte[reader.ReadUInt32()];
 			reader.ReadArray(reader.ReadInt32(), result);
 
-			reader.SeekOffset(ptr + 0xF8);
+			reader.SeekPosition(ptr + 0xF8);
 
 			for(int i = 0; i < numsects; i++)
 			{
@@ -83,14 +83,14 @@ namespace SA3D.Common.IO
 			OSModuleHeader header = reader.ReadObject<OSModuleHeader>();
 
 			OSSectionInfo[] sections = new OSSectionInfo[header.Info.NumSections];
-			reader.SeekOffset(header.Info.SectionInfoOffset);
+			reader.SeekPosition(header.Info.SectionInfoOffset);
 			for(uint i = 0; i < header.Info.NumSections; i++)
 			{
 				sections[i] = reader.ReadObject<OSSectionInfo>();
 			}
 
 			OSImportInfo[] imports = new OSImportInfo[header.ImpSize / 8];
-			reader.SeekOffset(header.ImpOffset);
+			reader.SeekPosition(header.ImpOffset);
 			for(uint i = 0; i < imports.Length; i++)
 			{
 				imports[i] = reader.ReadObject<OSImportInfo>();
@@ -106,13 +106,13 @@ namespace SA3D.Common.IO
 				}
 			}
 
-			reader.SeekOffset(reladdr);
+			reader.SeekPosition(reladdr);
 			OSRel rel = reader.ReadObject<OSRel>();
 			reladdr = (uint)reader.Position;
 
 			unchecked
 			{
-				reader.SeekOffset(0);
+				reader.SeekPosition(0);
 				while(rel.Type != RelocTypes.R_DOLPHIN_END)
 				{
 					reader.Seek(rel.Offset, SeekOrigin.Current);
@@ -152,7 +152,7 @@ namespace SA3D.Common.IO
 						case RelocTypes.R_DOLPHIN_END:
 							break;
 						case RelocTypes.R_DOLPHIN_SECTION:
-							reader.SeekOffset(sectionbase);
+							reader.SeekPosition(sectionbase);
 							break;
 						default:
 							throw new NotImplementedException($"REL type \"{rel.Type}\" not supported");

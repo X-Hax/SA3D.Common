@@ -14,6 +14,11 @@ namespace SA3D.Common.Lookup
 		private protected readonly Dictionary<T, long> _toAddr;
 
 		/// <summary>
+		/// Number of entries in the dictionary
+		/// </summary>
+		public int Count => _fromAddr.Count;
+
+		/// <summary>
 		/// Creates a new pointer dictionary
 		/// </summary>
 		public PointerDictionary()

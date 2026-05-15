@@ -26,6 +26,7 @@ SA3D.Common.Lookup.LabelDictionary.LabelDictionary(System.Collections.Generic.Di
 SA3D.Common.Lookup.LabeledArray<T>.GetEnumerator() -> System.Collections.IEnumerator!
 SA3D.Common.Lookup.LabeledArray<T>.LabelPrefix.get -> string!
 SA3D.Common.Lookup.PointerDictionary<T>.Add(long address, T value) -> void
+SA3D.Common.Lookup.PointerDictionary<T>.Count.get -> int
 SA3D.Common.Lookup.PointerDictionary<T>.GetAddress(T value) -> long?
 SA3D.Common.Lookup.PointerDictionary<T>.GetDictFrom() -> System.Collections.Generic.Dictionary<long, T>!
 SA3D.Common.Lookup.PointerDictionary<T>.GetDictTo() -> System.Collections.Generic.Dictionary<T, long>!

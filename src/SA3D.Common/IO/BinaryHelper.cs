@@ -110,7 +110,7 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <param name="reader">The reader to seek for</param>
 		/// <param name="position">The position to seek to</param>
-		public static void SeekOffset(this BinaryValueReader reader, long position)
+		public static void SeekPosition(this BinaryValueReader reader, long position)
 		{
 			reader.Seek(position, SeekOrigin.Begin);
 		}
@@ -198,13 +198,13 @@ namespace SA3D.Common.IO
 		/// Peeks the 4 bytes at the current position. Returns the endianness in which it would be the smaller value
 		/// </summary>
 		/// <returns></returns>
-		public static Endianness CheckEndianness32(this BinaryValueReader reader)
+		public static Endianness CheckEndianness32(this BinaryValueReader reader, long offset = 0, SeekOrigin origin = SeekOrigin.Begin)
 		{
 			uint little, big;
 
 			using(reader.WithEndian(Endianness.Little))
 			{
-				using(reader.At())
+				using(reader.At(offset, origin))
 				{
 					little = reader.ReadUInt32();
 				}
@@ -212,7 +212,7 @@ namespace SA3D.Common.IO
 
 			using(reader.WithEndian(Endianness.Big))
 			{
-				using(reader.At())
+				using(reader.At(offset, origin))
 				{
 					big = reader.ReadUInt32();
 				}
@@ -229,12 +229,12 @@ namespace SA3D.Common.IO
 		/// Reads a string at the the offset of the current position
 		/// </summary>
 		/// <param name="reader">The reader to read the string from</param>
+		/// <param name="offset">Offset to read a string at</param>
 		/// <param name="format">The format to read the string in</param>
 		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
 		/// <returns></returns>
-		public static string? ReadStringOffset(this BinaryObjectReader reader, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
+		public static string? ReadStringAtOffset(this BinaryObjectReader reader, long offset, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
 		{
-			long offset = reader.ReadOffsetValue();
 			if(offset == 0)
 			{
 				return null;
@@ -242,6 +242,32 @@ namespace SA3D.Common.IO
 
 			using SeekToken token = reader.AtOffset(offset);
 			return reader.ReadString(format, fixedLength);
+		}
+
+		/// <summary>
+		/// Reads a string at a specific offset. Returns an empty string instead of null
+		/// </summary>
+		/// <param name="reader">The reader to read the string from</param>
+		/// <param name="offset">Offset to read a string at</param>
+		/// <param name="format">The format to read the string in</param>
+		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
+		/// <returns></returns>
+		public static string ReadStringAtOffsetOrEmpty(this BinaryObjectReader reader, long offset, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
+		{
+			return reader.ReadStringAtOffset(offset, format, fixedLength) ?? string.Empty;
+		}
+
+
+		/// <summary>
+		/// Reads a string at the the offset of the current position
+		/// </summary>
+		/// <param name="reader">The reader to read the string from</param>
+		/// <param name="format">The format to read the string in</param>
+		/// <param name="fixedLength">The length of the string, if <see cref="StringBinaryFormat.FixedLength"/> is used</param>
+		/// <returns></returns>
+		public static string? ReadStringOffset(this BinaryObjectReader reader, StringBinaryFormat format = StringBinaryFormat.NullTerminated, int fixedLength = -1)
+		{
+			return reader.ReadStringAtOffset(reader.ReadOffsetValue(), format, fixedLength);
 		}
 
 		/// <summary>
