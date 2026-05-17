@@ -25,10 +25,29 @@ namespace SA3D.Common.Converters
 		{
 			if(destinationType == typeof(string) && value is T t)
 			{
-				return t.ToString();
+				return ConvertTo(t, context?.PropertyDescriptor?.Name);
 			}
 
 			return base.ConvertTo(context, culture, value, destinationType);
+		}
+
+		/// <summary>
+		/// Converts an object to a string
+		/// </summary>
+		/// <param name="value">The value to convert</param>
+		/// <param name="debugName">Name by which to identify the value being converted</param>
+		/// <returns></returns>
+		public static string ConvertTo(T value, string? debugName = null)
+		{
+			try
+			{
+				return value?.ToString()
+					?? throw new NullReferenceException("Conversion returned null");
+			}
+			catch(Exception exception)
+			{
+				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from an object to a string! Value: {value}", exception);
+			}
 		}
 
 		/// <inheritdoc/>
@@ -47,10 +66,29 @@ namespace SA3D.Common.Converters
 		{
 			if(value is string str)
 			{
-				return Activator.CreateInstance(typeof(T), str);
+				return ConvertFrom(str, context?.PropertyDescriptor?.Name);
 			}
 
 			return base.ConvertFrom(context, culture, value);
+		}
+
+		/// <summary>
+		/// Converts a string to an object
+		/// </summary>
+		/// <param name="value">The value to convert</param>
+		/// <param name="debugName">Name by which to identify the value being converted</param>
+		/// <returns></returns>
+		public static T ConvertFrom(string value, string? debugName = null)
+		{
+			try
+			{
+				return (T?)Activator.CreateInstance(typeof(T), value)
+					?? throw new NullReferenceException("Conversion returned null");
+			}
+			catch(Exception exception)
+			{
+				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from a string to an object! Value: {value}", exception);
+			}
 		}
 	}
 }

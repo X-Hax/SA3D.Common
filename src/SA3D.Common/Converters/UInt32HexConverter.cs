@@ -25,10 +25,20 @@ namespace SA3D.Common.Converters
 		{
 			if(destinationType == typeof(string) && value is uint integer)
 			{
-				return integer.ToString("X");
+				return ConvertTo(integer);
 			}
 
 			return base.ConvertTo(context, culture, value, destinationType);
+		}
+
+		/// <summary>
+		/// Converts an unsigned 32-bit integer to a hexadecimal string value
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static string ConvertTo(uint value)
+		{
+			return value.ToString("X");
 		}
 
 		/// <inheritdoc/>
@@ -47,10 +57,26 @@ namespace SA3D.Common.Converters
 		{
 			if(value is string str)
 			{
-				return uint.Parse(str, NumberStyles.HexNumber);
+				return ConvertFrom(str, context?.PropertyDescriptor?.Name);
 			}
 
 			return base.ConvertFrom(context, culture, value);
+		}
+
+		/// <summary>
+		/// Converts a hexadecimal string value to an unsigned 32-bit integer
+		/// </summary>
+		/// <param name="value">The value to convert</param>
+		/// <param name="debugName">Name by which to identify the value being converted</param>
+		/// <returns></returns>
+		public static uint ConvertFrom(string value, string? debugName = null)
+		{
+			if(uint.TryParse(value, NumberStyles.HexNumber, null, out uint result))
+			{
+				return result;
+			}
+
+			throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from hex to uint! Value: {value}");	
 		}
 
 		/// <inheritdoc/>

@@ -1,4 +1,26 @@
 ﻿abstract SA3D.Common.Lookup.BaseLUT.AddEntry(long address, object! value) -> void
+override SA3D.Common.Converters.QuaternionConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.QuaternionConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.QuaternionConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.QuaternionConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.Converters.Vector4Converter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
+override SA3D.Common.Converters.Vector4Converter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
+override SA3D.Common.Converters.Vector4Converter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
+override SA3D.Common.Converters.Vector4Converter.ConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, System.Type! destinationType) -> object?
+override SA3D.Common.JsonConverters.Matrix4x4JsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Numerics.Matrix4x4
+override SA3D.Common.JsonConverters.Matrix4x4JsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Matrix4x4 value, System.Text.Json.JsonSerializerOptions! options) -> void
+override SA3D.Common.JsonConverters.QuaternionJsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Numerics.Quaternion
+override SA3D.Common.JsonConverters.QuaternionJsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Quaternion value, System.Text.Json.JsonSerializerOptions! options) -> void
+override SA3D.Common.JsonConverters.Vector2JsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Numerics.Vector2
+override SA3D.Common.JsonConverters.Vector2JsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Vector2 value, System.Text.Json.JsonSerializerOptions! options) -> void
+override SA3D.Common.JsonConverters.Vector3JsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Numerics.Vector3
+override SA3D.Common.JsonConverters.Vector3JsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Vector3 value, System.Text.Json.JsonSerializerOptions! options) -> void
+override SA3D.Common.JsonConverters.Vector4JsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Numerics.Vector4
+override SA3D.Common.JsonConverters.Vector4JsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Vector4 value, System.Text.Json.JsonSerializerOptions! options) -> void
+SA3D.Common.Converters.QuaternionConverter
+SA3D.Common.Converters.QuaternionConverter.QuaternionConverter() -> void
+SA3D.Common.Converters.Vector4Converter
+SA3D.Common.Converters.Vector4Converter.Vector4Converter() -> void
 SA3D.Common.IO.BinaryHelper
 SA3D.Common.IO.EndiannessToken
 SA3D.Common.IO.EndiannessToken.Dispose() -> void
@@ -14,6 +36,16 @@ SA3D.Common.IO.ReadNullReferenceException.ReadNullReferenceException(Amicitia.IO
 SA3D.Common.IO.ReadNullReferenceException.ReadNullReferenceException(Amicitia.IO.Binary.BinaryValueReader! reader, string! structName, string! fieldName, long offset) -> void
 SA3D.Common.IO.ReadNullReferenceException.StructName.get -> string!
 SA3D.Common.IO.StructBinaryHelper
+SA3D.Common.JsonConverters.Matrix4x4JsonConverter
+SA3D.Common.JsonConverters.Matrix4x4JsonConverter.Matrix4x4JsonConverter() -> void
+SA3D.Common.JsonConverters.QuaternionJsonConverter
+SA3D.Common.JsonConverters.QuaternionJsonConverter.QuaternionJsonConverter() -> void
+SA3D.Common.JsonConverters.Vector2JsonConverter
+SA3D.Common.JsonConverters.Vector2JsonConverter.Vector2JsonConverter() -> void
+SA3D.Common.JsonConverters.Vector3JsonConverter
+SA3D.Common.JsonConverters.Vector3JsonConverter.Vector3JsonConverter() -> void
+SA3D.Common.JsonConverters.Vector4JsonConverter
+SA3D.Common.JsonConverters.Vector4JsonConverter.Vector4JsonConverter() -> void
 SA3D.Common.Lookup.BaseLUT.AddSafeLabel<T>(long address, T! value) -> void
 SA3D.Common.Lookup.BaseLUT.AddTryLabel<T>(long address, T! value) -> void
 SA3D.Common.Lookup.BaseLUT.BaseLUT(System.Collections.Generic.Dictionary<long, string!>! labels) -> void
@@ -37,6 +69,26 @@ SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(long address, out T result) 
 SA3D.Common.RegionMarker<T>.HasValue(long from, long to, T value) -> bool
 SA3D.Common.RegionMarker<T>.MarkRegion(long from, long to, T value) -> void
 static SA3D.Common.CollectionExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! input) -> SA3D.Common.Lookup.LabeledArray<T>!
+static SA3D.Common.Converters.BAMS16Converter.ConvertFrom(string! value, string? debugName = null) -> float
+static SA3D.Common.Converters.BAMS16Converter.ConvertTo(float value) -> string!
+static SA3D.Common.Converters.BAMS32Converter.ConvertFrom(string! value, string? debugName = null) -> float
+static SA3D.Common.Converters.BAMS32Converter.ConvertTo(float value) -> string!
+static SA3D.Common.Converters.Int32HexConverter.ConvertFrom(string! value, string? debugName = null) -> int
+static SA3D.Common.Converters.Int32HexConverter.ConvertTo(int value) -> string!
+static SA3D.Common.Converters.QuaternionConverter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Quaternion
+static SA3D.Common.Converters.QuaternionConverter.ConvertTo(System.Numerics.Quaternion value) -> string!
+static SA3D.Common.Converters.StringConverter<T>.ConvertFrom(string! value, string? debugName = null) -> T
+static SA3D.Common.Converters.StringConverter<T>.ConvertTo(T value, string? debugName = null) -> string!
+static SA3D.Common.Converters.UInt16HexConverter.ConvertFrom(string! value, string? debugName = null) -> ushort
+static SA3D.Common.Converters.UInt16HexConverter.ConvertTo(ushort value) -> string!
+static SA3D.Common.Converters.UInt32HexConverter.ConvertFrom(string! value, string? debugName = null) -> uint
+static SA3D.Common.Converters.UInt32HexConverter.ConvertTo(uint value) -> string!
+static SA3D.Common.Converters.Vector2Converter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Vector2
+static SA3D.Common.Converters.Vector2Converter.ConvertTo(System.Numerics.Vector2 value) -> string!
+static SA3D.Common.Converters.Vector3Converter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Vector3
+static SA3D.Common.Converters.Vector3Converter.ConvertTo(System.Numerics.Vector3 value) -> string!
+static SA3D.Common.Converters.Vector4Converter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Vector4
+static SA3D.Common.Converters.Vector4Converter.ConvertTo(System.Numerics.Vector4 value) -> string!
 static SA3D.Common.IO.BinaryHelper.Align(this Amicitia.IO.Binary.BinaryObjectWriter! writer, int alignment, long origin) -> void
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Streams.SeekToken
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueWriter! writer) -> Amicitia.IO.Streams.SeekToken

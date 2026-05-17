@@ -7,14 +7,14 @@ using System.Numerics;
 namespace SA3D.Common.Converters
 {
 	/// <summary>
-	/// A valueconverter for <see cref="Vector2"/>
+	/// A valueconverter for <see cref="Quaternion"/>
 	/// </summary>
-	public class Vector2Converter : ExpandableObjectConverter
+	public class QuaternionConverter : ExpandableObjectConverter
 	{
 		/// <inheritdoc/>
 		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
 		{
-			if(destinationType == typeof(Vector2))
+			if(destinationType == typeof(Quaternion))
 			{
 				return true;
 			}
@@ -25,7 +25,7 @@ namespace SA3D.Common.Converters
 		/// <inheritdoc/>
 		public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
 		{
-			if(destinationType == typeof(string) && value is Vector2 v)
+			if(destinationType == typeof(string) && value is Quaternion v)
 			{
 				return ConvertTo(v);
 			}
@@ -34,13 +34,13 @@ namespace SA3D.Common.Converters
 		}
 
 		/// <summary>
-		/// Converts a 2D vector to a string
+		/// Converts a quaternion to a string
 		/// </summary>
 		/// <param name="value">The value to convert</param>
 		/// <returns></returns>
-		public static string ConvertTo(Vector2 value)
+		public static string ConvertTo(Quaternion value)
 		{
-			return string.Format(CultureInfo.InvariantCulture, "{0:F6}, {1:F6}", value.X, value.Y);
+			return string.Format(CultureInfo.InvariantCulture, "{0:F6}, {1:F6}, {2:F6}, {3:F6}", value.X, value.Y, value.Z, value.W);
 		}
 
 		/// <inheritdoc/>
@@ -66,29 +66,31 @@ namespace SA3D.Common.Converters
 		}
 
 		/// <summary>
-		/// Converts a string to a 2D vector
+		/// Converts a string to a quaternion
 		/// </summary>
 		/// <param name="value">The value to convert</param>
 		/// <param name="debugName">Name by which to identify the value being converted</param>
 		/// <returns></returns>
-		public static Vector2 ConvertFrom(string value, string? debugName = null)
+		public static Quaternion ConvertFrom(string value, string? debugName = null)
 		{
 			try
 			{
 				string[] values = value.Split(',');
-				if(values.Length != 2)
+				if(values.Length != 4)
 				{
-					throw new InvalidOperationException($"Value split in {values.Length}; Expected 2!");
+					throw new InvalidOperationException($"Value split in {values.Length}; Expected 4!");
 				}
 
-				return new Vector2(
+				return new Quaternion(
 					float.Parse(values[0], CultureInfo.InvariantCulture),
-					float.Parse(values[1], CultureInfo.InvariantCulture)
+					float.Parse(values[1], CultureInfo.InvariantCulture),
+					float.Parse(values[2], CultureInfo.InvariantCulture),
+					float.Parse(values[3], CultureInfo.InvariantCulture)
 				);
 			}
 			catch(Exception exception)
 			{
-				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from a string to a 2D vector! Value: {value}", exception);
+				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from a string to a 4D vector! Value: {value}", exception);
 			}
 		}
 	}

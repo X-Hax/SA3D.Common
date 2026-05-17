@@ -20,10 +20,20 @@ namespace SA3D.Common.Converters
 		{
 			if(destinationType == typeof(string) && value is float single)
 			{
-				return ((uint)MathHelper.RadToBAMS(single)).ToString("X");
+				return ConvertTo(single);
 			}
 
 			return base.ConvertTo(context, culture, value, destinationType);
+		}
+
+		/// <summary>
+		/// Converts a radians value to a 32-bit BAMS string
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static string ConvertTo(float value)
+		{
+			return ((uint)MathHelper.RadToBAMS(value)).ToString("X");
 		}
 
 		/// <inheritdoc/>
@@ -37,11 +47,26 @@ namespace SA3D.Common.Converters
 		{
 			if(value is string str)
 			{
-				int bams = (int)uint.Parse(str, NumberStyles.HexNumber);
-				return MathHelper.BAMSToRad(bams);
+				return ConvertFrom(str, context?.PropertyDescriptor?.Name);
 			}
 
 			return base.ConvertFrom(context, culture, value);
+		}
+
+		/// <summary>
+		/// Converts a 32-bit BAMS string value to radians
+		/// </summary>
+		/// <param name="value">The value to convert</param>
+		/// <param name="debugName">Name by which to identify the value being converted</param>
+		/// <returns></returns>
+		public static float ConvertFrom(string value, string? debugName = null)
+		{
+			if(uint.TryParse(value, NumberStyles.HexNumber, null, out uint result))
+			{
+				return MathHelper.BAMSToRad(unchecked((int)result));
+			}
+
+			throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from BAMS32 to float! Value: {value}");
 		}
 
 		/// <inheritdoc/>
