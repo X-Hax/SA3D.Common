@@ -37,10 +37,11 @@ SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(long address, out T result) 
 SA3D.Common.RegionMarker<T>.HasValue(long from, long to, T value) -> bool
 SA3D.Common.RegionMarker<T>.MarkRegion(long from, long to, T value) -> void
 static SA3D.Common.CollectionExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! input) -> SA3D.Common.Lookup.LabeledArray<T>!
+static SA3D.Common.IO.BinaryHelper.Align(this Amicitia.IO.Binary.BinaryObjectWriter! writer, int alignment, long origin) -> void
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Streams.SeekToken
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueWriter! writer) -> Amicitia.IO.Streams.SeekToken
 static SA3D.Common.IO.BinaryHelper.CheckEndianness16(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Binary.Endianness
-static SA3D.Common.IO.BinaryHelper.CheckEndianness32(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Binary.Endianness
+static SA3D.Common.IO.BinaryHelper.CheckEndianness32(this Amicitia.IO.Binary.BinaryValueReader! reader, long offset = 0, System.IO.SeekOrigin origin = System.IO.SeekOrigin.Begin) -> Amicitia.IO.Binary.Endianness
 static SA3D.Common.IO.BinaryHelper.GetPositionOffset(this Amicitia.IO.Binary.BinaryObjectReader! reader) -> long
 static SA3D.Common.IO.BinaryHelper.GetPositionOffset(this Amicitia.IO.Binary.BinaryObjectWriter! writer) -> long
 static SA3D.Common.IO.BinaryHelper.ReadBAMS16(this Amicitia.IO.Binary.BinaryValueReader! reader) -> float
@@ -56,10 +57,12 @@ static SA3D.Common.IO.BinaryHelper.ReadObjectArrayAtOffset<T>(this Amicitia.IO.B
 static SA3D.Common.IO.BinaryHelper.ReadObjectArrayOffset<T, TContext>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count, TContext context) -> T[]!
 static SA3D.Common.IO.BinaryHelper.ReadObjectArrayOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count) -> T[]!
 static SA3D.Common.IO.BinaryHelper.ReadObjectArrayOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, System.Func<Amicitia.IO.Binary.BinaryObjectReader!, T>! read, int count) -> T[]!
+static SA3D.Common.IO.BinaryHelper.ReadStringAtOffset(this Amicitia.IO.Binary.BinaryObjectReader! reader, long offset, Amicitia.IO.Binary.StringBinaryFormat format = Amicitia.IO.Binary.StringBinaryFormat.NullTerminated, int fixedLength = -1) -> string?
+static SA3D.Common.IO.BinaryHelper.ReadStringAtOffsetOrEmpty(this Amicitia.IO.Binary.BinaryObjectReader! reader, long offset, Amicitia.IO.Binary.StringBinaryFormat format = Amicitia.IO.Binary.StringBinaryFormat.NullTerminated, int fixedLength = -1) -> string!
 static SA3D.Common.IO.BinaryHelper.ReadStringOffset(this Amicitia.IO.Binary.BinaryObjectReader! reader, Amicitia.IO.Binary.StringBinaryFormat format = Amicitia.IO.Binary.StringBinaryFormat.NullTerminated, int fixedLength = -1) -> string?
 static SA3D.Common.IO.BinaryHelper.ReadStringOffsetOrEmpty(this Amicitia.IO.Binary.BinaryObjectReader! reader, Amicitia.IO.Binary.StringBinaryFormat format = Amicitia.IO.Binary.StringBinaryFormat.NullTerminated, int fixedLength = -1) -> string!
-static SA3D.Common.IO.BinaryHelper.SeekOffset(this Amicitia.IO.Binary.BinaryValueReader! reader, long position) -> void
 static SA3D.Common.IO.BinaryHelper.SeekOffset(this Amicitia.IO.Binary.BinaryValueWriter! writer, long position) -> void
+static SA3D.Common.IO.BinaryHelper.SeekPosition(this Amicitia.IO.Binary.BinaryValueReader! reader, long position) -> void
 static SA3D.Common.IO.BinaryHelper.WithEndian(this Amicitia.IO.Binary.BinaryValueReader! reader, Amicitia.IO.Binary.Endianness endianness) -> SA3D.Common.IO.EndiannessToken
 static SA3D.Common.IO.BinaryHelper.WithEndian(this Amicitia.IO.Binary.BinaryValueWriter! writer, Amicitia.IO.Binary.Endianness endianness) -> SA3D.Common.IO.EndiannessToken
 static SA3D.Common.IO.BinaryHelper.WriteBAMS16(this Amicitia.IO.Binary.BinaryValueWriter! writer, float radians) -> void
@@ -88,6 +91,9 @@ static SA3D.Common.IO.LookupBinaryHelper.ReadLabeledObjectArrayAtOffset<T>(this 
 static SA3D.Common.IO.LookupBinaryHelper.ReadLabeledObjectArrayOffset<T, TContext>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count, string! labelPrefix, TContext context, SA3D.Common.Lookup.BaseLUT! lut) -> SA3D.Common.Lookup.LabeledArray<T>?
 static SA3D.Common.IO.LookupBinaryHelper.ReadLabeledObjectArrayOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count, string! labelPrefix, SA3D.Common.Lookup.BaseLUT! lut) -> SA3D.Common.Lookup.LabeledArray<T>?
 static SA3D.Common.IO.LookupBinaryHelper.ReadLabeledObjectArrayOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, System.Func<Amicitia.IO.Binary.BinaryObjectReader!, T>! read, int count, string! labelPrefix, SA3D.Common.Lookup.BaseLUT! lut) -> SA3D.Common.Lookup.LabeledArray<T>?
+static SA3D.Common.IO.LookupBinaryHelper.ReadLUTArray<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count, SA3D.Common.Lookup.BaseLUT! lut, string! labelPrefix, System.Action<Amicitia.IO.Binary.BinaryObjectReader!, T[]!>! read) -> SA3D.Common.Lookup.LabeledArray<T>!
+static SA3D.Common.IO.LookupBinaryHelper.ReadLUTArrayAtOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, long offset, int count, SA3D.Common.Lookup.BaseLUT! lut, string! labelPrefix, System.Action<Amicitia.IO.Binary.BinaryObjectReader!, T[]!>! read) -> SA3D.Common.Lookup.LabeledArray<T>?
+static SA3D.Common.IO.LookupBinaryHelper.ReadLUTItem<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, SA3D.Common.Lookup.BaseLUT! lut, string? labelPrefix, System.Func<Amicitia.IO.Binary.BinaryObjectReader!, T!>! read) -> T!
 static SA3D.Common.IO.LookupBinaryHelper.ReadLUTItemAtOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, long offset, SA3D.Common.Lookup.BaseLUT! lut, string? labelPrefix, System.Func<Amicitia.IO.Binary.BinaryObjectReader!, T!>! read) -> T?
 static SA3D.Common.IO.LookupBinaryHelper.ReadObject<T, TContext>(this Amicitia.IO.Binary.BinaryObjectReader! reader, TContext context, SA3D.Common.Lookup.BaseLUT! lut) -> T!
 static SA3D.Common.IO.LookupBinaryHelper.ReadObject<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, SA3D.Common.Lookup.BaseLUT! lut) -> T!

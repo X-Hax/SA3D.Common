@@ -1,8 +1,10 @@
-﻿using Amicitia.IO.Binary;
+﻿using Amicitia.IO;
+using Amicitia.IO.Binary;
 using Amicitia.IO.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SA3D.Common.IO
@@ -55,6 +57,18 @@ namespace SA3D.Common.IO
 		public static long GetPositionOffset(this BinaryObjectWriter writer)
 		{
 			return writer.OffsetHandler.CalculateOffset(writer.Position);
+		}
+
+		/// <summary>
+		/// Aligns the writer from a specific position
+		/// </summary>
+		/// <param name="writer">The writer to align</param>
+		/// <param name="origin">The origin from which to align</param>
+		/// <param name="alignment">The alignment</param>
+		public static void Align(this BinaryObjectWriter writer, int alignment, long origin)
+		{
+			long currentSize = writer.Position - origin;
+			writer.WriteCollection(Enumerable.Repeat((byte)0, (int)(AlignmentHelper.Align(currentSize, alignment) - currentSize)));
 		}
 
 		#endregion

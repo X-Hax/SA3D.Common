@@ -12,6 +12,7 @@ namespace SA3D.Common.IO
 	/// </summary>
 	public static class LookupBinaryHelper
 	{
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -64,6 +65,84 @@ namespace SA3D.Common.IO
 			using(reader.At(resolvedOffset, System.IO.SeekOrigin.Begin))
 			{
 				return reader.ReadLUTItem(lut, labelPrefix, read);
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="count"></param>
+		/// <param name="lut"></param>
+		/// <param name="labelPrefix"></param>
+		/// <param name="read"></param>
+		/// <returns></returns>
+		public static LabeledArray<T> ReadLUTArray<T>(this BinaryObjectReader reader, int count, BaseLUT lut, string labelPrefix, Action<BinaryObjectReader, T[]> read)
+		{
+			long offset = reader.GetPositionOffset();
+			LabeledArray<T>? result;
+
+			try
+			{
+				if(lut.TryGetValue(offset, out result))
+				{
+					if(result.Length < count)
+					{
+						result.Array = new T[count];
+						read(reader, result.Array);
+					}
+				}
+				else
+				{
+					result = new(lut.Labels.GetGenerateValue(offset, labelPrefix), count);
+
+					if(count > 0)
+					{
+						read(reader, result.Array);
+						lut.AddTryLabel(offset, result);
+					}
+				}
+
+			}
+			catch(InvalidCastException)
+			{
+				if(count == 0)
+				{
+					result = new(lut.Labels.GetGenerateValue(offset, labelPrefix), count);
+				}
+				else
+				{
+					throw;
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <param name="count"></param>
+		/// <param name="offset"></param>
+		/// <param name="lut"></param>
+		/// <param name="labelPrefix"></param>
+		/// <param name="read"></param>
+		/// <returns></returns>
+		public static LabeledArray<T>? ReadLUTArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, BaseLUT lut, string labelPrefix, Action<BinaryObjectReader, T[]> read)
+		{
+			long resolvedOffset = reader.OffsetHandler.ResolveOffset(offset);
+
+			if(resolvedOffset == -1)
+			{
+				return null;
+			}
+
+			using(reader.At(resolvedOffset, System.IO.SeekOrigin.Begin))
+			{
+				return reader.ReadLUTArray<T>(count, lut, labelPrefix, read);
 			}
 		}
 
@@ -123,12 +202,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T> ReadLabeledArray<T>(this BinaryObjectReader reader, int count, string labelPrefix, BaseLUT lut) where T : unmanaged
 		{
-			return reader.ReadLUTItem(lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadArray(count, result.Array);
-				return result;
-			});
+			return reader.ReadLUTArray<T>(count, lut, labelPrefix, (r, dst) => r.ReadArray(dst.Length, dst));
 		}
 
 		/// <summary>
@@ -143,12 +217,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T>? ReadLabeledArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, string labelPrefix, BaseLUT lut) where T : unmanaged
 		{
-			return reader.ReadLUTItemAtOffset(offset, lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadArray(count, result.Array);
-				return result;
-			});
+			return reader.ReadLUTArrayAtOffset<T>(offset, count, lut, labelPrefix, (r, dst) => r.ReadArray(dst.Length, dst));
 		}
 
 		/// <summary>
@@ -449,12 +518,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T> ReadLabeledObjectArray<T>(this BinaryObjectReader reader, int count, string labelPrefix, BaseLUT lut) where T : IBinarySerializable, new()
 		{
-			return reader.ReadLUTItem(lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadObjectArray(result.Array);
-				return result;
-			});
+			return reader.ReadLUTArray<T>(count, lut, labelPrefix, (r, dst) => r.ReadObjectArray(dst));
 		}
 
 		/// <summary>
@@ -470,12 +534,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T> ReadLabeledObjectArray<T, TContext>(this BinaryObjectReader reader, int count, string labelPrefix, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
 		{
-			return reader.ReadLUTItem(lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadObjectArray(context, result.Array);
-				return result;
-			});
+			return reader.ReadLUTArray<T>(count, lut, labelPrefix, (r, dst) => r.ReadObjectArray(context, dst));
 		}
 
 		/// <summary>
@@ -490,12 +549,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T> ReadLabeledObjectArray<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, int count, string labelPrefix, BaseLUT lut)
 		{
-			return reader.ReadLUTItem(lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadObjectArray(read, result.Array);
-				return result;
-			});
+			return reader.ReadLUTArray<T>(count, lut, labelPrefix, (r, dst) => r.ReadObjectArray(read, dst));
 		}
 
 
@@ -511,12 +565,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T>? ReadLabeledObjectArrayAtOffset<T>(this BinaryObjectReader reader, long offset, int count, string labelPrefix, BaseLUT lut) where T : IBinarySerializable, new()
 		{
-			return reader.ReadLUTItemAtOffset(offset, lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadObjectArray(result.Array);
-				return result;
-			});
+			return reader.ReadLUTArrayAtOffset<T>(offset, count, lut, labelPrefix, (r, dst) => r.ReadObjectArray(dst));
 		}
 
 		/// <summary>
@@ -533,12 +582,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T>? ReadLabeledObjectArrayAtOffset<T, TContext>(this BinaryObjectReader reader, long offset, int count, string labelPrefix, TContext context, BaseLUT lut) where T : IBinarySerializable<TContext>, new()
 		{
-			return reader.ReadLUTItemAtOffset(offset, lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadObjectArray(context, result.Array);
-				return result;
-			});
+			return reader.ReadLUTArrayAtOffset<T>(offset, count, lut, labelPrefix, (r, dst) => r.ReadObjectArray(context, dst));
 		}
 
 		/// <summary>
@@ -554,12 +598,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static LabeledArray<T>? ReadLabeledObjectArrayAtOffset<T>(this BinaryObjectReader reader, Func<BinaryObjectReader, T> read, long offset, int count, string labelPrefix, BaseLUT lut)
 		{
-			return reader.ReadLUTItemAtOffset(offset, lut, labelPrefix, (r) =>
-			{
-				LabeledArray<T> result = new(count);
-				r.ReadObjectArray(read, result.Array);
-				return result;
-			});
+			return reader.ReadLUTArrayAtOffset<T>(offset, count, lut, labelPrefix, (r, dst) => r.ReadObjectArray(read, dst));
 		}
 
 
@@ -610,9 +649,6 @@ namespace SA3D.Common.IO
 			long offset = reader.ReadOffsetValue();
 			return reader.ReadLabeledObjectArrayAtOffset(read, offset, count, labelPrefix, lut)!;
 		}
-
-
-
 
 		#endregion
 
@@ -718,7 +754,6 @@ namespace SA3D.Common.IO
 			lut.AddForWriter(writer, items);
 			writer.WriteArray(items.ToArray());
 		}
-
 
 		/// <summary>
 		/// 
