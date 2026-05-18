@@ -17,10 +17,6 @@ namespace SA3D.Common.Lookup
 		/// </summary>
 		public string Label { get; set; }
 
-		string IReferenceable.ReferenceName
-		{
-			get => Label;
-			set => Label = value;
-		}
+		string IReferenceable.ReferenceName => Label;
 	}
 }
