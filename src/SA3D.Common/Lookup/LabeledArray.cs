@@ -1,6 +1,8 @@
-﻿using System;
+﻿using SA3D.Common.JsonConverters;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace SA3D.Common.Lookup
 {
@@ -8,6 +10,8 @@ namespace SA3D.Common.Lookup
 	/// An array with a label.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
+
+	[JsonConverter(typeof(LabeledArrayJsonConverterFactory))]
 	public class LabeledArray<T> : ILabel, IList, IList<T>, ICloneable
 	{
 		private const string _labelPrefix = "array_";
