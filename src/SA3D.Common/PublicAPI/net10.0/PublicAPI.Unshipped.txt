@@ -77,27 +77,27 @@ SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(long address, out T result) 
 SA3D.Common.RegionMarker<T>.HasValue(long from, long to, T value) -> bool
 SA3D.Common.RegionMarker<T>.MarkRegion(long from, long to, T value) -> void
 static SA3D.Common.CollectionExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! input) -> SA3D.Common.Lookup.LabeledArray<T>!
-static SA3D.Common.Converters.BAMS16Converter.ConvertFrom(string! value, string? debugName = null) -> float
+static SA3D.Common.Converters.BAMS16Converter.ConvertFrom(string! value, string? debugName) -> float
 static SA3D.Common.Converters.BAMS16Converter.ConvertTo(float value) -> string!
-static SA3D.Common.Converters.BAMS32Converter.ConvertFrom(string! value, string? debugName = null) -> float
+static SA3D.Common.Converters.BAMS32Converter.ConvertFrom(string! value, string? debugName) -> float
 static SA3D.Common.Converters.BAMS32Converter.ConvertTo(float value) -> string!
-static SA3D.Common.Converters.Int32HexConverter.ConvertFrom(string! value, string? debugName = null) -> int
+static SA3D.Common.Converters.Int32HexConverter.ConvertFrom(string! value, string? debugName) -> int
 static SA3D.Common.Converters.Int32HexConverter.ConvertTo(int value) -> string!
-static SA3D.Common.Converters.QuaternionConverter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Quaternion
+static SA3D.Common.Converters.QuaternionConverter.ConvertFrom(string! value, string? debugName) -> System.Numerics.Quaternion
 static SA3D.Common.Converters.QuaternionConverter.ConvertTo(System.Numerics.Quaternion value) -> string!
-static SA3D.Common.Converters.StringConverter<T>.ConvertFrom(string! value, string? debugName = null) -> T
-static SA3D.Common.Converters.StringConverter<T>.ConvertTo(T value, string? debugName = null) -> string!
-static SA3D.Common.Converters.UInt16HexConverter.ConvertFrom(string! value, string? debugName = null) -> ushort
+static SA3D.Common.Converters.StringConverter<T>.ConvertFrom(string! value, string? debugName) -> T
+static SA3D.Common.Converters.StringConverter<T>.ConvertTo(T value, string? debugName) -> string!
+static SA3D.Common.Converters.UInt16HexConverter.ConvertFrom(string! value, string? debugName) -> ushort
 static SA3D.Common.Converters.UInt16HexConverter.ConvertTo(ushort value) -> string!
-static SA3D.Common.Converters.UInt32HexConverter.ConvertFrom(string! value, string? debugName = null) -> uint
+static SA3D.Common.Converters.UInt32HexConverter.ConvertFrom(string! value, string? debugName) -> uint
 static SA3D.Common.Converters.UInt32HexConverter.ConvertTo(uint value) -> string!
-static SA3D.Common.Converters.UInt8HexConverter.ConvertFrom(string! value, string? debugName = null) -> byte
+static SA3D.Common.Converters.UInt8HexConverter.ConvertFrom(string! value, string? debugName) -> byte
 static SA3D.Common.Converters.UInt8HexConverter.ConvertTo(byte value) -> string!
-static SA3D.Common.Converters.Vector2Converter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Vector2
+static SA3D.Common.Converters.Vector2Converter.ConvertFrom(string! value, string? debugName) -> System.Numerics.Vector2
 static SA3D.Common.Converters.Vector2Converter.ConvertTo(System.Numerics.Vector2 value) -> string!
-static SA3D.Common.Converters.Vector3Converter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Vector3
+static SA3D.Common.Converters.Vector3Converter.ConvertFrom(string! value, string? debugName) -> System.Numerics.Vector3
 static SA3D.Common.Converters.Vector3Converter.ConvertTo(System.Numerics.Vector3 value) -> string!
-static SA3D.Common.Converters.Vector4Converter.ConvertFrom(string! value, string? debugName = null) -> System.Numerics.Vector4
+static SA3D.Common.Converters.Vector4Converter.ConvertFrom(string! value, string? debugName) -> System.Numerics.Vector4
 static SA3D.Common.Converters.Vector4Converter.ConvertTo(System.Numerics.Vector4 value) -> string!
 static SA3D.Common.IO.BinaryHelper.Align(this Amicitia.IO.Binary.BinaryObjectWriter! writer, int alignment, long origin) -> void
 static SA3D.Common.IO.BinaryHelper.At(this Amicitia.IO.Binary.BinaryValueReader! reader) -> Amicitia.IO.Streams.SeekToken

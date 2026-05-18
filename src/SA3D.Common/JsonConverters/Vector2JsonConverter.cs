@@ -19,7 +19,7 @@ namespace SA3D.Common.JsonConverters
 				throw new JsonException("Expected a string for Vector2!");
 			}
 
-			return Vector2Converter.ConvertFrom(reader.GetString()!);
+			return Vector2Converter.ConvertFrom(reader.GetString()!, null);
 		}
 
 		/// <inheritdoc/>

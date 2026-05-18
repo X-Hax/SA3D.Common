@@ -42,7 +42,7 @@ namespace SA3D.Common.IO
 		{
 			Vector2[] result = new Vector2[count];
 
-			for (int i = 0; i < count; i++)
+			for(int i = 0; i < count; i++)
 			{
 				result[i] = reader.ReadVector2();
 			}
@@ -57,7 +57,7 @@ namespace SA3D.Common.IO
 		/// <param name="array">The array to write</param>
 		public static void WriteVector2Array(this BinaryValueWriter writer, Vector2[] array)
 		{
-			foreach (Vector2 value in array)
+			foreach(Vector2 value in array)
 			{
 				writer.WriteVector2(value);
 			}
@@ -112,7 +112,7 @@ namespace SA3D.Common.IO
 		/// <param name="array">The array to write</param>
 		public static void WriteVector3Array(this BinaryValueWriter writer, Vector3[] array)
 		{
-			foreach (Vector3 value in array)
+			foreach(Vector3 value in array)
 			{
 				writer.WriteVector3(value);
 			}

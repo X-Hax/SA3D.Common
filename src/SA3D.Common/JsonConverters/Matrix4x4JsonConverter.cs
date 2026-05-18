@@ -18,7 +18,7 @@ namespace SA3D.Common.JsonConverters
 				throw new JsonException("Matrix4x4 must be an array!");
 			}
 
-			Vector4[] rows = JsonSerializer.Deserialize<Vector4[]>(ref reader, options) 
+			Vector4[] rows = JsonSerializer.Deserialize<Vector4[]>(ref reader, options)
 				?? throw new JsonException("Failed to read Matrix4x4!");
 
 			if(rows.Length < 4)

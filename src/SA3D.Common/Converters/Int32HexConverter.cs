@@ -69,7 +69,7 @@ namespace SA3D.Common.Converters
 		/// <param name="value">The value to convert</param>
 		/// <param name="debugName">Name by which to identify the value being converted</param>
 		/// <returns></returns>
-		public static int ConvertFrom(string value, string? debugName = null)
+		public static int ConvertFrom(string value, string? debugName)
 		{
 			if(int.TryParse(value, NumberStyles.HexNumber, null, out int result))
 			{

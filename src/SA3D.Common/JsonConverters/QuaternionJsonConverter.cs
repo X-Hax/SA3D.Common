@@ -19,7 +19,7 @@ namespace SA3D.Common.JsonConverters
 				throw new JsonException("Expected a string for Quaternion!");
 			}
 
-			return QuaternionConverter.ConvertFrom(reader.GetString()!);
+			return QuaternionConverter.ConvertFrom(reader.GetString()!, null);
 		}
 
 		/// <inheritdoc/>

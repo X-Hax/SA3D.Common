@@ -19,13 +19,13 @@ namespace SA3D.Common.JsonConverters
 				throw new JsonException("Expected a string for Vector3!");
 			}
 
-			return Vector3Converter.ConvertFrom(reader.GetString()!);
+			return Vector3Converter.ConvertFrom(reader.GetString()!, null);
 		}
 
 		/// <inheritdoc/>
 		public override void Write(Utf8JsonWriter writer, Vector3 value, JsonSerializerOptions options)
 		{
-            writer.WriteStringValue(Vector3Converter.ConvertTo(value));
-        }
+			writer.WriteStringValue(Vector3Converter.ConvertTo(value));
+		}
 	}
 }

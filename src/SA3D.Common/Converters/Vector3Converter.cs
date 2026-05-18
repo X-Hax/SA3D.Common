@@ -71,7 +71,7 @@ namespace SA3D.Common.Converters
 		/// <param name="value">The value to convert</param>
 		/// <param name="debugName">Name by which to identify the value being converted</param>
 		/// <returns></returns>
-		public static Vector3 ConvertFrom(string value, string? debugName = null)
+		public static Vector3 ConvertFrom(string value, string? debugName)
 		{
 			try
 			{
