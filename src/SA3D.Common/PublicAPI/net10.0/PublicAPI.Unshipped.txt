@@ -22,6 +22,31 @@ override SA3D.Common.JsonConverters.Vector3JsonConverter.Read(ref System.Text.Js
 override SA3D.Common.JsonConverters.Vector3JsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Vector3 value, System.Text.Json.JsonSerializerOptions! options) -> void
 override SA3D.Common.JsonConverters.Vector4JsonConverter.Read(ref System.Text.Json.Utf8JsonReader reader, System.Type! typeToConvert, System.Text.Json.JsonSerializerOptions! options) -> System.Numerics.Vector4
 override SA3D.Common.JsonConverters.Vector4JsonConverter.Write(System.Text.Json.Utf8JsonWriter! writer, System.Numerics.Vector4 value, System.Text.Json.JsonSerializerOptions! options) -> void
+SA3D.Common.Ascii.AsciiExtensions
+SA3D.Common.Ascii.AsciiWriter
+SA3D.Common.Ascii.AsciiWriter.AsciiWriter() -> void
+SA3D.Common.Ascii.AsciiWriter.Write(string! value) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteArray<T, C>(string! type, SA3D.Common.Lookup.LabeledArray<T>! array, C context) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteArray<T>(string! type, SA3D.Common.Lookup.LabeledArray<T>? array) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteBlock(string? prefix = null, int endNewlineCount = 2) -> SA3D.Common.Ascii.AsciiWriterBlockToken
+SA3D.Common.Ascii.AsciiWriter.WriteLine() -> void
+SA3D.Common.Ascii.AsciiWriter.WriteLine(string! value) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteLine(string! value, int newlines) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteObject(SA3D.Common.Ascii.IAsciiSerializable? data) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteObject<C>(SA3D.Common.Ascii.IAsciiSerializable<C>? data, C context) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteObjectBlock(string! type) -> SA3D.Common.Ascii.AsciiWriterBlockToken
+SA3D.Common.Ascii.AsciiWriter.WriteObjectLabel(SA3D.Common.Lookup.ILabel? label) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteObjectPropertyLine(string! propertyName, SA3D.Common.Lookup.ILabel? obj) -> void
+SA3D.Common.Ascii.AsciiWriter.WritePropertyLine(string! propertyName, string! value) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteStructBlock(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken
+SA3D.Common.Ascii.AsciiWriter.WriteStructBlockWithReference(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken?
+SA3D.Common.Ascii.AsciiWriterBlockToken
+SA3D.Common.Ascii.AsciiWriterBlockToken.AsciiWriterBlockToken() -> void
+SA3D.Common.Ascii.AsciiWriterBlockToken.Dispose() -> void
+SA3D.Common.Ascii.IAsciiSerializable
+SA3D.Common.Ascii.IAsciiSerializable.Write(SA3D.Common.Ascii.AsciiWriter! writer) -> void
+SA3D.Common.Ascii.IAsciiSerializable<C>
+SA3D.Common.Ascii.IAsciiSerializable<C>.Write(SA3D.Common.Ascii.AsciiWriter! writer, C context) -> void
 SA3D.Common.Converters.QuaternionConverter
 SA3D.Common.Converters.QuaternionConverter.QuaternionConverter() -> void
 SA3D.Common.Converters.UInt8HexConverter
@@ -76,7 +101,18 @@ SA3D.Common.Lookup.PointerDictionary<T>.TryGetAddress(T value, out long result) 
 SA3D.Common.Lookup.PointerDictionary<T>.TryGetValue(long address, out T result) -> bool
 SA3D.Common.RegionMarker<T>.HasValue(long from, long to, T value) -> bool
 SA3D.Common.RegionMarker<T>.MarkRegion(long from, long to, T value) -> void
+static SA3D.Common.Ascii.AsciiExtensions.ToAscii(this float value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAscii(this System.Numerics.Vector2 value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAscii(this System.Numerics.Vector3 value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAscii<T>(this T value, System.Collections.Generic.IDictionary<string!, T>! lut) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAsciiDegrees(this float value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAsciiDegrees(this System.Numerics.Vector3 value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAsciiHex(this float value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAsciiHex(this System.Numerics.Vector2 value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAsciiHex(this System.Numerics.Vector3 value) -> string!
+static SA3D.Common.Ascii.AsciiExtensions.ToAsciiHex(this uint value) -> string!
 static SA3D.Common.CollectionExtensions.ContentClone<T>(this SA3D.Common.Lookup.LabeledArray<T>! input) -> SA3D.Common.Lookup.LabeledArray<T>!
+static SA3D.Common.CollectionExtensions.FindKey<K, V>(this System.Collections.Generic.IDictionary<K, V>! dictionary, V value) -> K
 static SA3D.Common.Converters.BAMS16Converter.ConvertFrom(string! value, string? debugName) -> float
 static SA3D.Common.Converters.BAMS16Converter.ConvertTo(float value) -> string!
 static SA3D.Common.Converters.BAMS32Converter.ConvertFrom(string! value, string? debugName) -> float

@@ -46,6 +46,19 @@ namespace SA3D.Common
 		}
 
 		/// <summary>
+		/// Returns the first key that is found to the given value. Throws an error if none is found
+		/// </summary>
+		/// <typeparam name="K">Type of the key</typeparam>
+		/// <typeparam name="V">Type of the value</typeparam>
+		/// <param name="dictionary">Dictionary to look through</param>
+		/// <param name="value">Value to look for</param>
+		/// <returns></returns>
+		public static K FindKey<K, V>(this IDictionary<K, V> dictionary, V value) where V : notnull
+		{
+			return dictionary.First(x => x.Value.Equals(value)).Key;
+		}
+
+		/// <summary>
 		/// Constructs an enumerable for iterating over the lines read (<see cref="StreamReader.ReadLine"/>) off a stream reader. Ends when reader returns null.
 		/// </summary>
 		/// <param name="reader">The reader to read lines off.</param>

@@ -14,6 +14,14 @@ namespace SA3D.Common
 		/// </summary>
 		private static readonly Random _rand = new();
 
+		private static readonly Encoding _shiftJIS;
+
+		static StringExtensions()
+		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+			_shiftJIS = Encoding.GetEncoding(932);
+		}
+
 		/// <summary>
 		/// Converts a signed short to a C Hexadecimal constant.
 		/// </summary>
@@ -116,7 +124,6 @@ namespace SA3D.Common
 				return "NULL";
 			}
 
-			Encoding enc = Encoding.GetEncoding(932);
 			StringBuilder result = new("\"");
 			foreach(char item in input)
 			{
@@ -159,7 +166,7 @@ namespace SA3D.Common
 						}
 						else if(item > '\x7F')
 						{
-							foreach(byte b in enc.GetBytes(item.ToString()))
+							foreach(byte b in _shiftJIS.GetBytes(item.ToString()))
 							{
 								result.AppendFormat(@"\{0}", Convert.ToString(b, 8).PadLeft(3, '0'));
 							}

@@ -25,6 +25,7 @@
 	<ItemGroup>
 	  <PackageReference Include="Amicitia.IO" Version="1.2.1" />
 	  <PackageReference Include="J113D.Json" Version="1.1.1" />
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.8" />
 	</ItemGroup>
 
 </Project>
