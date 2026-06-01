@@ -1,4 +1,5 @@
 ﻿abstract SA3D.Common.Lookup.BaseLUT.AddEntry(long address, object! value) -> void
+override SA3D.Common.Ascii.AsciiWriter.ToString() -> string!
 override SA3D.Common.Converters.QuaternionConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Type! sourceType) -> bool
 override SA3D.Common.Converters.QuaternionConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext? context, System.Type? destinationType) -> bool
 override SA3D.Common.Converters.QuaternionConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object! value) -> object?
@@ -35,9 +36,8 @@ SA3D.Common.Ascii.AsciiWriter.WriteLine(string! value, int newlines) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObject(SA3D.Common.Ascii.IAsciiSerializable? data) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObject<C>(SA3D.Common.Ascii.IAsciiSerializable<C>? data, C context) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObjectBlock(string! type) -> SA3D.Common.Ascii.AsciiWriterBlockToken
-SA3D.Common.Ascii.AsciiWriter.WriteObjectLabel(SA3D.Common.Lookup.ILabel? label) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObjectPropertyLine(string! propertyName, SA3D.Common.Lookup.ILabel? obj) -> void
-SA3D.Common.Ascii.AsciiWriter.WritePropertyLine(string! propertyName, string! value) -> void
+SA3D.Common.Ascii.AsciiWriter.WritePropertyLine(string! propertyName, string! value, bool comma = true) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteStructBlock(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken
 SA3D.Common.Ascii.AsciiWriter.WriteStructBlockWithReference(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken?
 SA3D.Common.Ascii.AsciiWriterBlockToken

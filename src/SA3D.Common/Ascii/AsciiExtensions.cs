@@ -128,5 +128,6 @@ namespace SA3D.Common.Ascii
 
 			return result;
 		}
+
 	}
 }

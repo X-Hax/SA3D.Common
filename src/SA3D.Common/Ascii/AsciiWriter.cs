@@ -51,6 +51,18 @@ namespace SA3D.Common.Ascii
 		}
 
 		/// <summary>
+		/// Writes empty lines to the writer
+		/// </summary>
+		/// <param name="newlines">The number of newlines to append after the value</param>
+		public void WriteLine(int newlines)
+		{
+			for(int i = 0; i < newlines; i++)
+			{
+				_stringBuilder.AppendLine();
+			}
+		}
+
+		/// <summary>
 		/// Writes a line to the writer
 		/// </summary>
 		/// <param name="value">The line to write</param>
@@ -65,19 +77,24 @@ namespace SA3D.Common.Ascii
 		}
 
 
-		private bool SetupLabel(ILabel label)
+		private string GetLabel(ILabel label)
 		{
-			return _writtenlabels.Add(label.Label.ToC());
+			return label.Label.ToC()[1..^1];
 		}
 
-		private string GetLabel(ILabel? label)
+		private bool SetupLabel(ILabel label)
+		{
+			return _writtenlabels.Add(GetLabel(label));
+		}
+
+		private string GetCheckLabel(ILabel? label)
 		{
 			if(label == null)
 			{
 				return "NULL";
 			}
 
-			string cString = label.Label.ToC();
+			string cString = GetLabel(label);
 
 			if(!_writtenlabels.Contains(cString))
 			{
@@ -165,21 +182,12 @@ namespace SA3D.Common.Ascii
 
 
 		/// <summary>
-		/// Writes an objects label to the writer
-		/// </summary>
-		/// <param name="label">The object of which to write the label</param>
-		/// <exception cref="InvalidOperationException"></exception>
-		public void WriteObjectLabel(ILabel? label)
-		{
-			Write(GetLabel(label));
-		}
-
-		/// <summary>
 		/// Writes a property name with its value
 		/// </summary>
 		/// <param name="propertyName">Name of the property</param>
 		/// <param name="value">Value of the property</param>
-		public void WritePropertyLine(string propertyName, string value)
+		/// <param name="comma">Writes a comma at the end of the property line</param>
+		public void WritePropertyLine(string propertyName, string value, bool comma = true)
 		{
 			string padding = " ";
 			if(propertyName.Length < 12)
@@ -187,7 +195,7 @@ namespace SA3D.Common.Ascii
 				padding = new string(' ', 12 - propertyName.Length);
 			}
 
-			WriteLine($"{propertyName}{padding}{value},");
+			WriteLine($"{propertyName}{padding}{value}{(comma ? "," : string.Empty)}");
 		}
 
 		/// <summary>
@@ -197,7 +205,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="obj">Object to link to the property</param>
 		public void WriteObjectPropertyLine(string propertyName, ILabel? obj)
 		{
-			WritePropertyLine(propertyName, GetLabel(obj));
+			WritePropertyLine(propertyName, GetCheckLabel(obj));
 		}
 
 
@@ -220,7 +228,7 @@ namespace SA3D.Common.Ascii
 		/// <returns></returns>
 		public AsciiWriterBlockToken WriteStructBlock(string type, ILabel obj)
 		{
-			WritePropertyLine(type, obj.ReferenceName + "[]");
+			WritePropertyLine(type, GetLabel(obj) + "[]", false);
 			return WriteBlock();
 		}
 
