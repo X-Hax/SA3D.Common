@@ -79,7 +79,7 @@ namespace SA3D.Common.Ascii
 
 		private string GetLabel(ILabel label)
 		{
-			return label.Label.ToC()[1..^1];
+			return label.Label.MakeIdentifier();
 		}
 
 		private bool SetupLabel(ILabel label)
