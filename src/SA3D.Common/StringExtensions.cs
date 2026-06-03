@@ -279,10 +279,15 @@ namespace SA3D.Common
 			StringBuilder result = new(input.Length + 1);
 			foreach(char item in input)
 			{
-				if(char.IsAsciiLetter(item) && char.IsAsciiDigit(item))
+				if(char.IsAsciiLetter(item) || char.IsAsciiDigit(item))
 				{
 					result.Append(item);
 				}
+			}
+
+			if(result.Length == 0)
+			{
+				return "invalid_" + input.GetHashCode();
 			}
 
 			if(result[0] >= '0' & result[0] <= '9')

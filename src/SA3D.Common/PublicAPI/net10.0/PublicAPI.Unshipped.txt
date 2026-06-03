@@ -31,13 +31,15 @@ SA3D.Common.Ascii.AsciiWriter.WriteArray<T, C>(string! type, SA3D.Common.Lookup.
 SA3D.Common.Ascii.AsciiWriter.WriteArray<T>(string! type, SA3D.Common.Lookup.LabeledArray<T>? array) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteBlock(string? prefix = null, int endNewlineCount = 2) -> SA3D.Common.Ascii.AsciiWriterBlockToken
 SA3D.Common.Ascii.AsciiWriter.WriteLine() -> void
+SA3D.Common.Ascii.AsciiWriter.WriteLine(int newlines) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteLine(string! value) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteLine(string! value, int newlines) -> void
+SA3D.Common.Ascii.AsciiWriter.WriteLineIndented(string! left, string! right) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObject(SA3D.Common.Ascii.IAsciiSerializable? data) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObject<C>(SA3D.Common.Ascii.IAsciiSerializable<C>? data, C context) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObjectBlock(string! type) -> SA3D.Common.Ascii.AsciiWriterBlockToken
 SA3D.Common.Ascii.AsciiWriter.WriteObjectPropertyLine(string! propertyName, SA3D.Common.Lookup.ILabel? obj) -> void
-SA3D.Common.Ascii.AsciiWriter.WritePropertyLine(string! propertyName, string! value, bool comma = true) -> void
+SA3D.Common.Ascii.AsciiWriter.WritePropertyLine(string! propertyName, string! value, string? comment = null) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteStructBlock(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken
 SA3D.Common.Ascii.AsciiWriter.WriteStructBlockWithReference(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken?
 SA3D.Common.Ascii.AsciiWriterBlockToken

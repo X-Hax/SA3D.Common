@@ -76,6 +76,22 @@ namespace SA3D.Common.Ascii
 			}
 		}
 
+		/// <summary>
+		/// Writes a line in 2 parts, with the right part having being at least 12 spaces from the start of the line
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		public void WriteLineIndented(string left, string right)
+		{
+			string padding = " ";
+			if(left.Length < 12)
+			{
+				padding = new string(' ', 12 - left.Length);
+			}
+
+			WriteLine($"{left}{padding}{right}");
+		}
+
 
 		private string GetLabel(ILabel label)
 		{
@@ -104,6 +120,8 @@ namespace SA3D.Common.Ascii
 			return cString;
 		}
 
+
+		
 
 		/// <summary>
 		/// Writes an object to the writer
@@ -187,15 +205,15 @@ namespace SA3D.Common.Ascii
 		/// <param name="propertyName">Name of the property</param>
 		/// <param name="value">Value of the property</param>
 		/// <param name="comma">Writes a comma at the end of the property line</param>
-		public void WritePropertyLine(string propertyName, string value, bool comma = true)
+		public void WritePropertyLine(string propertyName, string value, string? comment = null)
 		{
-			string padding = " ";
-			if(propertyName.Length < 12)
+			string end = string.Empty;
+			if(!string.IsNullOrEmpty(comment))
 			{
-				padding = new string(' ', 12 - propertyName.Length);
+				end = $" /* {comment} */";
 			}
 
-			WriteLine($"{propertyName}{padding}{value}{(comma ? "," : string.Empty)}");
+			WriteLineIndented(propertyName, value + "," + end);
 		}
 
 		/// <summary>
@@ -228,7 +246,7 @@ namespace SA3D.Common.Ascii
 		/// <returns></returns>
 		public AsciiWriterBlockToken WriteStructBlock(string type, ILabel obj)
 		{
-			WritePropertyLine(type, GetLabel(obj) + "[]", false);
+			WriteLineIndented(type, GetLabel(obj) + "[]");
 			return WriteBlock();
 		}
 
