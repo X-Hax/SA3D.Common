@@ -277,11 +277,15 @@ namespace SA3D.Common
 		public static string MakeIdentifier(this string input)
 		{
 			StringBuilder result = new(input.Length + 1);
-			foreach(char item in input)
+			foreach(char character in input)
 			{
-				if(char.IsAsciiLetter(item) || char.IsAsciiDigit(item))
+				if(char.IsAsciiLetter(character) || char.IsAsciiDigit(character) || character == '_')
 				{
-					result.Append(item);
+					result.Append(character);
+				}
+				else if(character == ' ')
+				{
+					result.Append('_');
 				}
 			}
 
