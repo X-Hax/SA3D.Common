@@ -83,10 +83,10 @@ namespace SA3D.Common.Ascii
 		/// <param name="right"></param>
 		public void WriteLineIndented(string left, string right)
 		{
-			string padding = " ";
+			string padding = "\t";
 			if(left.Length < 12)
 			{
-				padding = new string(' ', 12 - left.Length);
+				padding = new string('\t', (int)float.Ceiling((12 - left.Length) / 4f));
 			}
 
 			WriteLine($"{left}{padding}{right}");
@@ -120,8 +120,6 @@ namespace SA3D.Common.Ascii
 			return cString;
 		}
 
-
-		
 
 		/// <summary>
 		/// Writes an object to the writer
@@ -158,7 +156,8 @@ namespace SA3D.Common.Ascii
 		/// <typeparam name="T">The array element type</typeparam>
 		/// <param name="type">Type of the array</param>
 		/// <param name="array">The array</param>
-		public void WriteArray<T>(string type, LabeledArray<T>? array) where T : IAsciiSerializable
+		/// <param name="elementSpacing">Newlines between elements</param>
+		public void WriteArray<T>(string type, LabeledArray<T>? array, int elementSpacing) where T : IAsciiSerializable
 		{
 			if(array == null || !SetupLabel(array))
 			{
@@ -167,9 +166,11 @@ namespace SA3D.Common.Ascii
 
 			using(WriteStructBlock(type, array))
 			{
+				WriteLine(elementSpacing);
 				foreach(T item in array)
 				{
 					item.Write(this);
+					WriteLine(elementSpacing);
 				}
 			}
 		}
@@ -182,7 +183,8 @@ namespace SA3D.Common.Ascii
 		/// <param name="type">Type of the array</param>
 		/// <param name="array">The array</param>
 		/// <param name="context">The context to write with</param>
-		public void WriteArray<T, C>(string type, LabeledArray<T> array, C context) where T : IAsciiSerializable<C>
+		/// <param name="elementSpacing">Newlines between elements</param>
+		public void WriteArray<T, C>(string type, LabeledArray<T> array, C context, int elementSpacing) where T : IAsciiSerializable<C>
 		{
 			if(array == null || !SetupLabel(array))
 			{
@@ -191,20 +193,47 @@ namespace SA3D.Common.Ascii
 
 			using(WriteStructBlock(type, array))
 			{
+				WriteLine(elementSpacing);
 				foreach(T item in array)
 				{
 					item.Write(this, context);
+					WriteLine(elementSpacing);
 				}
 			}
 		}
 
+		/// <summary>
+		/// Writes an array to the writer
+		/// </summary>
+		/// <typeparam name="T">Array element type</typeparam>
+		/// <param name="type">Type of the array</param>
+		/// <param name="array">The array</param>
+		/// <param name="elementSpacing">Newlines between elements</param>
+		/// <param name="writeElement">Write function for array elements</param>
+		public void WriteArray<T>(string type, LabeledArray<T>? array, int elementSpacing, Action<AsciiWriter, T> writeElement)
+		{
+			if(array == null || !SetupLabel(array))
+			{
+				return;
+			}
+
+			using(WriteStructBlock(type, array))
+			{
+				WriteLine(elementSpacing);
+				foreach(T element in array)
+				{
+					writeElement(this, element);
+					WriteLine(elementSpacing);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Writes a property name with its value
 		/// </summary>
 		/// <param name="propertyName">Name of the property</param>
 		/// <param name="value">Value of the property</param>
-		/// <param name="comma">Writes a comma at the end of the property line</param>
+		/// <param name="comment">Comment to add after the property line</param>
 		public void WritePropertyLine(string propertyName, string value, string? comment = null)
 		{
 			string end = string.Empty;
