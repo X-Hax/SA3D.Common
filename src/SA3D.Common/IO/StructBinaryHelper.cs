@@ -146,10 +146,10 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
-		/// Read a <see cref="Quaternion"/> from a <see cref="BinaryValueReader"/>
+		/// Read a <see cref="Quaternion"/> from a <see cref="BinaryValueReader"/>; Imaginary part (XYZ) first
 		/// </summary>
 		/// <param name="reader">The reader to read from</param>
-		public static Quaternion ReadQuaternion(this BinaryValueReader reader)
+		public static Quaternion ReadQuaternionIm(this BinaryValueReader reader)
 		{
 			return new Quaternion(
 				reader.ReadSingle(),
@@ -160,16 +160,43 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
-		/// Write a <see cref="Quaternion"/> value to a <see cref="BinaryValueWriter"/>
+		/// Read a <see cref="Quaternion"/> from a <see cref="BinaryValueReader"/>; Real part (W) first
+		/// </summary>
+		/// <param name="reader">The reader to read from</param>
+		public static Quaternion ReadQuaternionRe(this BinaryValueReader reader)
+		{
+			float w = reader.ReadSingle();
+			float x = reader.ReadSingle();
+			float y = reader.ReadSingle();
+			float z = reader.ReadSingle();
+
+			return new Quaternion(x, y, z, w);
+		}
+
+		/// <summary>
+		/// Write a <see cref="Quaternion"/> value to a <see cref="BinaryValueWriter"/>; Imaginary part (XYZ) first
 		/// </summary>
 		/// <param name="writer">The writer to write to</param>
 		/// <param name="value">The value to write</param>
-		public static void WriteQuaternion(this BinaryValueWriter writer, Quaternion value)
+		public static void WriteQuaternionIm(this BinaryValueWriter writer, Quaternion value)
 		{
 			writer.WriteSingle(value.X);
 			writer.WriteSingle(value.Y);
 			writer.WriteSingle(value.Z);
 			writer.WriteSingle(value.W);
+		}
+
+		/// <summary>
+		/// Write a <see cref="Quaternion"/> value to a <see cref="BinaryValueWriter"/>; Real part (W) first
+		/// </summary>
+		/// <param name="writer">The writer to write to</param>
+		/// <param name="value">The value to write</param>
+		public static void WriteQuaternionRe(this BinaryValueWriter writer, Quaternion value)
+		{
+			writer.WriteSingle(value.W);
+			writer.WriteSingle(value.X);
+			writer.WriteSingle(value.Y);
+			writer.WriteSingle(value.Z);
 		}
 
 		/// <summary>

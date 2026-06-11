@@ -11,7 +11,7 @@ namespace SA3D.Common.Ascii
 	public class AsciiWriter
 	{
 		private readonly StringBuilder _stringBuilder;
-		private readonly HashSet<string> _writtenlabels;
+		private readonly HashSet<string> _writtenIdentifiers;
 
 
 		/// <summary>
@@ -20,7 +20,7 @@ namespace SA3D.Common.Ascii
 		public AsciiWriter()
 		{
 			_stringBuilder = new();
-			_writtenlabels = [];
+			_writtenIdentifiers = [];
 		}
 
 
@@ -83,43 +83,53 @@ namespace SA3D.Common.Ascii
 		/// <param name="right"></param>
 		public void WriteLineIndented(string left, string right)
 		{
+			const int indentWidth = 16;
+
 			string padding = "\t";
-			if(left.Length < 12)
+			if(left.Length < indentWidth)
 			{
-				padding = new string('\t', (int)float.Ceiling((12 - left.Length) / 4f));
+				padding = new string('\t', (int)float.Ceiling((indentWidth - left.Length) / 4f));
 			}
 
 			WriteLine($"{left}{padding}{right}");
 		}
 
 
-		private string GetLabel(ILabel label)
+		private string Getidentifier(ILabel label)
 		{
 			return label.Label.MakeIdentifier();
 		}
 
-		private bool SetupLabel(ILabel label)
+		private bool Setupidentifier(ILabel label)
 		{
-			return _writtenlabels.Add(GetLabel(label));
+			return _writtenIdentifiers.Add(Getidentifier(label));
 		}
 
-		private string GetCheckLabel(ILabel? label)
+		private string GetCheckidentifier(ILabel? label)
 		{
 			if(label == null)
 			{
 				return "NULL";
 			}
 
-			string cString = GetLabel(label);
+			string identifier = Getidentifier(label);
 
-			if(!_writtenlabels.Contains(cString))
+			if(!_writtenIdentifiers.Contains(identifier))
 			{
 				throw new InvalidOperationException($"No object with the name \"{label.Label}\" has been written yet!");
 			}
 
-			return cString;
+			return identifier;
 		}
 
+		/// <summary>
+		/// Writes an object identifier to the writer
+		/// </summary>
+		/// <param name="label">The object of which to write the identifier</param>
+		public void WriteObjectidentifier(ILabel? label)
+		{
+			Write(GetCheckidentifier(label));
+		}
 
 		/// <summary>
 		/// Writes an object to the writer
@@ -127,7 +137,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="data">The data to write</param>
 		public void WriteObject(IAsciiSerializable? data)
 		{
-			if(data == null || (data is ILabel label && !SetupLabel(label)))
+			if(data == null || (data is ILabel label && !Setupidentifier(label)))
 			{
 				return;
 			}
@@ -142,7 +152,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="context">The context to write with</param>
 		public void WriteObject<C>(IAsciiSerializable<C>? data, C context)
 		{
-			if(data == null || (data is ILabel label && !SetupLabel(label)))
+			if(data == null || (data is ILabel label && !Setupidentifier(label)))
 			{
 				return;
 			}
@@ -159,7 +169,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="elementSpacing">Newlines between elements</param>
 		public void WriteArray<T>(string type, LabeledArray<T>? array, int elementSpacing) where T : IAsciiSerializable
 		{
-			if(array == null || !SetupLabel(array))
+			if(array == null || !Setupidentifier(array))
 			{
 				return;
 			}
@@ -186,7 +196,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="elementSpacing">Newlines between elements</param>
 		public void WriteArray<T, C>(string type, LabeledArray<T> array, C context, int elementSpacing) where T : IAsciiSerializable<C>
 		{
-			if(array == null || !SetupLabel(array))
+			if(array == null || !Setupidentifier(array))
 			{
 				return;
 			}
@@ -212,7 +222,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="writeElement">Write function for array elements</param>
 		public void WriteArray<T>(string type, LabeledArray<T>? array, int elementSpacing, Action<AsciiWriter, T> writeElement)
 		{
-			if(array == null || !SetupLabel(array))
+			if(array == null || !Setupidentifier(array))
 			{
 				return;
 			}
@@ -252,7 +262,7 @@ namespace SA3D.Common.Ascii
 		/// <param name="obj">Object to link to the property</param>
 		public void WriteObjectPropertyLine(string propertyName, ILabel? obj)
 		{
-			WritePropertyLine(propertyName, GetCheckLabel(obj));
+			WritePropertyLine(propertyName, GetCheckidentifier(obj));
 		}
 
 
@@ -275,7 +285,7 @@ namespace SA3D.Common.Ascii
 		/// <returns></returns>
 		public AsciiWriterBlockToken WriteStructBlock(string type, ILabel obj)
 		{
-			WriteLineIndented(type, GetLabel(obj) + "[]");
+			WriteLineIndented(type, Getidentifier(obj) + "[]");
 			return WriteBlock();
 		}
 
@@ -288,7 +298,7 @@ namespace SA3D.Common.Ascii
 		/// <returns></returns>
 		public AsciiWriterBlockToken? WriteStructBlockWithReference(string type, ILabel obj)
 		{
-			if(!SetupLabel(obj))
+			if(!Setupidentifier(obj))
 			{
 				return null;
 			}

@@ -41,6 +41,7 @@ SA3D.Common.Ascii.AsciiWriter.WriteLineIndented(string! left, string! right) -> 
 SA3D.Common.Ascii.AsciiWriter.WriteObject(SA3D.Common.Ascii.IAsciiSerializable? data) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObject<C>(SA3D.Common.Ascii.IAsciiSerializable<C>? data, C context) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObjectBlock(string! type) -> SA3D.Common.Ascii.AsciiWriterBlockToken
+SA3D.Common.Ascii.AsciiWriter.WriteObjectidentifier(SA3D.Common.Lookup.ILabel? label) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteObjectPropertyLine(string! propertyName, SA3D.Common.Lookup.ILabel? obj) -> void
 SA3D.Common.Ascii.AsciiWriter.WritePropertyLine(string! propertyName, string! value, string? comment = null) -> void
 SA3D.Common.Ascii.AsciiWriter.WriteStructBlock(string! type, SA3D.Common.Lookup.ILabel! obj) -> SA3D.Common.Ascii.AsciiWriterBlockToken
@@ -233,14 +234,16 @@ static SA3D.Common.IO.LookupBinaryHelper.WriteObjectOffset<T, TContext>(this Ami
 static SA3D.Common.IO.LookupBinaryHelper.WriteObjectOffset<T>(this Amicitia.IO.Binary.BinaryObjectWriter! writer, T? value, SA3D.Common.Lookup.BaseLUT! lut, int alignment = 0, int priority = 0) -> void
 static SA3D.Common.IO.LookupBinaryHelper.WriteObjectOffset<T>(this Amicitia.IO.Binary.BinaryObjectWriter! writer, T? value, System.Action<Amicitia.IO.Binary.BinaryObjectWriter!, T!>! write, SA3D.Common.Lookup.BaseLUT! lut, int alignment = 0, int priority = 0) -> void
 static SA3D.Common.IO.StructBinaryHelper.ReadMatrix4x4(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Matrix4x4
-static SA3D.Common.IO.StructBinaryHelper.ReadQuaternion(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Quaternion
+static SA3D.Common.IO.StructBinaryHelper.ReadQuaternionIm(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Quaternion
+static SA3D.Common.IO.StructBinaryHelper.ReadQuaternionRe(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Quaternion
 static SA3D.Common.IO.StructBinaryHelper.ReadVector2(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Vector2
 static SA3D.Common.IO.StructBinaryHelper.ReadVector2Array(this Amicitia.IO.Binary.BinaryValueReader! reader, int count) -> System.Numerics.Vector2[]!
 static SA3D.Common.IO.StructBinaryHelper.ReadVector3(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Vector3
 static SA3D.Common.IO.StructBinaryHelper.ReadVector3Array(this Amicitia.IO.Binary.BinaryValueReader! reader, int count) -> System.Numerics.Vector3[]!
 static SA3D.Common.IO.StructBinaryHelper.ReadVector4(this Amicitia.IO.Binary.BinaryValueReader! reader) -> System.Numerics.Vector4
 static SA3D.Common.IO.StructBinaryHelper.WriteMatrix4x4(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Matrix4x4 value) -> void
-static SA3D.Common.IO.StructBinaryHelper.WriteQuaternion(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Quaternion value) -> void
+static SA3D.Common.IO.StructBinaryHelper.WriteQuaternionIm(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Quaternion value) -> void
+static SA3D.Common.IO.StructBinaryHelper.WriteQuaternionRe(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Quaternion value) -> void
 static SA3D.Common.IO.StructBinaryHelper.WriteVector2(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Vector2 value) -> void
 static SA3D.Common.IO.StructBinaryHelper.WriteVector2Array(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Vector2[]! array) -> void
 static SA3D.Common.IO.StructBinaryHelper.WriteVector3(this Amicitia.IO.Binary.BinaryValueWriter! writer, System.Numerics.Vector3 value) -> void

@@ -27,8 +27,7 @@ namespace SA3D.Common.JsonConverters
 			Type elementType = typeToConvert.GetGenericArguments()[0];
 
 			JsonConverter converter = (JsonConverter)Activator.CreateInstance(
-				typeof(LabeledArrayJsonConverter<>).MakeGenericType(
-					new Type[] { elementType }),
+				typeof(LabeledArrayJsonConverter<>).MakeGenericType([elementType]),
 				BindingFlags.Instance | BindingFlags.Public,
 				binder: null,
 				args: null,
