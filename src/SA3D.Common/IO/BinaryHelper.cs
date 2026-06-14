@@ -117,7 +117,7 @@ namespace SA3D.Common.IO
 
 		#endregion
 
-		#region Seek / Endian
+		#region Seek / Endian / Binary Offset Format
 
 		/// <summary>
 		/// Seek from <see cref="SeekOrigin.Begin"/>
@@ -151,6 +151,18 @@ namespace SA3D.Common.IO
 		}
 
 		/// <summary>
+		/// Creates a new <see cref="OffsetBinaryFormatToken"/> for a <see cref="BinaryObjectReader"/>
+		/// </summary>
+		/// <param name="reader">The reader to create the token for</param>
+		/// <param name="format">The format to set</param>
+		/// <returns></returns>
+		public static OffsetBinaryFormatToken WithBinaryOffsetFormat(this BinaryObjectReader reader, OffsetBinaryFormat format)
+		{
+			return new(reader, format);
+		}
+
+
+		/// <summary>
 		/// Seek from <see cref="SeekOrigin.Begin"/>
 		/// </summary>
 		/// <param name="writer">The writer to seek for</param>
@@ -180,6 +192,18 @@ namespace SA3D.Common.IO
 		{
 			return new(writer, endianness);
 		}
+
+		/// <summary>
+		/// Creates a new <see cref="OffsetBinaryFormatToken"/> for a <see cref="BinaryObjectReader"/>
+		/// </summary>
+		/// <param name="writer">The writer to create the token for</param>
+		/// <param name="format">The format to set</param>
+		/// <returns></returns>
+		public static OffsetBinaryFormatToken WithBinaryOffsetFormat(this BinaryObjectWriter writer, OffsetBinaryFormat format)
+		{
+			return new(writer, format);
+		}
+
 
 		/// <summary>
 		/// Peeks the 2 bytes at the current position. Returns the endianness in which it would be the smaller value
