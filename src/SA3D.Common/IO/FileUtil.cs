@@ -50,29 +50,31 @@ namespace SA3D.Common.IO
 		public static T ReadFromFile<T>(string filepath) where T : IFileSerializable, new()
 		{
 			using FileStream stream = System.IO.File.OpenRead(filepath);
-			return ReadFromStream<T>(stream);
+			return ReadFromStream<T>(stream, filepath);
 		}
 
 		/// <summary>
 		/// Reads a model file off byte data.
 		/// </summary>
 		/// <param name="data">Data to read.</param>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <returns>The model file that was read.</returns>
-		public static T ReadFromBytes<T>(byte[] data) where T : IFileSerializable, new()
+		public static T ReadFromBytes<T>(byte[] data, string? filepath) where T : IFileSerializable, new()
 		{
 			using MemoryStream stream = new(data);
-			return ReadFromStream<T>(stream);
+			return ReadFromStream<T>(stream, filepath);
 		}
 
 		/// <summary>
 		/// Read a model file off a stream
 		/// </summary>
 		/// <param name="stream">The stream to read from</param>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <returns></returns>
-		public static T ReadFromStream<T>(Stream stream) where T : IFileSerializable, new()
+		public static T ReadFromStream<T>(Stream stream, string? filepath) where T : IFileSerializable, new()
 		{
 			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, Endianness.Little);
-			return reader.ReadObject<T>();
+			return reader.ReadObject<T, FileContext>(new(filepath));
 		}
 
 
@@ -82,34 +84,36 @@ namespace SA3D.Common.IO
 		/// <param name="filepath">The path to the file that should be read.</param>
 		/// <param name="context">IO Context to use</param>
 		/// <returns>The file that was read.</returns>
-		public static T ReadFromFile<T, C>(string filepath, C context) where T : IFileSerializable<C>, new()
+		public static T ReadFromFile<T, C>(string filepath, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
 			using FileStream stream = System.IO.File.OpenRead(filepath);
-			return ReadFromStream<T, C>(stream, context);
+			return ReadFromStream<T, C>(stream, filepath, context);
 		}
 
 		/// <summary>
 		/// Reads a model file off byte data.
 		/// </summary>
 		/// <param name="data">Data to read.</param>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <param name="context">IO Context to use</param>
 		/// <returns>The model file that was read.</returns>
-		public static T ReadFromBytes<T, C>(byte[] data, C context) where T : IFileSerializable<C>, new()
+		public static T ReadFromBytes<T, C>(byte[] data, string? filepath, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
 			using MemoryStream stream = new(data);
-			return ReadFromStream<T, C>(stream, context);
+			return ReadFromStream<T, C>(stream, filepath, context);
 		}
 
 		/// <summary>
 		/// Read a model file off a stream
 		/// </summary>
 		/// <param name="stream">The stream to read from</param>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <param name="context">IO Context to use</param>
 		/// <returns></returns>
-		public static T ReadFromStream<T, C>(Stream stream, C context) where T : IFileSerializable<C>, new()
+		public static T ReadFromStream<T, C>(Stream stream, string? filepath, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
-			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, Endianness.Little);
-			return reader.ReadObject<T, C>(context);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, Endianness.Little, fileName: filepath);
+			return reader.ReadObject<T, FileContext<C>>(new(filepath, context));
 		}
 
 
@@ -122,19 +126,19 @@ namespace SA3D.Common.IO
 		public static void WriteToFile<T>(this T file, string filepath) where T : IFileSerializable, new()
 		{
 			using FileStream stream = System.IO.File.OpenWrite(filepath);
-			WriteToStream(file, stream);
+			WriteToStream(file, filepath, stream);
 		}
 
 		/// <summary>
 		/// Writes the file to a byte array.
 		/// </summary>
 		/// <param name="file">The file to write</param>
-		/// <exception cref="InvalidOperationException"></exception>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <returns>The written byte data.</returns>
-		public static byte[] WriteToBytes<T>(this T file) where T : IFileSerializable, new()
+		public static byte[] WriteToBytes<T>(this T file, string? filepath) where T : IFileSerializable, new()
 		{
 			using MemoryStream stream = new();
-			WriteToStream(file, stream);
+			WriteToStream(file, filepath, stream);
 			return stream.ToArray();
 		}
 
@@ -143,12 +147,12 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <param name="file">The file to write</param>
 		/// <param name="stream">The stream to write to</param>
-		/// <exception cref="InvalidOperationException"></exception>
-		public static void WriteToStream<T>(this T file, Stream stream) where T : IFileSerializable, new()
+		/// <param name="filepath">Path to the file being read</param>
+		public static void WriteToStream<T>(this T file, string? filepath, Stream stream) where T : IFileSerializable, new()
 		{
-			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, Endianness.Little);
+			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, Endianness.Little, fileName: filepath);
 			writer.OffsetFlushMode = OffsetFlushMode.Recursive;
-			writer.WriteObject(file);
+			writer.WriteObject(file, new FileContext(filepath));
 		}
 
 
@@ -159,10 +163,10 @@ namespace SA3D.Common.IO
 		/// <param name="context">IO Context to use</param>
 		/// <param name="filepath">Path to the file to write to.</param>
 		/// <exception cref="InvalidOperationException"></exception>
-		public static void WriteToFile<T, C>(this T file, C context, string filepath) where T : IFileSerializable<C>, new()
+		public static void WriteToFile<T, C>(this T file, string filepath, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
 			using FileStream stream = System.IO.File.OpenWrite(filepath);
-			WriteToStream(file, context, stream);
+			WriteToStream(file, filepath, context, stream);
 		}
 
 		/// <summary>
@@ -170,12 +174,13 @@ namespace SA3D.Common.IO
 		/// </summary>
 		/// <exception cref="InvalidOperationException"></exception>
 		/// <param name="file">The file to write</param>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <param name="context">IO Context to use</param>
 		/// <returns>The written byte data.</returns>
-		public static byte[] WriteToBytes<T, C>(this T file, C context) where T : IFileSerializable<C>, new()
+		public static byte[] WriteToBytes<T, C>(this T file, string? filepath, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
 			using MemoryStream stream = new();
-			WriteToStream(file, context, stream);
+			WriteToStream(file, filepath, context, stream);
 			return stream.ToArray();
 		}
 
@@ -183,14 +188,15 @@ namespace SA3D.Common.IO
 		/// Writes the model file to a byte array.
 		/// </summary>
 		/// <param name="file">The file to write</param>
+		/// <param name="filepath">Path to the file being read</param>
 		/// <param name="context">IO Context to use</param>
 		/// <param name="stream">The stream to write to</param>
 		/// <exception cref="InvalidOperationException"></exception>
-		public static void WriteToStream<T, C>(this T file, C context, Stream stream) where T : IFileSerializable<C>, new()
+		public static void WriteToStream<T, C>(this T file, string? filepath, C context, Stream stream) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
 			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, Endianness.Little);
 			writer.OffsetFlushMode = OffsetFlushMode.Recursive;
-			writer.WriteObject(file, context);
+			writer.WriteObject(file, new FileContext<C>(filepath, context));
 		}
 	}
 }

@@ -65,7 +65,22 @@ SA3D.Common.IO.EndiannessToken.Dispose() -> void
 SA3D.Common.IO.EndiannessToken.EndiannessToken() -> void
 SA3D.Common.IO.EndiannessToken.EndiannessToken(Amicitia.IO.Binary.BinaryValueReader! reader, Amicitia.IO.Binary.Endianness endianness) -> void
 SA3D.Common.IO.EndiannessToken.EndiannessToken(Amicitia.IO.Binary.BinaryValueWriter! writer, Amicitia.IO.Binary.Endianness endianness) -> void
+SA3D.Common.IO.FileContext
+SA3D.Common.IO.FileContext.FileContext() -> void
+SA3D.Common.IO.FileContext.FileContext(string? filepath) -> void
+SA3D.Common.IO.FileContext.Filepath.get -> string?
+SA3D.Common.IO.FileContext.Filepath.set -> void
+SA3D.Common.IO.FileContext<T>
+SA3D.Common.IO.FileContext<T>.Context.get -> T
+SA3D.Common.IO.FileContext<T>.Context.set -> void
+SA3D.Common.IO.FileContext<T>.FileContext() -> void
+SA3D.Common.IO.FileContext<T>.FileContext(SA3D.Common.IO.FileContext context) -> void
+SA3D.Common.IO.FileContext<T>.FileContext(string? filepath, T context) -> void
+SA3D.Common.IO.FileContext<T>.Filepath.get -> string?
+SA3D.Common.IO.FileContext<T>.Filepath.set -> void
 SA3D.Common.IO.FileUtil
+SA3D.Common.IO.IFileContext
+SA3D.Common.IO.IFileContext.Filepath.get -> string?
 SA3D.Common.IO.IFileSerializable
 SA3D.Common.IO.IFileSerializable.Check(Amicitia.IO.Binary.BinaryObjectReader! reader) -> bool
 SA3D.Common.IO.IFileSerializable<T>
@@ -196,18 +211,18 @@ static SA3D.Common.IO.EndiannessToken.explicit operator Amicitia.IO.Binary.Endia
 static SA3D.Common.IO.FileUtil.CheckBytes<T>(byte[]! data) -> bool
 static SA3D.Common.IO.FileUtil.CheckFile<T>(string! filepath) -> bool
 static SA3D.Common.IO.FileUtil.CheckStream<T>(System.IO.Stream! stream) -> bool
-static SA3D.Common.IO.FileUtil.ReadFromBytes<T, C>(byte[]! data, C context) -> T
-static SA3D.Common.IO.FileUtil.ReadFromBytes<T>(byte[]! data) -> T
+static SA3D.Common.IO.FileUtil.ReadFromBytes<T, C>(byte[]! data, string? filepath, C context) -> T
+static SA3D.Common.IO.FileUtil.ReadFromBytes<T>(byte[]! data, string? filepath) -> T
 static SA3D.Common.IO.FileUtil.ReadFromFile<T, C>(string! filepath, C context) -> T
 static SA3D.Common.IO.FileUtil.ReadFromFile<T>(string! filepath) -> T
-static SA3D.Common.IO.FileUtil.ReadFromStream<T, C>(System.IO.Stream! stream, C context) -> T
-static SA3D.Common.IO.FileUtil.ReadFromStream<T>(System.IO.Stream! stream) -> T
-static SA3D.Common.IO.FileUtil.WriteToBytes<T, C>(this T file, C context) -> byte[]!
-static SA3D.Common.IO.FileUtil.WriteToBytes<T>(this T file) -> byte[]!
-static SA3D.Common.IO.FileUtil.WriteToFile<T, C>(this T file, C context, string! filepath) -> void
+static SA3D.Common.IO.FileUtil.ReadFromStream<T, C>(System.IO.Stream! stream, string? filepath, C context) -> T
+static SA3D.Common.IO.FileUtil.ReadFromStream<T>(System.IO.Stream! stream, string? filepath) -> T
+static SA3D.Common.IO.FileUtil.WriteToBytes<T, C>(this T file, string? filepath, C context) -> byte[]!
+static SA3D.Common.IO.FileUtil.WriteToBytes<T>(this T file, string? filepath) -> byte[]!
+static SA3D.Common.IO.FileUtil.WriteToFile<T, C>(this T file, string! filepath, C context) -> void
 static SA3D.Common.IO.FileUtil.WriteToFile<T>(this T file, string! filepath) -> void
-static SA3D.Common.IO.FileUtil.WriteToStream<T, C>(this T file, C context, System.IO.Stream! stream) -> void
-static SA3D.Common.IO.FileUtil.WriteToStream<T>(this T file, System.IO.Stream! stream) -> void
+static SA3D.Common.IO.FileUtil.WriteToStream<T, C>(this T file, string? filepath, C context, System.IO.Stream! stream) -> void
+static SA3D.Common.IO.FileUtil.WriteToStream<T>(this T file, string? filepath, System.IO.Stream! stream) -> void
 static SA3D.Common.IO.LookupBinaryHelper.ReadArray<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count, SA3D.Common.Lookup.BaseLUT! lut) -> T[]!
 static SA3D.Common.IO.LookupBinaryHelper.ReadArrayAtOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, long offset, int count, SA3D.Common.Lookup.BaseLUT! lut) -> T[]?
 static SA3D.Common.IO.LookupBinaryHelper.ReadArrayOffset<T>(this Amicitia.IO.Binary.BinaryObjectReader! reader, int count, SA3D.Common.Lookup.BaseLUT! lut) -> T[]?
