@@ -1,5 +1,6 @@
 ﻿using SA3D.Common.Lookup;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,6 +72,17 @@ namespace SA3D.Common
 			}
 
 			yield break;
+		}
+
+		/// <summary>
+		/// Returns the first occurence of a type in an enumerable or null
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="enumerable"></param>
+		/// <returns></returns>
+		public static T? FirstOfType<T>(this IEnumerable enumerable) where T : notnull
+		{
+			return enumerable.OfType<T>().FirstOrDefault();
 		}
 
 #pragma warning disable CS8603 // We can manually ignore the possible null return this here
