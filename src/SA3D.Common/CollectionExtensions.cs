@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SA3D.Common.Lookup;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,6 +30,36 @@ namespace SA3D.Common
 		}
 
 		/// <summary>
+		/// Returns a clone of an array where each field has been cloned too
+		/// </summary>
+		/// <param name="input">Array to clone</param>
+		/// <returns></returns>
+		public static LabeledArray<T> ContentClone<T>(this LabeledArray<T> input) where T : ICloneable
+		{
+			LabeledArray<T> result = new(input.Label, input.Length);
+
+			for(int i = 0; i < result.Length; i++)
+			{
+				result[i] = (T)input[i].Clone();
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Returns the first key that is found to the given value. Throws an error if none is found
+		/// </summary>
+		/// <typeparam name="K">Type of the key</typeparam>
+		/// <typeparam name="V">Type of the value</typeparam>
+		/// <param name="dictionary">Dictionary to look through</param>
+		/// <param name="value">Value to look for</param>
+		/// <returns></returns>
+		public static K FindKey<K, V>(this IDictionary<K, V> dictionary, V value) where V : notnull
+		{
+			return dictionary.First(x => x.Value.Equals(value)).Key;
+		}
+
+		/// <summary>
 		/// Constructs an enumerable for iterating over the lines read (<see cref="StreamReader.ReadLine"/>) off a stream reader. Ends when reader returns null.
 		/// </summary>
 		/// <param name="reader">The reader to read lines off.</param>
@@ -40,6 +72,17 @@ namespace SA3D.Common
 			}
 
 			yield break;
+		}
+
+		/// <summary>
+		/// Returns the first occurence of a type in an enumerable or null
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="enumerable"></param>
+		/// <returns></returns>
+		public static T? FirstOfType<T>(this IEnumerable enumerable) where T : notnull
+		{
+			return enumerable.OfType<T>().FirstOrDefault();
 		}
 
 #pragma warning disable CS8603 // We can manually ignore the possible null return this here

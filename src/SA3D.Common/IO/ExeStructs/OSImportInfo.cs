@@ -1,23 +1,25 @@
-﻿namespace SA3D.Common.IO.ExeStructs
+﻿using Amicitia.IO.Binary;
+
+namespace SA3D.Common.IO.ExeStructs
 {
-	internal struct OSImportInfo
+	internal struct OSImportInfo : IBinarySerializable
 	{
 		public const uint StructSize = 8;
 
 		public uint ID { get; set; }
 		public uint Offset { get; set; }
 
-		public OSImportInfo(uint id, uint offset)
+
+		public void Read(BinaryObjectReader reader)
 		{
-			ID = id;
-			Offset = offset;
+			ID = reader.ReadUInt32();
+			Offset = reader.ReadUInt32();
 		}
 
-		public static OSImportInfo Read(EndianStackReader data, uint address)
+		public readonly void Write(BinaryObjectWriter writer)
 		{
-			return new(
-				data.ReadUInt(address),
-				data.ReadUInt(address + 4));
+			writer.WriteUInt32(ID);
+			writer.WriteUInt32(Offset);
 		}
 	}
 }

@@ -1,0 +1,327 @@
+﻿using SA3D.Common.Lookup;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SA3D.Common.Ascii
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	public class AsciiWriter
+	{
+		private readonly StringBuilder _stringBuilder;
+		private readonly HashSet<string> _writtenIdentifiers;
+
+
+		/// <summary>
+		/// Creates a new Ascii writer
+		/// </summary>
+		public AsciiWriter()
+		{
+			_stringBuilder = new();
+			_writtenIdentifiers = [];
+		}
+
+
+		/// <summary>
+		/// Writes a string to the writer
+		/// </summary>
+		/// <param name="value"></param>
+		public void Write(string value)
+		{
+			_stringBuilder.Append(value);
+		}
+
+		/// <summary>
+		/// Writes an empty line to the writer
+		/// </summary>
+		public void WriteLine()
+		{
+			_stringBuilder.AppendLine();
+		}
+
+		/// <summary>
+		/// Writes a line to the writer
+		/// </summary>
+		/// <param name="value">The line to write</param>
+		public void WriteLine(string value)
+		{
+			_stringBuilder.AppendLine(value);
+		}
+
+		/// <summary>
+		/// Writes empty lines to the writer
+		/// </summary>
+		/// <param name="newlines">The number of newlines to append after the value</param>
+		public void WriteLine(int newlines)
+		{
+			for(int i = 0; i < newlines; i++)
+			{
+				_stringBuilder.AppendLine();
+			}
+		}
+
+		/// <summary>
+		/// Writes a line to the writer
+		/// </summary>
+		/// <param name="value">The line to write</param>
+		/// <param name="newlines">The number of newlines to append after the value</param>
+		public void WriteLine(string value, int newlines)
+		{
+			_stringBuilder.Append(value);
+			for(int i = 0; i < newlines; i++)
+			{
+				_stringBuilder.AppendLine();
+			}
+		}
+
+		/// <summary>
+		/// Writes a line in 2 parts, with the right part having being at least 12 spaces from the start of the line
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		public void WriteLineIndented(string left, string right)
+		{
+			const int indentWidth = 16;
+
+			string padding = "\t";
+			if(left.Length < indentWidth)
+			{
+				padding = new string('\t', (int)float.Ceiling((indentWidth - left.Length) / 4f));
+			}
+
+			WriteLine($"{left}{padding}{right}");
+		}
+
+
+		private string Getidentifier(ILabel label)
+		{
+			return label.Label.MakeIdentifier();
+		}
+
+		private bool Setupidentifier(ILabel label)
+		{
+			return _writtenIdentifiers.Add(Getidentifier(label));
+		}
+
+		private string GetCheckidentifier(ILabel? label)
+		{
+			if(label == null)
+			{
+				return "NULL";
+			}
+
+			string identifier = Getidentifier(label);
+
+			if(!_writtenIdentifiers.Contains(identifier))
+			{
+				throw new InvalidOperationException($"No object with the name \"{label.Label}\" has been written yet!");
+			}
+
+			return identifier;
+		}
+
+		/// <summary>
+		/// Writes an object identifier to the writer
+		/// </summary>
+		/// <param name="label">The object of which to write the identifier</param>
+		public void WriteObjectidentifier(ILabel? label)
+		{
+			Write(GetCheckidentifier(label));
+		}
+
+		/// <summary>
+		/// Writes an object to the writer
+		/// </summary>
+		/// <param name="data">The data to write</param>
+		public void WriteObject(IAsciiSerializable? data)
+		{
+			if(data == null || (data is ILabel label && !Setupidentifier(label)))
+			{
+				return;
+			}
+
+			data.Write(this);
+		}
+
+		/// <summary>
+		/// Writes an object to the writer
+		/// </summary>
+		/// <param name="data">The data to write</param>
+		/// <param name="context">The context to write with</param>
+		public void WriteObject<C>(IAsciiSerializable<C>? data, C context)
+		{
+			if(data == null || (data is ILabel label && !Setupidentifier(label)))
+			{
+				return;
+			}
+
+			data.Write(this, context);
+		}
+
+		/// <summary>
+		/// Writes an array to the writer
+		/// </summary>
+		/// <typeparam name="T">The array element type</typeparam>
+		/// <param name="type">Type of the array</param>
+		/// <param name="array">The array</param>
+		/// <param name="elementSpacing">Newlines between elements</param>
+		public void WriteArray<T>(string type, LabeledArray<T>? array, int elementSpacing) where T : IAsciiSerializable
+		{
+			if(array == null || !Setupidentifier(array))
+			{
+				return;
+			}
+
+			using(WriteStructBlock(type, array))
+			{
+				WriteLine(elementSpacing);
+				foreach(T item in array)
+				{
+					item.Write(this);
+					WriteLine(elementSpacing);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Writes an array to the writer
+		/// </summary>
+		/// <typeparam name="T">The array element type</typeparam>
+		/// <typeparam name="C">The context type</typeparam>
+		/// <param name="type">Type of the array</param>
+		/// <param name="array">The array</param>
+		/// <param name="context">The context to write with</param>
+		/// <param name="elementSpacing">Newlines between elements</param>
+		public void WriteArray<T, C>(string type, LabeledArray<T> array, C context, int elementSpacing) where T : IAsciiSerializable<C>
+		{
+			if(array == null || !Setupidentifier(array))
+			{
+				return;
+			}
+
+			using(WriteStructBlock(type, array))
+			{
+				WriteLine(elementSpacing);
+				foreach(T item in array)
+				{
+					item.Write(this, context);
+					WriteLine(elementSpacing);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Writes an array to the writer
+		/// </summary>
+		/// <typeparam name="T">Array element type</typeparam>
+		/// <param name="type">Type of the array</param>
+		/// <param name="array">The array</param>
+		/// <param name="elementSpacing">Newlines between elements</param>
+		/// <param name="writeElement">Write function for array elements</param>
+		public void WriteArray<T>(string type, LabeledArray<T>? array, int elementSpacing, Action<AsciiWriter, T> writeElement)
+		{
+			if(array == null || !Setupidentifier(array))
+			{
+				return;
+			}
+
+			using(WriteStructBlock(type, array))
+			{
+				WriteLine(elementSpacing);
+				foreach(T element in array)
+				{
+					writeElement(this, element);
+					WriteLine(elementSpacing);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Writes a property name with its value
+		/// </summary>
+		/// <param name="propertyName">Name of the property</param>
+		/// <param name="value">Value of the property</param>
+		/// <param name="comment">Comment to add after the property line</param>
+		public void WritePropertyLine(string propertyName, string value, string? comment = null)
+		{
+			string end = string.Empty;
+			if(!string.IsNullOrEmpty(comment))
+			{
+				end = $" /* {comment} */";
+			}
+
+			WriteLineIndented(propertyName, value + "," + end);
+		}
+
+		/// <summary>
+		/// Writes a property name with its value
+		/// </summary>
+		/// <param name="propertyName">Name of the property</param>
+		/// <param name="obj">Object to link to the property</param>
+		public void WriteObjectPropertyLine(string propertyName, ILabel? obj)
+		{
+			WritePropertyLine(propertyName, GetCheckidentifier(obj));
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="prefix"></param>
+		/// <param name="endNewlineCount"></param>
+		/// <returns></returns>
+		public AsciiWriterBlockToken WriteBlock(string? prefix = null, int endNewlineCount = 2)
+		{
+			return new AsciiWriterBlockToken(this, prefix, endNewlineCount);
+		}
+
+		/// <summary>
+		/// Writes an encapsulating struct block with an object definition line at the start
+		/// </summary>
+		/// <param name="type">Type of the struct</param>
+		/// <param name="obj">Object with the label</param>
+		/// <returns></returns>
+		public AsciiWriterBlockToken WriteStructBlock(string type, ILabel obj)
+		{
+			WriteLineIndented(type, Getidentifier(obj) + "[]");
+			return WriteBlock();
+		}
+
+		/// <summary>
+		/// Writes an encapsulating struct block with an object definition line at the start.
+		/// <br/>Returns null if object was already written 
+		/// </summary>
+		/// <param name="type">Type of the struct</param>
+		/// <param name="obj">Object with the label</param>
+		/// <returns></returns>
+		public AsciiWriterBlockToken? WriteStructBlockWithReference(string type, ILabel obj)
+		{
+			if(!Setupidentifier(obj))
+			{
+				return null;
+			}
+
+			return WriteStructBlock(type, obj);
+		}
+
+		/// <summary>
+		/// Writes an encapsulating object block
+		/// </summary>
+		/// <param name="type">Object type to write</param>
+		/// <returns></returns>
+		public AsciiWriterBlockToken WriteObjectBlock(string type)
+		{
+			AsciiWriterBlockToken result = WriteBlock(type + "_", 4);
+			WriteLine();
+			return result;
+		}
+
+		/// <inheritdoc/>
+		public override string ToString()
+		{
+			return _stringBuilder.ToString();
+		}
+	}
+}

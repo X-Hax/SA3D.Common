@@ -1,23 +1,24 @@
-﻿namespace SA3D.Common.IO.ExeStructs
+﻿using Amicitia.IO.Binary;
+
+namespace SA3D.Common.IO.ExeStructs
 {
-	internal struct OSSectionInfo
+	internal struct OSSectionInfo : IBinarySerializable
 	{
 		public const uint StructSize = 8;
 
 		public uint Offset { get; set; }
 		public uint Size { get; set; }
 
-		public OSSectionInfo(uint offset, uint size)
+		public void Read(BinaryObjectReader reader)
 		{
-			Offset = offset;
-			Size = size;
+			Offset = reader.ReadUInt32();
+			Size = reader.ReadUInt32();
 		}
 
-		public static OSSectionInfo Read(EndianStackReader data, uint address)
+		public readonly void Write(BinaryObjectWriter writer)
 		{
-			return new(
-				data.ReadUInt(address),
-				data.ReadUInt(address + 4));
+			writer.WriteUInt32(Offset);
+			writer.WriteUInt32(Size);
 		}
 	}
 }

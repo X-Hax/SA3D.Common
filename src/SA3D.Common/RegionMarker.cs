@@ -10,7 +10,7 @@ namespace SA3D.Common
 	/// <typeparam name="T">Marker Datatype</typeparam>
 	public class RegionMarker<T> where T : unmanaged, IEquatable<T>
 	{
-		private readonly SortedDictionary<uint, T> _regions;
+		private readonly SortedDictionary<long, T> _regions;
 
 		/// <summary>
 		/// Creates a new region marker with a default region value.
@@ -32,11 +32,11 @@ namespace SA3D.Common
 		/// <param name="from">Start of the region (inclusive).</param>
 		/// <param name="to">End of the region (exclusive).</param>
 		/// <param name="value">Value to mark the region as.</param>
-		public void MarkRegion(uint from, uint to, T value)
+		public void MarkRegion(long from, long to, T value)
 		{
 			T endValue = _regions.Last(x => x.Key < to).Value;
 
-			foreach(uint marker in _regions.Keys.ToArray())
+			foreach(long marker in _regions.Keys.ToArray())
 			{
 				if(marker < from)
 				{
@@ -76,9 +76,9 @@ namespace SA3D.Common
 		/// <param name="to">End of region to check (exclusive).</param>
 		/// <param name="value">Value to check for.</param>
 		/// <returns></returns>
-		public bool HasValue(uint from, uint to, T value)
+		public bool HasValue(long from, long to, T value)
 		{
-			List<KeyValuePair<uint, T>> relevantMarkers = _regions.Where(x => x.Key >= from && x.Key < to).ToList();
+			List<KeyValuePair<long, T>> relevantMarkers = _regions.Where(x => x.Key >= from && x.Key < to).ToList();
 
 			if(from > 0 && (relevantMarkers.Count == 0 || relevantMarkers[0].Key != from))
 			{

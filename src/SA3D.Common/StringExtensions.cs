@@ -10,9 +10,17 @@ namespace SA3D.Common
 	public static class StringExtensions
 	{
 		/// <summary>
-		/// Global random generator for <see cref="GenerateIdentifier"/>
+		/// Global random generator for <see cref="GenerateIdentifier()"/>
 		/// </summary>
 		private static readonly Random _rand = new();
+
+		private static readonly Encoding _shiftJIS;
+
+		static StringExtensions()
+		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+			_shiftJIS = Encoding.GetEncoding(932);
+		}
 
 		/// <summary>
 		/// Converts a signed short to a C Hexadecimal constant.
@@ -21,7 +29,7 @@ namespace SA3D.Common
 		/// <returns>A C hexadecimal constant.</returns>
 		public static string ToCHex(this short number)
 		{
-			if(number is > (-1) and < 10)
+			if(number is > -1 and < 10)
 			{
 				return number.ToString(NumberFormatInfo.InvariantInfo);
 			}
@@ -51,7 +59,7 @@ namespace SA3D.Common
 		/// <returns>A C hexadecimal constant.</returns>
 		public static string ToCHex(this int number)
 		{
-			if(number is > (-1) and < 10)
+			if(number is > -1 and < 10)
 			{
 				return number.ToString(NumberFormatInfo.InvariantInfo);
 			}
@@ -81,7 +89,7 @@ namespace SA3D.Common
 		/// <returns>A C hexadecimal constant.</returns>
 		public static string ToCHex(this long number)
 		{
-			if(number is > (-1) and < 10)
+			if(number is > -1 and < 10)
 			{
 				return number.ToString(NumberFormatInfo.InvariantInfo);
 			}
@@ -116,7 +124,6 @@ namespace SA3D.Common
 				return "NULL";
 			}
 
-			Encoding enc = Encoding.GetEncoding(932);
 			StringBuilder result = new("\"");
 			foreach(char item in input)
 			{
@@ -159,7 +166,7 @@ namespace SA3D.Common
 						}
 						else if(item > '\x7F')
 						{
-							foreach(byte b in enc.GetBytes(item.ToString()))
+							foreach(byte b in _shiftJIS.GetBytes(item.ToString()))
 							{
 								result.AppendFormat(@"\{0}", Convert.ToString(b, 8).PadLeft(3, '0'));
 							}
@@ -270,12 +277,21 @@ namespace SA3D.Common
 		public static string MakeIdentifier(this string input)
 		{
 			StringBuilder result = new(input.Length + 1);
-			foreach(char item in input)
+			foreach(char character in input)
 			{
-				if(char.IsAsciiLetter(item) && char.IsAsciiDigit(item))
+				if(char.IsAsciiLetter(character) || char.IsAsciiDigit(character) || character == '_')
 				{
-					result.Append(item);
+					result.Append(character);
 				}
+				else if(character == ' ')
+				{
+					result.Append('_');
+				}
+			}
+
+			if(result.Length == 0)
+			{
+				return "invalid_" + input.GetHashCode();
 			}
 
 			if(result[0] >= '0' & result[0] <= '9')
@@ -293,6 +309,16 @@ namespace SA3D.Common
 		public static string GenerateIdentifier()
 		{
 			return DateTime.Now.Ticks.ToString("X") + _rand.Next(0, 65536).ToString("X4");
+		}
+
+		/// <summary>
+		/// Generates a unique, random hexadecimal identifier string consisting of the current Tick number and a random number between 0 and 65536.
+		/// </summary>
+		/// <param name="prefix">Prefix to attach to the identifier</param>
+		/// <returns></returns>
+		public static string GenerateIdentifier(this string prefix)
+		{
+			return prefix + GenerateIdentifier();
 		}
 	}
 }

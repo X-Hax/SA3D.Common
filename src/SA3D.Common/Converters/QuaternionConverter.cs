@@ -1,18 +1,20 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 
 namespace SA3D.Common.Converters
 {
 	/// <summary>
-	/// A valueconverter for strings
+	/// A valueconverter for <see cref="Quaternion"/>
 	/// </summary>
-	public class StringConverter<T> : TypeConverter
+	public class QuaternionConverter : ExpandableObjectConverter
 	{
 		/// <inheritdoc/>
-		public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
+		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)
 		{
-			if(destinationType == typeof(string))
+			if(destinationType == typeof(Quaternion))
 			{
 				return true;
 			}
@@ -23,31 +25,22 @@ namespace SA3D.Common.Converters
 		/// <inheritdoc/>
 		public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
 		{
-			if(destinationType == typeof(string) && value is T t)
+			if(destinationType == typeof(string) && value is Quaternion v)
 			{
-				return ConvertTo(t, context?.PropertyDescriptor?.Name);
+				return ConvertTo(v);
 			}
 
 			return base.ConvertTo(context, culture, value, destinationType);
 		}
 
 		/// <summary>
-		/// Converts an object to a string
+		/// Converts a quaternion to a string
 		/// </summary>
 		/// <param name="value">The value to convert</param>
-		/// <param name="debugName">Name by which to identify the value being converted</param>
 		/// <returns></returns>
-		public static string ConvertTo(T value, string? debugName)
+		public static string ConvertTo(Quaternion value)
 		{
-			try
-			{
-				return value?.ToString()
-					?? throw new NullReferenceException("Conversion returned null");
-			}
-			catch(Exception exception)
-			{
-				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from an object to a string! Value: {value}", exception);
-			}
+			return string.Format(CultureInfo.InvariantCulture, "{0:F6}, {1:F6}, {2:F6}, {3:F6}", value.X, value.Y, value.Z, value.W);
 		}
 
 		/// <inheritdoc/>
@@ -73,21 +66,31 @@ namespace SA3D.Common.Converters
 		}
 
 		/// <summary>
-		/// Converts a string to an object
+		/// Converts a string to a quaternion
 		/// </summary>
 		/// <param name="value">The value to convert</param>
 		/// <param name="debugName">Name by which to identify the value being converted</param>
 		/// <returns></returns>
-		public static T ConvertFrom(string value, string? debugName)
+		public static Quaternion ConvertFrom(string value, string? debugName)
 		{
 			try
 			{
-				return (T?)Activator.CreateInstance(typeof(T), value)
-					?? throw new NullReferenceException("Conversion returned null");
+				string[] values = value.Split(',');
+				if(values.Length != 4)
+				{
+					throw new InvalidOperationException($"Value split in {values.Length}; Expected 4!");
+				}
+
+				return new Quaternion(
+					float.Parse(values[0], CultureInfo.InvariantCulture),
+					float.Parse(values[1], CultureInfo.InvariantCulture),
+					float.Parse(values[2], CultureInfo.InvariantCulture),
+					float.Parse(values[3], CultureInfo.InvariantCulture)
+				);
 			}
 			catch(Exception exception)
 			{
-				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from a string to an object! Value: {value}", exception);
+				throw new InvalidCastException($"Failed to cast {(string.IsNullOrWhiteSpace(debugName) ? "?" : debugName)} from a string to a 4D vector! Value: {value}", exception);
 			}
 		}
 	}

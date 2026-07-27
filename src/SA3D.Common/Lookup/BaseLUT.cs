@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SA3D.Common.Lookup
 {
@@ -24,7 +25,7 @@ namespace SA3D.Common.Lookup
 		/// Creates a LUT with preexisting labels.
 		/// </summary>
 		/// <param name="labels">Preexisting labels.</param>
-		public BaseLUT(Dictionary<uint, string> labels)
+		public BaseLUT(Dictionary<long, string> labels)
 		{
 			Labels = new(labels);
 			All = new();
@@ -44,156 +45,63 @@ namespace SA3D.Common.Lookup
 		/// </summary>
 		/// <param name="address">The address to add.</param>
 		/// <param name="value">The value to add.</param>
-		protected abstract void AddEntry(uint address, object value);
+		protected abstract void AddEntry(long address, object value);
 
-
-
-		private uint InternalGetAddAddress<T>(T? value, Func<T, uint>? writeValue, Func<uint>? write) where T : class
+		/// <summary>
+		/// Adds a new address-value pair to the LUT. Tries to add the label
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="address"></param>
+		/// <param name="value"></param>
+		public void AddTryLabel<T>(long address, T value) where T : class
 		{
-			if(value == null)
+			All.Add(address, value);
+
+			if(value is ILabel label)
 			{
-				return 0;
+				Labels.TryAdd(address, label.Label);
 			}
 
-			if(!All.TryGetAddress(value, out uint result))
-			{
-				result = writeValue != null ? writeValue(value) : write!();
-				All.Add(result, value);
-
-				if(value is ILabel label)
-				{
-					Labels.AddSafe(result, label.Label);
-				}
-
-				AddEntry(result, value);
-			}
-
-			return result;
+			AddEntry(address, value);
 		}
 
 		/// <summary>
-		/// Gets an address, or executes a custom handler that adds and returns the address if it is not found.
+		/// Adds a new address-value pair to the LUT. Adds a safe label
 		/// </summary>
-		/// <typeparam name="T">Value type.</typeparam>
-		/// <param name="value">Value to get/add the address of.</param>
-		/// <param name="write">The custom handler to write data and return the corresponding address to add.</param>
-		/// <returns>The address for the specified value.</returns>
-		public uint GetAddAddress<T>(T? value, Func<T, uint> write) where T : class
+		/// <typeparam name="T"></typeparam>
+		/// <param name="address"></param>
+		/// <param name="value"></param>
+		public void AddSafeLabel<T>(long address, T value) where T : class
 		{
-			return InternalGetAddAddress(value, write, null);
-		}
+			All.Add(address, value);
 
-		/// <summary>
-		/// Gets an address, or executes a custom handler that adds and returns the address if it is not found.
-		/// </summary>
-		/// <typeparam name="T">Value type.</typeparam>
-		/// <param name="value">Value to get/add the address of.</param>
-		/// <param name="write">The custom handler to write data and return the corresponding address to add.</param>
-		/// <returns>The address for the specified value.</returns>
-		public uint GetAddAddress<T>(T? value, Func<uint> write) where T : class
-		{
-			return InternalGetAddAddress(value, null, write);
-		}
-
-		private T InternalGetAddValue<T>(uint address, string? genPrefix, Func<uint, T>? readAddr, Func<T>? read) where T : class
-		{
-			if(address == 0)
+			if(value is ILabel label)
 			{
-				throw new ArgumentException("Address is 0!");
+				Labels.AddSafe(address, label.Label);
 			}
 
-			T result;
-			if(!All.TryGetValue(address, out object? gottenValue))
-			{
-				result = readAddr != null ? readAddr(address) : read!();
-
-				All.Add(address, result);
-
-				if(result is ILabel labelable)
-				{
-					if(Labels.TryGetValue(address, out string? label))
-					{
-						labelable.Label = label;
-					}
-					else if(genPrefix != null)
-					{
-						labelable.Label = Labels.GetGenerateValue(address, genPrefix);
-						Labels.Add(address, labelable.Label);
-					}
-				}
-
-				AddEntry(address, result);
-			}
-			else
-			{
-				result = (T)gottenValue;
-			}
-
-			return result;
+			AddEntry(address, value);
 		}
 
 		/// <summary>
-		/// Executes the read function and stores the resulting value in the LUT.
-		/// <br/> The resulting ILabel value will receive the Label stored in <see cref="Labels"/> if found for the address; otherwise a label generated using the address and prefix
+		/// Tries to get the typed value assigned to a given address
 		/// </summary>
-		/// <typeparam name="T">Type of the value to read/add.</typeparam>
-		/// <param name="address">Address at which the value is located.</param>
-		/// <param name="genPrefix">The prefix to use for generating the Label when not found in <see cref="Labels"/>.</param>
-		/// <param name="read">Func for reading the label value at the specified address.</param>
-		/// <returns>The result of the read func.</returns>
-		public T GetAddLabeledValue<T>(uint address, string genPrefix, Func<uint, T> read) where T : class, ILabel
-		{
-			return InternalGetAddValue(address, genPrefix, read, null);
-		}
-
-		/// <summary>
-		/// Executes the read function and stores the resulting value in the LUT.
-		/// <br/> The resulting ILabel value will receive the Label stored in <see cref="Labels"/> if found for the address; otherwise a label generated using the address and prefix
-		/// </summary>
-		/// <typeparam name="T">Type of the value to read/add.</typeparam>
-		/// <param name="address">Address at which the value is located.</param>
-		/// <param name="genPrefix">The prefix to use for generating the Label when not found in <see cref="Labels"/>.</param>
-		/// <param name="read">Func for reading the label object at the specified address.</param>
-		/// <returns>The result of the read func.</returns>
-		public T GetAddLabeledValue<T>(uint address, string genPrefix, Func<T> read) where T : class, ILabel
-		{
-			return InternalGetAddValue(address, genPrefix, null, read);
-		}
-
-		/// <summary>
-		/// Executes the read function and stores the resulting value in the LUT.
-		/// </summary>
-		/// <typeparam name="T">Type of the value to read/add.</typeparam>
-		/// <param name="address">Address at which the value is located.</param>
-		/// <param name="read">Func for reading the value at the specified address.</param>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="address"></param>
+		/// <param name="value"></param>
 		/// <returns></returns>
-		/// <exception cref="InvalidOperationException">Thrown when passing an ILabel type value</exception>
-		public T GetAddValue<T>(uint address, Func<uint, T> read) where T : class
+		/// <exception cref="InvalidCastException"></exception>
+		public bool TryGetValue<T>(long address, [NotNullWhen(true)] out T? value) where T : class
 		{
-			if(typeof(T).IsAssignableTo(typeof(ILabel)))
+			if(All.TryGetValue(address, out object? genValue))
 			{
-				throw new InvalidOperationException("Please use GetAddLabeledValue for types that implement ILabel!");
+				value = genValue as T ?? throw new InvalidCastException($"Stored value is of type \"{genValue!.GetType()}\" and not {typeof(T)}");
+				return true;
 			}
 
-			return InternalGetAddValue(address, null, read, null);
+			value = null;
+			return false;
 		}
 
-		/// <summary>
-		/// Executes the read function and stores the resulting value in the LUT.
-		/// </summary>
-		/// <typeparam name="T">Type of the value to read/add.</typeparam>
-		/// <param name="address">Address at which the value is located.</param>
-		/// <param name="read">Func for reading the value at the specified address.</param>
-		/// <returns></returns>
-		/// <exception cref="InvalidOperationException">Thrown when passing an ILabel type value</exception>
-		public T GetAddValue<T>(uint address, Func<T> read) where T : class
-		{
-			if(typeof(T).IsAssignableTo(typeof(ILabel)))
-			{
-				throw new InvalidOperationException("Please use GetAddLabeledValue for types that implement ILabel!");
-			}
-
-			return InternalGetAddValue(address, null, null, read);
-		}
 	}
 }

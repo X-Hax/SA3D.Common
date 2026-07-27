@@ -1,5 +1,8 @@
-﻿using SA3D.Common.IO.ExeStructs;
+﻿using Amicitia.IO.Binary;
+using Amicitia.IO.Streams;
+using SA3D.Common.IO.ExeStructs;
 using System;
+using System.IO;
 
 namespace SA3D.Common.IO
 {
@@ -20,35 +23,47 @@ namespace SA3D.Common.IO
 			result = null;
 			imageBase = default;
 
-			EndianStackReader exeData = new(file);
+			using MemoryStream stream = new(file);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, Endianness.Little);
 
-			if(exeData.ReadUShort(0) != 0x5A4D)
+			if(reader.ReadUInt16() != 0x5A4D)
 			{
 				return false;
 			}
 
-			uint ptr = exeData.ReadUInt(0x3c);
-			if(exeData.ReadUInt(ptr) != 0x4550) //PE\0\0
+			reader.SeekPosition(0x3C);
+			uint ptr = reader.ReadUInt32();
+
+			reader.SeekPosition(ptr);
+			if(reader.ReadUInt32() != 0x4550) //PE\0\0
 			{
 				return false;
 			}
 
-			ushort numsects = exeData.ReadUShort(ptr + 6);
-			imageBase = exeData.ReadUInt(ptr + 0x34);
-			result = new byte[exeData.ReadUInt(ptr + 0x50)];
-			exeData.ReadBytes(0, result, 0, exeData.ReadInt(ptr + 0x54));
+			reader.SeekPosition(ptr + 6);
+			ushort numsects = reader.ReadUInt16();
 
-			ptr += 0xF8;
+			reader.SeekPosition(ptr + 0x34);
+			imageBase = reader.ReadUInt32();
+
+			reader.SeekPosition(ptr + 0x50);
+			result = new byte[reader.ReadUInt32()];
+			reader.ReadArray(reader.ReadInt32(), result);
+
+			reader.SeekPosition(ptr + 0xF8);
+
 			for(int i = 0; i < numsects; i++)
 			{
-				exeData.ReadBytes(
-					exeData.ReadUInt(ptr + SectionOffsets.FAddr),
-					result,
-					exeData.ReadUInt(ptr + SectionOffsets.VAddr),
-					exeData.ReadInt(ptr + SectionOffsets.FSize)
-					);
+				reader.Skip(0xC);
+				uint vAddr = reader.ReadUInt32();
+				int fSize = reader.ReadInt32();
+				int fAddr = reader.ReadInt32();
+				reader.Skip(0x10);
 
-				ptr += SectionOffsets.Size;
+				using(reader.AtOffset(vAddr))
+				{
+					reader.ReadArray(fSize, result.AsSpan(fAddr));
+				}
 			}
 
 			return true;
@@ -62,20 +77,23 @@ namespace SA3D.Common.IO
 		/// <exception cref="NotImplementedException"/>
 		public static void FixRELPointers(byte[] file, uint imageBase = 0)
 		{
-			EndianStackReader data = new(file);
+			using MemoryStream stream = new(file);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, Endianness.Little);
 
-			OSModuleHeader header = OSModuleHeader.Read(data, 0);
+			OSModuleHeader header = reader.ReadObject<OSModuleHeader>();
 
 			OSSectionInfo[] sections = new OSSectionInfo[header.Info.NumSections];
+			reader.SeekPosition(header.Info.SectionInfoOffset);
 			for(uint i = 0; i < header.Info.NumSections; i++)
 			{
-				sections[i] = OSSectionInfo.Read(data, header.Info.SectionInfoOffset + (i * 8));
+				sections[i] = reader.ReadObject<OSSectionInfo>();
 			}
 
 			OSImportInfo[] imports = new OSImportInfo[header.ImpSize / 8];
+			reader.SeekPosition(header.ImpOffset);
 			for(uint i = 0; i < imports.Length; i++)
 			{
-				imports[i] = OSImportInfo.Read(data, header.ImpOffset + (i * 8));
+				imports[i] = reader.ReadObject<OSImportInfo>();
 			}
 
 			uint reladdr = 0;
@@ -88,14 +106,16 @@ namespace SA3D.Common.IO
 				}
 			}
 
-			OSRel rel = OSRel.Read(data, reladdr);
-			uint dataaddr = 0;
+			reader.SeekPosition(reladdr);
+			OSRel rel = reader.ReadObject<OSRel>();
+			reladdr = (uint)reader.Position;
 
 			unchecked
 			{
+				reader.SeekPosition(0);
 				while(rel.Type != RelocTypes.R_DOLPHIN_END)
 				{
-					dataaddr += rel.Offset;
+					reader.Seek(rel.Offset, SeekOrigin.Current);
 					uint sectionbase = (uint)(sections[rel.Section].Offset & ~1);
 					uint? newPointer = null;
 					switch(rel.Type)
@@ -104,7 +124,11 @@ namespace SA3D.Common.IO
 							newPointer = rel.Addend + sectionbase;
 							break;
 						case 0x02:
-							newPointer = (data.ReadUInt(dataaddr) & 0xFC000003) | ((rel.Addend + sectionbase) & 0x3FFFFFC);
+							using(reader.At())
+							{
+								newPointer = (reader.ReadUInt32() & 0xFC000003) | ((rel.Addend + sectionbase) & 0x3FFFFFC);
+							}
+
 							break;
 						case 0x03:
 						case 0x04:
@@ -117,14 +141,18 @@ namespace SA3D.Common.IO
 							newPointer = (ushort)(((rel.Addend + sectionbase) >> 16) + (((rel.Addend + sectionbase) & 0x8000) == 0x8000 ? 1 : 0));
 							break;
 						case 0x0A:
-							newPointer = (data.ReadUInt(dataaddr) & 0xFC000003) | ((rel.Addend + sectionbase - dataaddr) & 0x3FFFFFC);
+							using(SeekToken token = reader.At())
+							{
+								newPointer = (reader.ReadUInt32() & 0xFC000003) | ((rel.Addend + sectionbase - (uint)(long)token) & 0x3FFFFFC);
+							}
+
 							break;
 						case 0x00:
 						case RelocTypes.R_DOLPHIN_NOP:
 						case RelocTypes.R_DOLPHIN_END:
 							break;
 						case RelocTypes.R_DOLPHIN_SECTION:
-							dataaddr = sectionbase;
+							reader.SeekPosition(sectionbase);
 							break;
 						default:
 							throw new NotImplementedException($"REL type \"{rel.Type}\" not supported");
@@ -132,11 +160,14 @@ namespace SA3D.Common.IO
 
 					if(newPointer != null)
 					{
-						BitConverter.GetBytes(newPointer.Value + imageBase).CopyTo(file, dataaddr);
+						BitConverter.GetBytes(newPointer.Value + imageBase).CopyTo(file, reader.Position);
 					}
 
-					reladdr += 8;
-					rel = OSRel.Read(data, reladdr);
+					using(reader.AtOffset(reladdr))
+					{
+						rel = reader.ReadObject<OSRel>();
+						reladdr = (uint)reader.Position;
+					}
 				}
 			}
 		}
