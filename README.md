@@ -12,7 +12,7 @@ Code reused all throughout the SA3D Code Library.
 | SA3D.Common.Ini        		| Ini data de/serializer.                                                              	|
 | SA3D.Common.IO         		| Data reader and writer, as well as Executable utilities.                             	|
 | SA3D.Common.Converters 		| Various converters, mostly used in conjunction with Ini data.                        	|
-| SA3D.Common.JsonConverters	| Various Json converters for native data types				                        	|
+| SA3D.Common.JsonConverters	| Various Json converters for native data types.			                        	|
 
 ---
 
