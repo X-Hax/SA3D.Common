@@ -38,6 +38,17 @@ namespace SA3D.Common.IO
 		public static bool CheckStream<T>(Stream stream) where T : IFileSerializable, new()
 		{
 			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, Endianness.Little);
+			return reader.Check<T>();
+		}
+
+		/// <summary>
+		/// Checks whether the data at a binary readers current location can be read as <typeparamref name="T"/>
+		/// </summary>
+		/// <param name="reader">Reader to check</param>
+		/// <returns></returns>
+		public static bool Check<T>(this BinaryObjectReader reader) where T : IFileSerializable, new()
+		{
+			using SeekToken at = reader.At();
 			return new T().Check(reader);
 		}
 
