@@ -14,13 +14,13 @@ namespace SA3D.Common.Lookup
 		/// <summary>
 		/// Utility function for checking whether a dictionary is null. Needed for reliable Amicitia.IO serialization
 		/// </summary>
-		/// <param name="pointerDictionary">The dictionary to check for null</param>
+		/// <param name="offsetDictionary">The dictionary to check for null</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static void NullReferenceCheck<T>([NotNull] this PointerDictionary<T>? pointerDictionary) where T : notnull
+		public static void NullReferenceCheck<T>([NotNull] this OffsetDictionary<T>? offsetDictionary) where T : notnull
 		{
-			if(pointerDictionary == null)
+			if(offsetDictionary == null)
 			{
-				throw new NullReferenceException("No pointer lookup dictionary!");
+				throw new NullReferenceException("No offset lookup dictionary!");
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace SA3D.Common.Lookup
 		/// </summary>
 		/// <param name="lut">The lookup table to check for null</param>
 		/// <exception cref="NullReferenceException"></exception>
-		public static void NullReferenceCheck([NotNull] this BaseLUT? lut)
+		public static void NullReferenceCheck([NotNull] this OffsetLUT? lut)
 		{
 			if(lut == null)
 			{
@@ -41,9 +41,9 @@ namespace SA3D.Common.Lookup
 		/// Adds a value to the LUT at the current writing position of a <see cref="BinaryObjectWriter"/>
 		/// </summary>
 		/// <param name="lut">Lookup table to add the value to</param>
-		/// <param name="writer">The writer from which to get the pointer</param>
+		/// <param name="writer">The writer from which to get the offset</param>
 		/// <param name="value">The value to add</param>
-		public static void AddForWriter<T>(this BaseLUT lut, BinaryObjectWriter writer, T value) where T : class
+		public static void AddForWriter<T>(this OffsetLUT lut, BinaryObjectWriter writer, T value) where T : class
 		{
 			if(value is IList list && list.Count == 0)
 			{

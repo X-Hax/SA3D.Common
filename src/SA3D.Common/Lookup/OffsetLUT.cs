@@ -9,7 +9,7 @@ namespace SA3D.Common.Lookup
 	/// Base lookuptable (LUT) for various uses.
 	/// </summary>
 	[DebuggerNonUserCode]
-	public abstract class BaseLUT
+	public class OffsetLUT
 	{
 		/// <summary>
 		/// Labels for the added objects
@@ -19,13 +19,14 @@ namespace SA3D.Common.Lookup
 		/// <summary>
 		/// All objects in this LUT
 		/// </summary>
-		public PointerDictionary<object> All { get; }
+		public OffsetDictionary<object> All { get; }
+
 
 		/// <summary>
 		/// Creates a LUT with preexisting labels.
 		/// </summary>
 		/// <param name="labels">Preexisting labels.</param>
-		public BaseLUT(Dictionary<long, string> labels)
+		public OffsetLUT(Dictionary<long, string> labels)
 		{
 			Labels = new(labels);
 			All = new();
@@ -34,66 +35,69 @@ namespace SA3D.Common.Lookup
 		/// <summary>
 		/// Creates a new empty LUT.
 		/// </summary>
-		public BaseLUT()
+		public OffsetLUT()
 		{
 			Labels = new();
 			All = new();
 		}
 
 		/// <summary>
-		/// Custom handler for adding a new address/value pair to the lookup table.
+		/// Custom handler for adding a new offset/value pair to the lookup table.
 		/// </summary>
-		/// <param name="address">The address to add.</param>
+		/// <param name="offset">The offset to add.</param>
 		/// <param name="value">The value to add.</param>
-		protected abstract void AddEntry(long address, object value);
-
-		/// <summary>
-		/// Adds a new address-value pair to the LUT. Tries to add the label
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="address"></param>
-		/// <param name="value"></param>
-		public void AddTryLabel<T>(long address, T value) where T : class
+		protected virtual void OnAddEntry(long offset, object value)
 		{
-			All.Add(address, value);
 
-			if(value is ILabel label)
-			{
-				Labels.TryAdd(address, label.Label);
-			}
-
-			AddEntry(address, value);
 		}
 
 		/// <summary>
-		/// Adds a new address-value pair to the LUT. Adds a safe label
+		/// Adds a new offset-value pair to the LUT. Tries to add the label
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
-		/// <param name="address"></param>
+		/// <param name="offset"></param>
 		/// <param name="value"></param>
-		public void AddSafeLabel<T>(long address, T value) where T : class
+		public void AddTryLabel<T>(long offset, T value) where T : class
 		{
-			All.Add(address, value);
+			All.Add(offset, value);
 
 			if(value is ILabel label)
 			{
-				Labels.AddSafe(address, label.Label);
+				Labels.TryAdd(offset, label.Label);
 			}
 
-			AddEntry(address, value);
+			OnAddEntry(offset, value);
 		}
 
 		/// <summary>
-		/// Tries to get the typed value assigned to a given address
+		/// Adds a new offset-value pair to the LUT. Adds a safe label
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
-		/// <param name="address"></param>
+		/// <param name="offset"></param>
+		/// <param name="value"></param>
+		public void AddSafeLabel<T>(long offset, T value) where T : class
+		{
+			All.Add(offset, value);
+
+			if(value is ILabel label)
+			{
+				Labels.AddSafe(offset, label.Label);
+			}
+
+			OnAddEntry(offset, value);
+		}
+
+		/// <summary>
+		/// Tries to get the typed value assigned to a given offset
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="offset"></param>
 		/// <param name="value"></param>
 		/// <returns></returns>
 		/// <exception cref="InvalidCastException"></exception>
-		public bool TryGetValue<T>(long address, [NotNullWhen(true)] out T? value) where T : class
+		public bool TryGetValue<T>(long offset, [NotNullWhen(true)] out T? value) where T : class
 		{
-			if(All.TryGetValue(address, out object? genValue))
+			if(All.TryGetValue(offset, out object? genValue))
 			{
 				value = genValue as T ?? throw new InvalidCastException($"Stored value is of type \"{genValue!.GetType()}\" and not {typeof(T)}");
 				return true;

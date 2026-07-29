@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 namespace SA3D.Common.Lookup
 {
 	/// <summary>
-	/// A dictionary for mapping labels to addresses.
+	/// A dictionary for mapping labels to offsets.
 	/// </summary>
-	public sealed partial class LabelDictionary : PointerDictionary<string>
+	public sealed partial class LabelDictionary : OffsetDictionary<string>
 	{
 		[GeneratedRegex("(?![0-9A-Za-z_]).")]
 		private static partial Regex IllegalCharactersCheck();
@@ -31,18 +31,18 @@ namespace SA3D.Common.Lookup
 		/// <summary>
 		/// Adds a new label to the dictionary. If the name is already taken, it gets preceded by a number to keep it unique.
 		/// </summary>
-		/// <param name="address">The address to add.</param>
+		/// <param name="offset">The offset to add.</param>
 		/// <param name="label">The label to add.</param>
 		/// <returns>The label as it was added.</returns>
 		/// <exception cref="ArgumentException"/>
-		public string AddSafe(long address, string label)
+		public string AddSafe(long offset, string label)
 		{
 			label = IllegalCharactersCheck().Replace(label, "_");
 
-			if(_toAddr.ContainsKey(label))
+			if(_toOffset.ContainsKey(label))
 			{
 				int append = 1;
-				while(_toAddr.ContainsKey($"{label}_{append}"))
+				while(_toOffset.ContainsKey($"{label}_{append}"))
 				{
 					append++;
 				}
@@ -50,37 +50,37 @@ namespace SA3D.Common.Lookup
 				label = $"{label}_{append}";
 			}
 
-			Add(address, label);
+			Add(offset, label);
 			return label;
 		}
 
 		/// <summary>
-		/// Returns either the found address, or assembled a custom label for the address
+		/// Returns either the found offset, or assembled a custom label for the offset
 		/// </summary>
-		/// <param name="address">The lookup address</param>
+		/// <param name="offset">The lookup offset</param>
 		/// <param name="prefix">The prefix to use when creating a custom label</param>
 		/// <returns></returns>
-		public string GetSafe(long address, string prefix)
+		public string GetSafe(long offset, string prefix)
 		{
-			if(!TryGetValue(address, out string? result))
+			if(!TryGetValue(offset, out string? result))
 			{
-				result = prefix + address.ToString("X8");
+				result = prefix + offset.ToString("X8");
 			}
 
 			return result;
 		}
 
 		/// <summary>
-		/// Attempts to get the label for the specified address. If none is found, it will return a hexadecimal representation of the address prefixed with the specified prefix.
+		/// Attempts to get the label for the specified offset. If none is found, it will return a hexadecimal representation of the offset prefixed with the specified prefix.
 		/// </summary>
-		/// <param name="address">The address to get the label for.</param>
+		/// <param name="offset">The offset to get the label for.</param>
 		/// <param name="prefix">The prefix to add when no label is found.</param>
 		/// <returns>The found or generated label.</returns>
-		public string GetGenerateValue(long address, string prefix)
+		public string GetGenerateValue(long offset, string prefix)
 		{
-			return TryGetValue(address, out string? result)
+			return TryGetValue(offset, out string? result)
 				? result
-				: $"{prefix}{address:X8}";
+				: $"{prefix}{offset:X8}";
 		}
 
 	}

@@ -44,7 +44,7 @@ namespace SA3D.Common.IO
 		/// <summary>
 		/// Gets the current offset position in the stream
 		/// </summary>
-		/// <param name="reader">The reader to get the pointer address from</param>
+		/// <param name="reader">The reader to get the pointer offset from</param>
 		public static long GetPositionOffset(this BinaryObjectReader reader)
 		{
 			return reader.OffsetHandler.CalculateOffset(reader.Position);
@@ -53,7 +53,7 @@ namespace SA3D.Common.IO
 		/// <summary>
 		/// Gets the current offset position in the stream
 		/// </summary>
-		/// <param name="writer">The writer to get the pointer address from</param>
+		/// <param name="writer">The writer to get the pointer offset from</param>
 		public static long GetPositionOffset(this BinaryObjectWriter writer)
 		{
 			return writer.OffsetHandler.CalculateOffset(writer.Position);

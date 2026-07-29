@@ -8,7 +8,7 @@ Code reused all throughout the SA3D Code Library.
 |------------------------		|--------------------------------------------------------------------------------------	|
 | SA3D.Common            		| Various Utility Methods                                                              	|
 | SA3D.Ascii					| Writer for writing Ascii C-structures													|
-| SA3D.Common.Lookup     		| 2-way pointer dictionaries for storing pairs with unique values and unique addresses 	|
+| SA3D.Common.Lookup     		| 2-way pointer dictionaries for storing pairs with unique values and unique offsets 	|
 | SA3D.Common.Ini        		| Ini data de/serializer.                                                              	|
 | SA3D.Common.IO         		| Data reader and writer, as well as Executable utilities.                             	|
 | SA3D.Common.Converters 		| Various converters, mostly used in conjunction with Ini data.                        	|
