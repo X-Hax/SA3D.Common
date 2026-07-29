@@ -5,7 +5,7 @@ namespace SA3D.Common.Ini
 	/// <summary>
 	/// Ini Settings for a collection
 	/// </summary>
-	public class IniCollectionSettings
+	public sealed class IniCollectionSettings
 	{
 		/// <summary>
 		/// Serializer mode of the ini collection

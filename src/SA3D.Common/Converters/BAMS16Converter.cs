@@ -7,7 +7,7 @@ namespace SA3D.Common.Converters
 	/// <summary>
 	/// A valueconverter for 16 bit BAMS angles
 	/// </summary>
-	public class BAMS16Converter : TypeConverter
+	public sealed class BAMS16Converter : TypeConverter
 	{
 		/// <inheritdoc/>
 		public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)

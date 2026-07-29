@@ -9,7 +9,7 @@ namespace SA3D.Common.JsonConverters
 	/// <summary>
 	/// Json converter for <see cref="Quaternion"/>.
 	/// </summary>
-	public class QuaternionJsonConverter : JsonConverter<Quaternion>
+	public sealed class QuaternionJsonConverter : JsonConverter<Quaternion>
 	{
 		/// <inheritdoc/>
 		public override Quaternion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

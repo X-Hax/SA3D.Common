@@ -9,7 +9,7 @@ namespace SA3D.Common.Converters
 	/// <summary>
 	/// A valueconverter for <see cref="Quaternion"/>
 	/// </summary>
-	public class QuaternionConverter : ExpandableObjectConverter
+	public sealed class QuaternionConverter : ExpandableObjectConverter
 	{
 		/// <inheritdoc/>
 		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)

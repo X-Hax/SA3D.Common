@@ -7,7 +7,7 @@ namespace SA3D.Common.Converters
 	/// <summary>
 	/// A valueconverter for strings
 	/// </summary>
-	public class StringConverter<T> : TypeConverter
+	public sealed class StringConverter<T> : TypeConverter
 	{
 		/// <inheritdoc/>
 		public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)

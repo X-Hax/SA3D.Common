@@ -8,7 +8,7 @@ namespace SA3D.Common.JsonConverters
 	/// <summary>
 	/// Json converter for uint32 hexadecimal
 	/// </summary>
-	public class UInt32HexJsonConverter : JsonConverter<uint>
+	public sealed class UInt32HexJsonConverter : JsonConverter<uint>
 	{
 		/// <inheritdoc/>
 		public override uint Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

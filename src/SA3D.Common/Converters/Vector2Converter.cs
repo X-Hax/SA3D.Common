@@ -9,7 +9,7 @@ namespace SA3D.Common.Converters
 	/// <summary>
 	/// A valueconverter for <see cref="Vector2"/>
 	/// </summary>
-	public class Vector2Converter : ExpandableObjectConverter
+	public sealed class Vector2Converter : ExpandableObjectConverter
 	{
 		/// <inheritdoc/>
 		public override bool CanConvertTo(ITypeDescriptorContext? context, [NotNullWhen(true)] Type? destinationType)

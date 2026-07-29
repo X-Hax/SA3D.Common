@@ -12,7 +12,7 @@ namespace SA3D.Common.Lookup
 	/// <typeparam name="T"></typeparam>
 
 	[JsonConverter(typeof(LabeledArrayJsonConverterFactory))]
-	public class LabeledArray<T> : ILabel, IList, IList<T>, ICloneable
+	public sealed class LabeledArray<T> : ILabel, IList, IList<T>, ICloneable
 	{
 		private const string _labelPrefix = "array_";
 

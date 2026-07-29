@@ -9,7 +9,7 @@ namespace SA3D.Common.JsonConverters
 	/// <summary>
 	/// Json converter for <see cref="Vector3"/>.
 	/// </summary>
-	public class Vector3JsonConverter : JsonConverter<Vector3>
+	public sealed class Vector3JsonConverter : JsonConverter<Vector3>
 	{
 		/// <inheritdoc/>
 		public override Vector3 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

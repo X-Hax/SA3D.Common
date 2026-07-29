@@ -7,7 +7,7 @@ namespace SA3D.Common.Converters
 	/// <summary>
 	/// A valueconverter for unsigned hexadecimal 16 bit numbers
 	/// </summary>
-	public class UInt16HexConverter : TypeConverter
+	public sealed class UInt16HexConverter : TypeConverter
 	{
 		/// <inheritdoc/>
 		public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)

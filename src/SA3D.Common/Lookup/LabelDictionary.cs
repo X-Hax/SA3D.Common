@@ -7,7 +7,7 @@ namespace SA3D.Common.Lookup
 	/// <summary>
 	/// A dictionary for mapping labels to addresses.
 	/// </summary>
-	public partial class LabelDictionary : PointerDictionary<string>
+	public sealed partial class LabelDictionary : PointerDictionary<string>
 	{
 		[GeneratedRegex("(?![0-9A-Za-z_]).")]
 		private static partial Regex IllegalCharactersCheck();

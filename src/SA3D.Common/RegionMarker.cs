@@ -8,7 +8,7 @@ namespace SA3D.Common
 	/// A handler for defining 1 dimensional regions (like to keep track of value types in an array).
 	/// </summary>
 	/// <typeparam name="T">Marker Datatype</typeparam>
-	public class RegionMarker<T> where T : unmanaged, IEquatable<T>
+	public sealed class RegionMarker<T> where T : unmanaged, IEquatable<T>
 	{
 		private readonly SortedDictionary<long, T> _regions;
 
