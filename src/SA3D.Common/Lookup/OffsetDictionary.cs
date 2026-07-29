@@ -19,7 +19,7 @@ namespace SA3D.Common.Lookup
 		public int Count => _fromOffset.Count;
 
 		/// <summary>
-		/// Creates a new pointer dictionary
+		/// Creates a new offset dictionary
 		/// </summary>
 		public OffsetDictionary()
 		{
@@ -49,7 +49,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="value">The value of the offset to get.</param>
 		/// <returns>The offset if successful; <see langword="null"/> if unsuccessful.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public long? GetAddress(T value)
+		public long? GetOffset(T value)
 		{
 			if(_toOffset.TryGetValue(value, out long offset))
 			{
@@ -78,7 +78,7 @@ namespace SA3D.Common.Lookup
 		/// <param name="result">When this method returns, contains the offset associated with the specified value, if the value is found; otherwise, <see langword="null"/>. This parameter is passed uninitialized.</param>
 		/// <returns><see langword="true"/> if the <see cref="OffsetDictionary{T}"/> contains an offset with the specified value, otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public bool TryGetAddress(T value, [MaybeNullWhen(false)] out long result)
+		public bool TryGetOffset(T value, [MaybeNullWhen(false)] out long result)
 		{
 			return _toOffset.TryGetValue(value, out result);
 		}
@@ -93,7 +93,7 @@ namespace SA3D.Common.Lookup
 		{
 			if(!_fromOffset.TryAdd(offset, value))
 			{
-				throw new ArgumentException($"An item with the same offset has already been added. Address: {offset:X8}");
+				throw new ArgumentException($"An item with the same offset has already been added. Offset: {offset:X8}");
 			}
 
 			if(!_toOffset.TryAdd(value, offset))

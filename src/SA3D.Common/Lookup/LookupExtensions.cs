@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace SA3D.Common.Lookup
 {
 	/// <summary>
-	/// Pointer dictionary extension methods
+	/// Offset dictionary extension methods
 	/// </summary>
 	public static class LookupExtensions
 	{
