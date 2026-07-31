@@ -11,8 +11,9 @@ namespace SA3D.Common.IO
 		/// Check whether the data behind a reader can be read as the file
 		/// </summary>
 		/// <param name="reader"></param>
+		/// <param name="context">file context to check with</param>
 		/// <returns></returns>
-		public bool Check(BinaryObjectReader reader);
+		public bool Check(BinaryObjectReader reader, FileContext context);
 	}
 
 	/// <summary>
@@ -20,6 +21,23 @@ namespace SA3D.Common.IO
 	/// </summary>
 	public interface IFileSerializable<T> : IBinarySerializable<FileContext<T>>, IFileSerializable where T : unmanaged
 	{
+		/// <summary>
+		/// Check whether the data behind a reader can be read as the file
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <param name="context">file context to check with</param>
+		/// <returns></returns>
+		public bool Check(BinaryObjectReader reader, FileContext<T> context);
+
+		bool IFileSerializable.Check(BinaryObjectReader reader, FileContext context)
+		{
+			return Check(reader, new FileContext<T>()
+			{
+				Filepath = context.Filepath
+			});
+		}
+
+
 		void IBinarySerializable.Read(BinaryObjectReader reader)
 		{
 			Read(reader, default(FileContext<T>));
@@ -29,6 +47,7 @@ namespace SA3D.Common.IO
 		{
 			Write(writer, default(FileContext<T>));
 		}
+
 
 		void IBinarySerializable<FileContext>.Read(BinaryObjectReader reader, FileContext context)
 		{
