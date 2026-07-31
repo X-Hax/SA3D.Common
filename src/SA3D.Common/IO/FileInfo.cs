@@ -21,6 +21,6 @@ namespace SA3D.Common.IO
 		/// <summary>
 		/// Endiannes with which the file should be read
 		/// </summary>
-		public Endianness Endiannes { get; set; }
+		public Endianness? Endiannes { get; set; }
 	}
 }

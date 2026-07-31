@@ -44,7 +44,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static bool CheckStream<T>(Stream stream, FileInfo fileInfo) where T : IFileSerializable, new()
 		{
-			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes, fileInfo.Encoding, fileInfo.Filepath);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes ?? new T().DefaultFileEndianness, fileInfo.Encoding, fileInfo.Filepath);
 			return reader.Check<T>(new(fileInfo.Filepath));
 		}
 
@@ -98,7 +98,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static bool CheckStream<T, C>(Stream stream, FileInfo fileInfo, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
-			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes, fileInfo.Encoding, fileInfo.Filepath);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes ?? new T().DefaultFileEndianness, fileInfo.Encoding, fileInfo.Filepath);
 			return reader.Check<T, C>(new(fileInfo.Filepath, context));
 		}
 
@@ -151,7 +151,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static T ReadFromStream<T>(Stream stream, FileInfo fileInfo) where T : IFileSerializable, new()
 		{
-			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes, fileInfo.Encoding, fileInfo.Filepath);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes ?? new T().DefaultFileEndianness, fileInfo.Encoding, fileInfo.Filepath);
 			return reader.ReadObject<T, FileContext>(new(fileInfo.Filepath));
 		}
 
@@ -195,7 +195,7 @@ namespace SA3D.Common.IO
 		/// <returns></returns>
 		public static T ReadFromStream<T, C>(Stream stream, FileInfo fileInfo, C context) where T : IFileSerializable<C>, new() where C : unmanaged
 		{
-			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes, fileInfo.Encoding, fileInfo.Filepath);
+			using BinaryObjectReader reader = new(stream, StreamOwnership.Retain, fileInfo.Endiannes ?? new T().DefaultFileEndianness, fileInfo.Encoding, fileInfo.Filepath);
 			return reader.ReadObject<T, FileContext<C>>(new(fileInfo.Filepath, context));
 		}
 
@@ -238,7 +238,7 @@ namespace SA3D.Common.IO
 		/// <param name="fileInfo">Info with which the file should be written</param>
 		public static void WriteToStream<T>(this T file, FileInfo fileInfo, Stream stream) where T : IFileSerializable
 		{
-			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, fileInfo.Endiannes, fileInfo.Encoding, fileInfo.Filepath);
+			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, fileInfo.Endiannes ?? file.DefaultFileEndianness, fileInfo.Encoding, fileInfo.Filepath);
 			writer.OffsetFlushMode = OffsetFlushMode.Recursive;
 			writer.WriteObject(file, new FileContext(fileInfo.Filepath));
 		}
@@ -287,7 +287,7 @@ namespace SA3D.Common.IO
 		/// <exception cref="InvalidOperationException"></exception>
 		public static void WriteToStream<T, C>(this T file, FileInfo fileInfo, C context, Stream stream) where T : IFileSerializable<C> where C : unmanaged
 		{
-			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, fileInfo.Endiannes, fileInfo.Encoding, fileInfo.Filepath);
+			using BinaryObjectWriter writer = new(stream, StreamOwnership.Retain, fileInfo.Endiannes ?? file.DefaultFileEndianness, fileInfo.Encoding, fileInfo.Filepath);
 			writer.OffsetFlushMode = OffsetFlushMode.Recursive;
 			writer.WriteObject(file, new FileContext<C>(fileInfo.Filepath, context));
 		}

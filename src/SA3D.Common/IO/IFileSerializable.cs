@@ -8,6 +8,11 @@ namespace SA3D.Common.IO
 	public interface IFileSerializable : IBinarySerializable<FileContext>
 	{
 		/// <summary>
+		/// Default endianness to use when writing the file
+		/// </summary>
+		public Endianness DefaultFileEndianness => Endianness.Little;
+
+		/// <summary>
 		/// Check whether the data behind a reader can be read as the file
 		/// </summary>
 		/// <param name="reader"></param>
