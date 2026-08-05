@@ -1,3 +1,5 @@
+[![NuGet](https://img.shields.io/nuget/v/SA3D.Common.svg)](https://www.nuget.org/packages/SA3D.Common) [![downloads](https://img.shields.io/nuget/dt/SA3D.Common)](https://www.nuget.org/packages/SA3D.Common)
+
 # SA3D.Common
 Code reused all throughout the SA3D Code Library.
 
