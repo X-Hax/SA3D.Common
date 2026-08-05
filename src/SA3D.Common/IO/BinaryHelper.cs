@@ -236,13 +236,13 @@ namespace SA3D.Common.IO
 		/// Peeks the 4 bytes at the current position. Returns the endianness in which it would be the smaller value
 		/// </summary>
 		/// <returns></returns>
-		public static Endianness CheckEndianness32(this BinaryValueReader reader, long offset = 0, SeekOrigin origin = SeekOrigin.Begin)
+		public static Endianness CheckEndianness32(this BinaryValueReader reader)
 		{
 			uint little, big;
 
 			using(reader.WithEndian(Endianness.Little))
 			{
-				using(reader.At(offset, origin))
+				using(reader.At())
 				{
 					little = reader.ReadUInt32();
 				}
@@ -250,7 +250,7 @@ namespace SA3D.Common.IO
 
 			using(reader.WithEndian(Endianness.Big))
 			{
-				using(reader.At(offset, origin))
+				using(reader.At())
 				{
 					big = reader.ReadUInt32();
 				}
