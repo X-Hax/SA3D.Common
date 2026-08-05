@@ -10,14 +10,13 @@ namespace SA3D.Common.Lookup
 	/// An array with a label.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-
 	[JsonConverter(typeof(LabeledArrayJsonConverterFactory))]
-	public sealed class LabeledArray<T> : ILabel, IList, IList<T>, ICloneable
+	public class LabeledArray<T> : ILabel, IList<T>, IList, ICloneable
 	{
 		private const string _labelPrefix = "array_";
 
 		/// <inheritdoc/>
-		public string LabelPrefix { get; } = _labelPrefix;
+		public virtual string LabelPrefix { get; } = _labelPrefix;
 
 		/// <inheritdoc/>
 		public string Label { get; set; }
@@ -39,7 +38,6 @@ namespace SA3D.Common.Lookup
 		public int Length => Array.Length;
 
 		#region Constructors
-
 
 		/// <summary>
 		/// Creates a new labeled array from a label and an array.
@@ -84,17 +82,29 @@ namespace SA3D.Common.Lookup
 		/// <param name="size">The size of the array.</param>
 		public LabeledArray(uint size) : this(new T[size]) { }
 
+		/// <summary>
+		/// Creates a new empty labeled array with a label
+		/// </summary>
+		/// <param name="label"></param>
+		public LabeledArray(string label) : this(label, 0) { }
+
+		/// <summary>
+		/// Creates a new, empty labeled array with a generated label
+		/// </summary>
+		public LabeledArray() : this(0) { }
+
+
 		#endregion
 
 		#region Enumerable & Enumerable<T>
 
-		/// <inheritdoc/>
-		public IEnumerator GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return Array.GetEnumerator();
 		}
 
-		IEnumerator<T> IEnumerable<T>.GetEnumerator()
+		/// <inheritdoc/>
+		public IEnumerator<T> GetEnumerator()
 		{
 			return ((IEnumerable<T>)Array).GetEnumerator();
 		}

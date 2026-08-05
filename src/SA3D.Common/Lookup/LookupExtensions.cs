@@ -56,12 +56,12 @@ namespace SA3D.Common.Lookup
 		/// <summary>
 		/// returns null if <paramref name="array"/> is null or has a length of 0, otherwise returns <paramref name="array"/> again.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="T">Array type</typeparam>
 		/// <param name="array"></param>
 		/// <returns></returns>
-		public static LabeledArray<T>? EmptyNull<T>(this LabeledArray<T>? array)
+		public static T? EmptyNull<T>(this T? array) where T : class, IList
 		{
-			return array?.Length > 0 ? array : null;
+			return array?.Count > 0 ? array : null;
 		}
 	}
 }
